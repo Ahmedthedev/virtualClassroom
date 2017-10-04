@@ -5,8 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 
-//modules: titre, date début, date fin, documents, participants, messages, evaluations, profId, description, speechText
-class Module {
+public class Module {
 
     public String title;
     public Date start;
