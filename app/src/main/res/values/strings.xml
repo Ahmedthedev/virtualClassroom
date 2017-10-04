@@ -1,3 +1,21 @@
 <resources>
     <string name="app_name">VirtualClassroom</string>
+
+    <string name="fragment_log_in_logo_desc">Application logo</string>
+    <string name="fragment_log_in_loading">Loading…</string>
+    <string name="fragment_log_in_create_account">No account yet ? Create one !</string>
+    <string name="fragment_log_in_log_in_text">Log in</string>
+    <string name="fragment_log_in_email_hint">E-mail address</string>
+    <string name="fragment_log_in_name_hint">Username</string>
+    <string name="fragment_log_in_password_hint">Password</string>
+    <string name="fragment_log_in_password_confirm_hint">Repeat password</string>
+    <string name="fragment_log_in_or">or</string>
+    <string name="fragment_log_in_auth_conflict_msg">You already have an existing account.\nPlease try another authentication provider.</string>
+    <string name="fragment_log_in_email_error_msg">An error has occurred during the Email authentication process.</string>
+    <string name="fragment_log_in_email_invalid_error_msg">Invalid e-mail address.</string>
+    <string name="fragment_log_in_password_invalid_error_msg">Invalid password. (6 length min)</string>
+    <string name="fragment_log_in_password_confirm_invalid_error_msg">Invalid password confirmation</string>
+    <string name="fragment_log_in_name_invalid_error_msg">Invalid username. (6 length min)</string>
+
+    <string name="fragment_create_account_button_text">Create account</string>
 </resources>
