@@ -33,8 +33,6 @@ public class LogInActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in);
         firebaseAuth = FirebaseAuth.getInstance();
-        logOut();
-        Tools.printDeviceHash(this);
         FirebaseUser currentUser = firebaseAuth.getCurrentUser();
 
         if (currentUser != null) {
