@@ -4,19 +4,19 @@ import java.util.Date;
 
 
 public class Message {
-
     public String text;
-    public Date start;
-    public User user;
+    public Date dateCreation;
+    public String username;
+    public String userId;
 
     public Message() {
 
     }
 
-    public Message(String text, Date start, User user) {
+    public Message(String text, Date dateCreation, String username, String userId) {
         this.text = text;
-        this.start = start;
-        this.user = user;
+        this.dateCreation = dateCreation;
+        this.username = username;
+        this.userId = userId;
     }
-
 }
