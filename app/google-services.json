@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "493535475654",
+    "firebase_url": "https://virtualclassroom-aa052.firebaseio.com",
+    "project_id": "virtualclassroom-aa052",
+    "storage_bucket": "virtualclassroom-aa052.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:493535475654:android:beb274dea441af32",
+        "android_client_info": {
+          "package_name": "com.esgi.virtualclassroom"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "493535475654-dlal773gssk3hh6nuftrckp4p5daabkq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.esgi.virtualclassroom",
+            "certificate_hash": "11912cbbce0c44d81fcc3ca823d28a82da22cea3"
+          }
+        },
+        {
+          "client_id": "493535475654-q2ak0m36g8d8988ah9tbv4m4meefqlpq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBsDJBjSxa1CK0IVPg1RW5DTWP2fM9zh1E"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "493535475654-q2ak0m36g8d8988ah9tbv4m4meefqlpq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
