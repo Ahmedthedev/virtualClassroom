@@ -12,19 +12,25 @@ import android.widget.Toast;
 
 import com.esgi.virtualclassroom.fragments.CreateAccountFragment;
 import com.esgi.virtualclassroom.fragments.LogInFragment;
+import com.esgi.virtualclassroom.models.User;
 import com.esgi.virtualclassroom.utils.Tools;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class LogInActivity extends AppCompatActivity implements
         CreateAccountFragment.OnCreateAccountInteractionListener,
         LogInFragment.OnLoginInteractionListener
 {
+    private DatabaseReference dbRef;
     private FirebaseAuth firebaseAuth;
     private ProgressDialog progressDialog;
 
@@ -32,7 +38,9 @@ public class LogInActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in);
+        dbRef = FirebaseDatabase.getInstance().getReference();
         firebaseAuth = FirebaseAuth.getInstance();
+        logOut();
         FirebaseUser currentUser = firebaseAuth.getCurrentUser();
 
         if (currentUser != null) {
@@ -76,9 +84,15 @@ public class LogInActivity extends AppCompatActivity implements
         firebaseAuth.createUserWithEmailAndPassword(email, password).addOnSuccessListener(this, new OnSuccessListener<AuthResult>() {
             @Override
             public void onSuccess(AuthResult authResult) {
-                FirebaseUser user = authResult.getUser();
-                UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder().setDisplayName(name).build();
-                updateUser(user, profileUpdates);
+                final FirebaseUser user = authResult.getUser();
+                User profile = new User(name, user.getEmail(), null, false);
+                dbRef.child("users").child(user.getUid()).setValue(profile).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        hideProgressDialog();
+                        goToHomeScreen();
+                    }
+                });
             }
         }).addOnFailureListener(this, new OnFailureListener() {
             @Override
@@ -91,16 +105,6 @@ public class LogInActivity extends AppCompatActivity implements
 
                 logOut();
                 hideProgressDialog();
-            }
-        });
-    }
-
-    private void updateUser(FirebaseUser user, UserProfileChangeRequest profileUpdates) {
-        user.updateProfile(profileUpdates).addOnSuccessListener(this, new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                hideProgressDialog();
-                goToHomeScreen();
             }
         });
     }
