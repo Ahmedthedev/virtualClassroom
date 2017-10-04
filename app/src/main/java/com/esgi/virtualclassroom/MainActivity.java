@@ -40,13 +40,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 currentUser = dataSnapshot.getValue(User.class);
+                switchFragment(HomeFragment.newInstance(), true);
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) { }
         });
 
-        switchFragment(HomeFragment.newInstance(),true);
     }
 
     private void switchFragment(Fragment fragment, boolean addToBackStack) {
