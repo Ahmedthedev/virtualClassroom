@@ -9,10 +9,10 @@ import android.view.ViewGroup;
 
 import com.esgi.virtualclassroom.R;
 
-public class ActualEventFragment extends Fragment {
+public class FuturEventFragment extends Fragment {
 
-    public static ActualEventFragment newInstance() {
-        return new ActualEventFragment();
+    public static FuturEventFragment newInstance() {
+        return new FuturEventFragment();
     }
 
     @Override
