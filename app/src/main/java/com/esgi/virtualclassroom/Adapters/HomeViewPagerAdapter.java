@@ -11,14 +11,22 @@ import com.esgi.virtualclassroom.fragments.PastEventFragment;
 
 public class HomeViewPagerAdapter extends FragmentStatePagerAdapter {
 
-    public HomeViewPagerAdapter(FragmentManager fm) {
-        super(fm);
+    private int tabsNumber;
+
+    public HomeViewPagerAdapter(FragmentManager fragmentManager, int tabsNumber) {
+        super(fragmentManager);
+        this.tabsNumber = tabsNumber;
     }
 
     @Override
     public int getCount() {
-        return 3;
+        return tabsNumber;
     }
+
+    public HomeViewPagerAdapter(FragmentManager fm) {
+        super(fm);
+    }
+
 
     @Override
     public Fragment getItem(int position) {

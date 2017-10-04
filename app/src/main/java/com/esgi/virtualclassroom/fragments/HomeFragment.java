@@ -36,13 +36,13 @@ public class HomeFragment extends Fragment {
     private void displayViewPager() {
         TabLayout tabLayout = getView().findViewById(R.id.tab_layout);
         tabLayout.removeAllTabs();
-        tabLayout.addTab(tabLayout.newTab().setText("Contacts"));
-        tabLayout.addTab(tabLayout.newTab().setText("Medias"));
-        tabLayout.addTab(tabLayout.newTab().setText("Groups"));
+        tabLayout.addTab(tabLayout.newTab().setText("Ancients"));
+        tabLayout.addTab(tabLayout.newTab().setText("Futurs"));
+        tabLayout.addTab(tabLayout.newTab().setText("Découvrire"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
         profileViewPager = getView().findViewById(R.id.profile_viewpager);
-        HomeViewPagerAdapter adapterViewPager = new HomeViewPagerAdapter(getActivity().getSupportFragmentManager());
+        HomeViewPagerAdapter adapterViewPager = new HomeViewPagerAdapter(getActivity().getSupportFragmentManager(), tabLayout.getTabCount());
         profileViewPager.setAdapter(adapterViewPager);
         profileViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {

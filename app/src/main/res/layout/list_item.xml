@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:padding="@dimen/cardview_compat_inset_shadow"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/moduleName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Module Name" />
+
+            <TextView
+                android:id="@+id/teacherName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Teacher Name"/>
+
+            <TextView
+                android:id="@+id/dateStart"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Date Start"/>
+
+            <TextView
+                android:id="@+id/dateEnd"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Date End" />
+
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>
