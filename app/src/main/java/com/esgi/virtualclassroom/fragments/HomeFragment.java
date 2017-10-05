@@ -37,20 +37,16 @@ public class HomeFragment extends Fragment {
             actionBar.setTitle(getString(R.string.fragment_home_title));
         }
 
-        displayViewPager();
+        displayViewPager(view);
     }
-    private void displayViewPager() {
-        if (getView() == null) {
-            return;
-        }
-
-        TabLayout tabLayout = getView().findViewById(R.id.tab_layout);
+    private void displayViewPager(View view) {
+        TabLayout tabLayout = view.findViewById(R.id.tab_layout);
         tabLayout.removeAllTabs();
         tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.fragment_home_tab_past)));
         tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.fragment_home_tab_future)));
         tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.fragment_home_tab_available)));
 
-        profileViewPager = getView().findViewById(R.id.profile_viewpager);
+        profileViewPager = view.findViewById(R.id.profile_viewpager);
         HomeViewPagerAdapter adapterViewPager = new HomeViewPagerAdapter(getActivity().getSupportFragmentManager(), tabLayout.getTabCount());
         profileViewPager.setAdapter(adapterViewPager);
         profileViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));

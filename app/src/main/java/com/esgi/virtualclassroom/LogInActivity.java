@@ -19,6 +19,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -81,6 +82,9 @@ public class LogInActivity extends AppCompatActivity implements
             @Override
             public void onSuccess(AuthResult authResult) {
                 final FirebaseUser user = authResult.getUser();
+                UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder().setDisplayName(name).build();
+                user.updateProfile(profileUpdates);
+
                 User profile = new User(name, user.getEmail(), null, false);
                 dbRef.child("users").child(user.getUid()).setValue(profile).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
