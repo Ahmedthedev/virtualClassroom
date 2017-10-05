@@ -6,8 +6,8 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import com.esgi.virtualclassroom.fragments.HomeFragment;
 import com.esgi.virtualclassroom.fragments.RecorderFragment;
-import com.esgi.virtualclassroom.models.Module;
 import com.esgi.virtualclassroom.models.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -17,10 +17,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import com.esgi.virtualclassroom.fragments.HomeFragment;
 import com.esgi.virtualclassroom.utils.Tools;
-
-import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
     DatabaseReference dbRef;
