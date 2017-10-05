@@ -9,6 +9,7 @@ import com.esgi.virtualclassroom.models.User;
 import com.esgi.virtualclassroom.utils.Tools;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -46,5 +47,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onCancelled(DatabaseError databaseError) { }
         });
+
+        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder().setDisplayName("Kevin KONRAD").build();
+        firebaseUser.updateProfile(profileUpdates);
+        firebaseUser.reload();
     }
 }

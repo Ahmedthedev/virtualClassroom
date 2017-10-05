@@ -35,11 +35,7 @@ public class PastEventFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        if (getView() == null) {
-            return;
-        }
-
-        recyclerView = getView().findViewById(R.id.pastRecyclerView);
+        recyclerView = view.findViewById(R.id.pastRecyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
         arraylistItems = new ArrayList<>();

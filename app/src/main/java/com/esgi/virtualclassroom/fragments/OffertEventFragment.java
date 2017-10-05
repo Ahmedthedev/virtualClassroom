@@ -43,16 +43,12 @@ public class OffertEventFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        if (getView() == null) {
-            return;
-        }
-
-        recyclerView = getView().findViewById(R.id.offerRecyclerView);
+        recyclerView = view.findViewById(R.id.offerRecyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
 
         adapter = new HomeRecyclerViewAdapter(getActivity(), arraylistItems);
-        recyclerView = getView().findViewById(R.id.offerRecyclerView);
+        recyclerView = view.findViewById(R.id.offerRecyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
         recyclerView.setAdapter(adapter);
