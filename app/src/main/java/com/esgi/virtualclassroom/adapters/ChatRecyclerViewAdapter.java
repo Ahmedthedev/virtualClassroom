@@ -47,7 +47,7 @@ public class ChatRecyclerViewAdapter extends RecyclerView.Adapter<ChatRecyclerVi
             super(itemView);
             messageText = itemView.findViewById(R.id.moduleName);
             messageUsername = itemView.findViewById(R.id.teacherName);
-            messageCreationDate = itemView.findViewById(R.id.ad_image_view);
+//            messageCreationDate = itemView.findViewById(R.id.ad_image_view);
         }
     }
 }
