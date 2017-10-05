@@ -4,25 +4,29 @@
     android:layout_height="wrap_content">
 
     <android.support.v7.widget.CardView
+        android:layout_margin="@dimen/cardview_default_elevation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <LinearLayout
+            android:padding="16dp"
             android:id="@+id/linearLayout"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <TextView
-                android:id="@+id/moduleName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Module Name" />
 
             <TextView
                 android:id="@+id/teacherName"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Teacher Name"/>
+                android:text="Teacher Name"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat"/>
+
+            <TextView
+                android:id="@+id/moduleName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Module Name" />
 
             <TextView
                 android:id="@+id/dateStart"

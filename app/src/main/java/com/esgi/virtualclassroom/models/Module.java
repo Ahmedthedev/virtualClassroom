@@ -10,7 +10,7 @@ public class Module {
     public String title;
     public Date start;
     public Date end;
-    public List<Files> documents;
+    public List<Document> documents;
     public List<User> student;
     public List<Message> messages;
     public List<Evaluation> evaluations;
@@ -30,7 +30,7 @@ public class Module {
         this.teacher = teacher;
     }
 
-    public Module(String title, Date start, Date end, List<Files> documents, List<User> student, List<Message> messages, List<Evaluation> evaluations, User teacher, String description, String speechText) {
+    public Module(String title, Date start, Date end, List<Document> documents, List<User> student, List<Message> messages, List<Evaluation> evaluations, User teacher, String description, String speechText) {
         this.title = title;
         this.start = start;
         this.end = end;
@@ -55,11 +55,11 @@ public class Module {
         this.title = title;
     }
 
-    public List<Files> getDocuments() {
+    public List<Document> getDocuments() {
         return documents;
     }
 
-    public void setDocuments(List<Files> documents) {
+    public void setDocuments(List<Document> documents) {
         this.documents = documents;
     }
 

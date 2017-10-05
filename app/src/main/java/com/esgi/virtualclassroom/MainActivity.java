@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.esgi.virtualclassroom.fragments.HomeFragment;
 import com.esgi.virtualclassroom.models.Message;
+import com.esgi.virtualclassroom.fragments.RecorderFragment;
 import com.esgi.virtualclassroom.models.User;
 import com.esgi.virtualclassroom.utils.Tools;
 import com.google.firebase.auth.FirebaseAuth;

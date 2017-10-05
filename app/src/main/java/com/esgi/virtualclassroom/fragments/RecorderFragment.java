@@ -1,6 +1,8 @@
 package com.esgi.virtualclassroom.fragments;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
@@ -9,15 +11,21 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.esgi.virtualclassroom.R;
 import com.esgi.virtualclassroom.models.Module;
+import com.esgi.virtualclassroom.views.DrawingView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -35,6 +43,11 @@ public class RecorderFragment extends Fragment implements RecognitionListener {
     private SpeechRecognizer speechRecognizer;
     private Intent recognizerIntent;
     private boolean isListening;
+    private FrameLayout drawingViewContainer;
+    private Button sendImage;
+
+    DrawingView dv ;
+    private Paint mPaint;
 
     public static RecorderFragment newInstance(String moduleId) {
         Bundle args = new Bundle();
@@ -46,7 +59,36 @@ public class RecorderFragment extends Fragment implements RecognitionListener {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_voice_recorder, container, false);
+
+        View v = inflater.inflate(R.layout.fragment_voice_recorder, container, false);
+        drawingViewContainer = v.findViewById(R.id.layout_drawing_container);
+
+        mPaint = new Paint();
+        mPaint.setAntiAlias(true);
+        mPaint.setDither(true);
+        mPaint.setColor(Color.BLUE);
+        mPaint.setStyle(Paint.Style.STROKE);
+        mPaint.setStrokeJoin(Paint.Join.ROUND);
+        mPaint.setStrokeCap(Paint.Cap.ROUND);
+        mPaint.setStrokeWidth(12);
+        dv = new DrawingView(this.getContext(),mPaint);
+        drawingViewContainer.addView(dv);
+        Button done = v.findViewById(R.id.draw);
+        done.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                dv.uploadFile();
+                System.out.println("1-touch btn");
+            }
+        });
+        Button clear = v.findViewById(R.id.clear);
+        clear.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                dv.clear();
+                System.out.println("1-touch clear");
+            }
+        });
+        //dv.uploadFile();
+        return v;
     }
 
     @Override
@@ -54,6 +96,7 @@ public class RecorderFragment extends Fragment implements RecognitionListener {
         super.onViewCreated(view, savedInstanceState);
         dbRef = FirebaseDatabase.getInstance().getReference();
         moduleId = getArguments().getString(EXTRA_MODULE_ID);
+       // drawingViewContainer = view.findViewById(R.id.view_drawing_container);
 
         ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
         if (actionBar != null) {
@@ -65,7 +108,7 @@ public class RecorderFragment extends Fragment implements RecognitionListener {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 module = dataSnapshot.getValue(Module.class);
-                updateUI();
+                //updateUI();
             }
 
             @Override
@@ -78,7 +121,8 @@ public class RecorderFragment extends Fragment implements RecognitionListener {
         speechRecognizer.setRecognitionListener(this);
         recognizerIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
 
-        speechTextView = view.findViewById(R.id.txtSpeechInput);
+
+
         btnSpeak = view.findViewById(R.id.btnSpeak);
 
         btnSpeak.setOnClickListener(new View.OnClickListener() {

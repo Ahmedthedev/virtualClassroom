@@ -2,30 +2,46 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg_gradient"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:weightSum="2">
 
-    <ScrollView
-        android:padding="20dp"
-        android:layout_weight="4"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp">
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:id="@+id/layout_drawing_container"
+        >
 
-        <TextView
-            android:id="@+id/txtSpeechInput"
+
+
+    </FrameLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/draw"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="100dp"
-            android:textColor="@color/white"
-            android:textSize="26sp"
-            android:ellipsize="end"
-            android:textStyle="normal" />
-    </ScrollView>
+            android:text="draw done" />
+
+        <Button
+
+            android:id="@+id/clear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="clear" />
+
+    </LinearLayout>
+
+
 
     <LinearLayout
         android:padding="10dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:gravity="center"
+        android:layout_weight="1"
         android:orientation="vertical">
 
         <ImageButton

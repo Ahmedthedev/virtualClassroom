@@ -33,9 +33,9 @@ public class HomeViewPagerAdapter extends FragmentStatePagerAdapter {
             case 0:
                 return PastEventFragment.newInstance();
             case 1:
-                return OffertEventFragment.newInstance();
-            case 2:
                 return FuturEventFragment.newInstance();
+            case 2:
+                return OffertEventFragment.newInstance();
             default:
                 return null;
         }
