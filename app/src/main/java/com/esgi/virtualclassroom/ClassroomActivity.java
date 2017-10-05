@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import com.esgi.virtualclassroom.fragments.ChatFragment;
+import com.esgi.virtualclassroom.fragments.RecorderFragment;
 import com.esgi.virtualclassroom.models.Module;
 import com.esgi.virtualclassroom.utils.Tools;
 import com.google.firebase.auth.FirebaseAuth;
@@ -34,6 +35,7 @@ public class ClassroomActivity extends AppCompatActivity {
             return;
         }
 
+        Tools.switchFragment(this, R.id.main_fragment_container, RecorderFragment.newInstance(moduleId), true);
         Tools.switchFragment(this, R.id.chat_fragment_container, ChatFragment.newInstance(moduleId), true);
 
         moduleRef = dbRef.child("modules").child(moduleId);

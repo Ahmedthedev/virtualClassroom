@@ -17,17 +17,31 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.esgi.virtualclassroom.R;
+import com.esgi.virtualclassroom.models.Module;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class RecorderFragment extends Fragment implements RecognitionListener {
-    private String currentSpeech;
+    public static String EXTRA_MODULE_ID = "extra_module_id";
+    private String moduleId;
+    private Module module;
+    private DatabaseReference dbRef;
+    private DatabaseReference moduleRef;
     private TextView speechTextView;
     private ImageButton btnSpeak;
     private SpeechRecognizer speechRecognizer;
     private Intent recognizerIntent;
     private boolean isListening;
 
-    public static RecorderFragment newInstance() {
-        return new RecorderFragment();
+    public static RecorderFragment newInstance(String moduleId) {
+        Bundle args = new Bundle();
+        args.putString(EXTRA_MODULE_ID, moduleId);
+        RecorderFragment fragment = new RecorderFragment();
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override
@@ -38,11 +52,27 @@ public class RecorderFragment extends Fragment implements RecognitionListener {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        dbRef = FirebaseDatabase.getInstance().getReference();
+        moduleId = getArguments().getString(EXTRA_MODULE_ID);
 
         ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
         if (actionBar != null) {
             actionBar.hide();
         }
+
+        moduleRef = dbRef.child("modules").child(moduleId);
+        moduleRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                module = dataSnapshot.getValue(Module.class);
+                updateUI();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
         speechRecognizer = SpeechRecognizer.createSpeechRecognizer(getContext());
         speechRecognizer.setRecognitionListener(this);
@@ -63,6 +93,10 @@ public class RecorderFragment extends Fragment implements RecognitionListener {
                 }
             }
         });
+    }
+
+    private void updateUI() {
+        speechTextView.setText(module.speechText);
     }
 
     @Override

@@ -9,7 +9,9 @@ import android.widget.TextView;
 import com.esgi.virtualclassroom.R;
 import com.esgi.virtualclassroom.models.Message;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 
 
 public class ChatRecyclerViewAdapter extends RecyclerView.Adapter<ChatRecyclerViewAdapter.ViewHolder>{
@@ -21,7 +23,7 @@ public class ChatRecyclerViewAdapter extends RecyclerView.Adapter<ChatRecyclerVi
 
     @Override
     public ChatRecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_list_item, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_chat_message, parent, false);
         return new ViewHolder(v);
     }
 
@@ -29,8 +31,10 @@ public class ChatRecyclerViewAdapter extends RecyclerView.Adapter<ChatRecyclerVi
     public void onBindViewHolder(ChatRecyclerViewAdapter.ViewHolder holder, int position) {
         final Message message = messages.get(position);
         holder.messageText.setText(message.text);
-        holder.messageUsername.setText(message.username);
-        holder.messageCreationDate.setText(message.dateCreation.toString());
+        holder.messageUsername.setText(message.user.name);
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.getDefault());
+        String dateString = sdf.format(message.dateCreation);
+        holder.messageCreationDate.setText(dateString);
     }
 
     @Override
@@ -45,9 +49,9 @@ public class ChatRecyclerViewAdapter extends RecyclerView.Adapter<ChatRecyclerVi
 
         ViewHolder(View itemView) {
             super(itemView);
-            messageText = itemView.findViewById(R.id.moduleName);
-            messageUsername = itemView.findViewById(R.id.teacherName);
-//            messageCreationDate = itemView.findViewById(R.id.ad_image_view);
+            messageText = itemView.findViewById(R.id.message_text);
+            messageUsername = itemView.findViewById(R.id.message_user_name);
+            messageCreationDate = itemView.findViewById(R.id.message_date);
         }
     }
 }
