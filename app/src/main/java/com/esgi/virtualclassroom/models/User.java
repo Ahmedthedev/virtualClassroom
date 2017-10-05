@@ -18,4 +18,18 @@ public class User {
         this.isProf = isProf;
         this.modules = modules;
     }
+
+    public User(String name, String email, boolean isProf) {
+        this.name = name;
+        this.email = email;
+        this.isProf = isProf;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }
