@@ -4,8 +4,9 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,15 +32,24 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.show();
+            actionBar.setTitle(getString(R.string.fragment_home_title));
+        }
+
         displayViewPager();
     }
     private void displayViewPager() {
+        if (getView() == null) {
+            return;
+        }
+
         TabLayout tabLayout = getView().findViewById(R.id.tab_layout);
         tabLayout.removeAllTabs();
-        tabLayout.addTab(tabLayout.newTab().setText("Ancients"));
-        tabLayout.addTab(tabLayout.newTab().setText("Futurs"));
-        tabLayout.addTab(tabLayout.newTab().setText("Découvrire"));
-        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+        tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.fragment_home_tab_past)));
+        tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.fragment_home_tab_future)));
+        tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.fragment_home_tab_available)));
 
         profileViewPager = getView().findViewById(R.id.profile_viewpager);
         HomeViewPagerAdapter adapterViewPager = new HomeViewPagerAdapter(getActivity().getSupportFragmentManager(), tabLayout.getTabCount());

@@ -39,7 +39,6 @@ public class LogInActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_log_in);
         dbRef = FirebaseDatabase.getInstance().getReference();
         firebaseAuth = FirebaseAuth.getInstance();
-        logOut();
         FirebaseUser currentUser = firebaseAuth.getCurrentUser();
 
         if (currentUser != null) {
