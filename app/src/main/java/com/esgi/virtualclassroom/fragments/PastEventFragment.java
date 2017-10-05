@@ -25,7 +25,7 @@ public class PastEventFragment extends Fragment {
 
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
-    private List<Module> arraylistItems;
+    private List<Module> arraylistItems = new ArrayList<>();
 
 
     public static PastEventFragment newInstance() {
@@ -48,11 +48,7 @@ public class PastEventFragment extends Fragment {
 
         arraylistItems = new ArrayList<>();
 
-        for (int i=0; i < 10; i++) {
-            User user = new User("namePast","email",true);
-            Module listModule = new Module("Module"+i,"date start"+i,"date end"+i,user);
-            arraylistItems.add(listModule);
-        }
+
         adapter = new HomeRecyclerViewAdapter(this.getContext(),arraylistItems);
 
         recyclerView.setAdapter(adapter);

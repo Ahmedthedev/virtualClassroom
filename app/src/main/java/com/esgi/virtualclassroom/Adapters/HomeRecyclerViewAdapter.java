@@ -37,8 +37,8 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
 
         holder.moduleName.setText(listModule1.getTitle());
         holder.teacherName.setText(listModule1.getTeacher().getName());
-        holder.dateStart.setText(listModule1.getStart());
-        holder.dateEnd.setText(listModule1.getEnd());
+        holder.dateStart.setText(listModule1.getStart().toString());
+        holder.dateEnd.setText(listModule1.getEnd().toString());
 
         holder.linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override

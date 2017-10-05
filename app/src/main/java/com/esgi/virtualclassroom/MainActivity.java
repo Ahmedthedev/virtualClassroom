@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 currentUser = dataSnapshot.getValue(User.class);
-                switchFragment(RecorderFragment.newInstance(), true);
+                switchFragment(HomeFragment.newInstance(), true);
             }
 
             @Override

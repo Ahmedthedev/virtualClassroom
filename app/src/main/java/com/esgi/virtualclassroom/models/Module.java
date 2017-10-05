@@ -8,8 +8,8 @@ import java.util.List;
 public class Module {
 
     public String title;
-    public String start;
-    public String end;
+    public Date start;
+    public Date end;
     public List<Files> documents;
     public List<User> student;
     public List<Message> messages;
@@ -21,15 +21,17 @@ public class Module {
     public Module() {
 
     }
-
-    public Module(String title, String start, String end, User teacher) {
+    public String getHead() {
+        return this.getTitle();
+    }
+    public Module(String title, Date start, Date end, User teacher) {
         this.title = title;
         this.start = start;
         this.end = end;
         this.teacher = teacher;
     }
 
-    public Module(String title, String start, String end, List<Files> documents, List<User> student, List<Message> messages, List<Evaluation> evaluations, User teacher, String description, String speechText) {
+    public Module(String title, Date start, Date end, List<Files> documents, List<User> student, List<Message> messages, List<Evaluation> evaluations, User teacher, String description, String speechText) {
         this.title = title;
         this.start = start;
         this.end = end;
@@ -50,28 +52,28 @@ public class Module {
         this.title = title;
     }
 
-    public String getStart() {
-        return start;
-    }
-
-    public void setStart(String start) {
-        this.start = start;
-    }
-
-    public String getEnd() {
-        return end;
-    }
-
-    public void setEnd(String end) {
-        this.end = end;
-    }
-
     public List<Files> getDocuments() {
         return documents;
     }
 
     public void setDocuments(List<Files> documents) {
         this.documents = documents;
+    }
+
+    public Date getStart() {
+        return start;
+    }
+
+    public void setStart(Date start) {
+        this.start = start;
+    }
+
+    public Date getEnd() {
+        return end;
+    }
+
+    public void setEnd(Date end) {
+        this.end = end;
     }
 
     public List<User> getStudent() {
