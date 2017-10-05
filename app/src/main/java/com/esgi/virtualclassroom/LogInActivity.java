@@ -4,9 +4,6 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
@@ -107,27 +104,13 @@ public class LogInActivity extends AppCompatActivity implements
         });
     }
 
-    private void switchFragment(Fragment fragment, boolean addToBackStack) {
-        FragmentManager manager = getSupportFragmentManager();
-        FragmentTransaction transaction = manager.beginTransaction();
-
-        if (addToBackStack) {
-            transaction.addToBackStack(null);
-        }
-
-        fragment.setRetainInstance(true);
-        transaction.replace(R.id.fragment_container, fragment, fragment.getClass().getSimpleName());
-        transaction.commit();
-        Tools.closeKeyboard(this);
-    }
-
     @Override
     public void goToCreateAccountScreen() {
-        switchFragment(CreateAccountFragment.newInstance(), true);
+        Tools.switchFragment(this, R.id.fragment_container, CreateAccountFragment.newInstance(), true);
     }
 
     private void goToLoginScreen() {
-        switchFragment(LogInFragment.newInstance(), false);
+        Tools.switchFragment(this, R.id.fragment_container, LogInFragment.newInstance(), false);
     }
 
     private void goToHomeScreen() {

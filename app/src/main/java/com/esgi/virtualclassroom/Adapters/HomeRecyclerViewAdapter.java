@@ -1,14 +1,15 @@
-package com.esgi.virtualclassroom.Adapters;
+package com.esgi.virtualclassroom.adapters;
 
-import android.content.Context;
+import android.app.Activity;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.esgi.virtualclassroom.ClassroomActivity;
 import com.esgi.virtualclassroom.R;
 import com.esgi.virtualclassroom.models.Module;
 
@@ -16,13 +17,12 @@ import java.util.List;
 
 
 public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerViewAdapter.ViewHolder>{
-
     private List<Module> listModule;
-    private Context context;
+    private Activity activity;
 
-    public HomeRecyclerViewAdapter(Context context, List<Module> listItem) {
+    public HomeRecyclerViewAdapter(Activity activity, List<Module> listItem) {
         this.listModule = listItem;
-        this.context = context;
+        this.activity = activity;
     }
 
     @Override
@@ -33,17 +33,19 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
 
     @Override
     public void onBindViewHolder(HomeRecyclerViewAdapter.ViewHolder holder, int position) {
-        Module listModule1 = listModule.get(position);
+        final Module module = listModule.get(position);
 
-        holder.moduleName.setText(listModule1.getTitle());
-        holder.teacherName.setText(listModule1.getTeacher().getName());
-        holder.dateStart.setText(listModule1.getStart().toString());
-        holder.dateEnd.setText(listModule1.getEnd().toString());
+        holder.moduleName.setText(module.getTitle());
+        holder.teacherName.setText(module.getTeacher().getName());
+        holder.dateStart.setText(module.getStart().toString());
+        holder.dateEnd.setText(module.getEnd().toString());
 
         holder.linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(context, "you clicked on ",Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(activity, ClassroomActivity.class);
+                intent.putExtra(ClassroomActivity.EXTRA_MODULE_ID, module.id);
+                activity.startActivity(intent);
             }
         });
 
@@ -54,21 +56,20 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
         return listModule.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    class ViewHolder extends RecyclerView.ViewHolder{
+        TextView moduleName;
+        TextView teacherName;
+        TextView dateStart;
+        TextView dateEnd;
+        LinearLayout linearLayout;
 
-        public TextView moduleName;
-        public TextView teacherName;
-        public TextView dateStart;
-        public TextView dateEnd;
-        public LinearLayout linearLayout;
-
-        public ViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
-            moduleName = (TextView) itemView.findViewById(R.id.moduleName);
-            teacherName = (TextView) itemView.findViewById(R.id.teacherName);
-            dateStart = (TextView) itemView.findViewById(R.id.dateStart);
-            dateEnd = (TextView) itemView.findViewById(R.id.dateEnd);
-            linearLayout = (LinearLayout) itemView.findViewById(R.id.linearLayout);
+            moduleName = itemView.findViewById(R.id.moduleName);
+            teacherName = itemView.findViewById(R.id.teacherName);
+            dateStart = itemView.findViewById(R.id.dateStart);
+            dateEnd = itemView.findViewById(R.id.dateEnd);
+            linearLayout = itemView.findViewById(R.id.linearLayout);
         }
     }
 }

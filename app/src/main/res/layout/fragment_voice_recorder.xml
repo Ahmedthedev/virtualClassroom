@@ -12,7 +12,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="100dp"
         android:textColor="@color/white"
-        android:textSize="26dp"
+        android:textSize="26sp"
         android:textStyle="normal" />
 
     <LinearLayout
@@ -28,6 +28,7 @@
             android:id="@+id/btnSpeak"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:contentDescription="@string/fragment_recorder_mic_button_description"
             android:background="@null"
             android:src="@drawable/ico_mic" />
 

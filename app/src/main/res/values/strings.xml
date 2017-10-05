@@ -9,7 +9,6 @@
     <string name="fragment_log_in_name_hint">Username</string>
     <string name="fragment_log_in_password_hint">Password</string>
     <string name="fragment_log_in_password_confirm_hint">Repeat password</string>
-    <string name="fragment_log_in_or">or</string>
     <string name="fragment_log_in_auth_conflict_msg">You already have an existing account.\nPlease try another authentication provider.</string>
     <string name="fragment_log_in_email_error_msg">An error has occurred during the Email authentication process.</string>
     <string name="fragment_log_in_email_invalid_error_msg">Invalid e-mail address.</string>
@@ -24,8 +23,8 @@
     <string name="fragment_home_tab_future">To come</string>
     <string name="fragment_home_tab_available">Available</string>
 
-    <string name="fragment_recorder_action_settings">Settings</string>
-    <string name="fragment_recorder_speech_prompt">Start speaking&#8230;</string>
-    <string name="fragment_recorder_speech_not_supported">Your device does not support audio recording</string>
     <string name="fragment_recorder_tap_on_mic">Click the mic to start</string>
+    <string name="fragment_recorder_mic_button_description">Start recording button</string>
+    <string name="title_item_list">Items</string>
+    <string name="title_item_detail">Item Detail</string>
 </resources>

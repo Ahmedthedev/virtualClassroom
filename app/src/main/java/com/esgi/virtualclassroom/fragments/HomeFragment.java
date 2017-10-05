@@ -1,21 +1,20 @@
 package com.esgi.virtualclassroom.fragments;
 
+import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.esgi.virtualclassroom.Adapters.HomeViewPagerAdapter;
 import com.esgi.virtualclassroom.R;
+import com.esgi.virtualclassroom.adapters.HomeViewPagerAdapter;
 
 public class HomeFragment extends Fragment {
-
     private ViewPager profileViewPager;
     private int currentPage = 0;
 

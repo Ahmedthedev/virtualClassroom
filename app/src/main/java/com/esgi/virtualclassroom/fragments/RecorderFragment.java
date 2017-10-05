@@ -19,7 +19,8 @@ import android.widget.TextView;
 import com.esgi.virtualclassroom.R;
 
 public class RecorderFragment extends Fragment implements RecognitionListener {
-    private TextView txtSpeechInput;
+    private String currentSpeech;
+    private TextView speechTextView;
     private ImageButton btnSpeak;
     private SpeechRecognizer speechRecognizer;
     private Intent recognizerIntent;
@@ -47,7 +48,7 @@ public class RecorderFragment extends Fragment implements RecognitionListener {
         speechRecognizer.setRecognitionListener(this);
         recognizerIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
 
-        txtSpeechInput = view.findViewById(R.id.txtSpeechInput);
+        speechTextView = view.findViewById(R.id.txtSpeechInput);
         btnSpeak = view.findViewById(R.id.btnSpeak);
 
         btnSpeak.setOnClickListener(new View.OnClickListener() {

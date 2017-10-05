@@ -1,4 +1,4 @@
-package com.esgi.virtualclassroom.Adapters;
+package com.esgi.virtualclassroom.adapters;
 
 
 import android.support.v4.app.Fragment;
@@ -26,7 +26,6 @@ public class HomeViewPagerAdapter extends FragmentStatePagerAdapter {
     public HomeViewPagerAdapter(FragmentManager fm) {
         super(fm);
     }
-
 
     @Override
     public Fragment getItem(int position) {

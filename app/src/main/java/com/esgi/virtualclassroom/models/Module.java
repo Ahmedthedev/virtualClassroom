@@ -6,7 +6,7 @@ import java.util.List;
 
 
 public class Module {
-
+    public String id;
     public String title;
     public Date start;
     public Date end;
@@ -21,10 +21,9 @@ public class Module {
     public Module() {
 
     }
-    public String getHead() {
-        return this.getTitle();
-    }
-    public Module(String title, Date start, Date end, User teacher) {
+
+    public Module(String id, String title, Date start, Date end, User teacher) {
+        this.id = id;
         this.title = title;
         this.start = start;
         this.end = end;
@@ -42,6 +41,10 @@ public class Module {
         this.teacher = teacher;
         this.description = description;
         this.speechText = speechText;
+    }
+
+    public String getId() {
+        return id;
     }
 
     public String getTitle() {
