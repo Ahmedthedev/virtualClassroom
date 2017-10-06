@@ -3,6 +3,7 @@ package com.esgi.virtualclassroom.models;
 import java.nio.file.Files;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 
 public class Module {
@@ -10,7 +11,7 @@ public class Module {
     public String title;
     public Date start;
     public Date end;
-    public List<Document> documents;
+    public Map<String,Document> documents;
     public List<User> student;
     public List<Message> messages;
     public List<Evaluation> evaluations;
@@ -30,7 +31,7 @@ public class Module {
         this.teacher = teacher;
     }
 
-    public Module(String title, Date start, Date end, List<Document> documents, List<User> student, List<Message> messages, List<Evaluation> evaluations, User teacher, String description, String speechText) {
+    public Module(String title, Date start, Date end, Map<String,Document> documents, List<User> student, List<Message> messages, List<Evaluation> evaluations, User teacher, String description, String speechText) {
         this.title = title;
         this.start = start;
         this.end = end;
@@ -53,14 +54,6 @@ public class Module {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public List<Document> getDocuments() {
-        return documents;
-    }
-
-    public void setDocuments(List<Document> documents) {
-        this.documents = documents;
     }
 
     public Date getStart() {

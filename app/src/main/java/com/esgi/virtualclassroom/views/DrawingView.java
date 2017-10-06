@@ -16,6 +16,8 @@ import com.esgi.virtualclassroom.models.Document;
 import com.esgi.virtualclassroom.models.Module;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -26,14 +28,16 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 
 
 public class DrawingView extends View {
 
     //DrawingView dv ;
     private Paint mPaint;
-
+    private Module module;
     public int width;
+    private String moduleId;
     public  int height;
     private Bitmap mBitmap;
     private Canvas mCanvas;
@@ -47,9 +51,11 @@ public class DrawingView extends View {
         return mBitmap;
     }
 
-    public DrawingView(Context c, Paint mPaint) {
+    public DrawingView(Context c, Paint mPaint,String moduleId,Module module) {
         super(c);
         context=c;
+        this.module = module;
+        this.moduleId = moduleId;
         this.mPaint = mPaint;
         mPath = new Path();
         mBitmapPaint = new Paint(Paint.DITHER_FLAG);
@@ -78,15 +84,14 @@ public class DrawingView extends View {
     public void uploadFile() {
 
         FirebaseStorage storage = FirebaseStorage.getInstance();
-        StorageReference storageRef = storage.getReference();
-        storageRef = storageRef.child("images");
-        String name = new Date().getTime() + ".jpg";
+        final StorageReference storageRef = storage.getReference().child("images");
+
+        final String name = new Date().getTime() + ".jpg";
         StorageReference mountainImagesRef = storageRef.child(name);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         mBitmap.compress(Bitmap.CompressFormat.JPEG, 20, baos);
         byte[] data = baos.toByteArray();
         UploadTask uploadTask = mountainImagesRef.putBytes(data);
-        Document doc = new Document("url",mountainImagesRef.getName());
         uploadTask.addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
@@ -95,12 +100,25 @@ public class DrawingView extends View {
         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
-                @SuppressWarnings("VisibleForTests") Uri downloadUrl = taskSnapshot.getDownloadUrl();
-                System.out.println("1-onSuccess");
-                //return new Document();
-                clear();
-                Log.d("downloadUrl-->", "" + downloadUrl);
+
+                storageRef.child(name).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        DatabaseReference dbhref = FirebaseDatabase.getInstance().getReference();
+                        DatabaseReference moduleRef = dbhref.child("modules").child(moduleId).child("documents");
+                        DatabaseReference newDocumentRef = moduleRef.push();
+                        Document img = new Document(name,uri.toString());
+                       //List<Document> l = new L
+
+                        newDocumentRef.setValue(img).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+
+                                Log.i("test","success");
+                            }
+                        });
+                    }
+                });
             }
         });
 

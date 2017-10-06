@@ -5,23 +5,17 @@ package com.esgi.virtualclassroom.models;
  */
 
 public class Document {
-    private String url;
-    private String name;
+    public String name;
+    public String url;
+
 
     public Document() {
 
     }
 
-    public Document(String url, String name) {
-        this.url = url;
+    public Document(String name, String url) {
+
         this.name = name;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public String getName() {
-        return name;
+        this.url = url;
     }
 }

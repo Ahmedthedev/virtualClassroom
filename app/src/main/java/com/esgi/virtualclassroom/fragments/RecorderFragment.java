@@ -38,6 +38,7 @@ public class RecorderFragment extends Fragment implements RecognitionListener {
     private Module module;
     private DatabaseReference dbRef;
     private DatabaseReference moduleRef;
+    private String moduleName;
     private TextView speechTextView;
     private ImageButton btnSpeak;
     private SpeechRecognizer speechRecognizer;
@@ -66,20 +67,24 @@ public class RecorderFragment extends Fragment implements RecognitionListener {
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
         mPaint.setDither(true);
-        mPaint.setColor(Color.BLUE);
+        mPaint.setColor(Color.WHITE);
         mPaint.setStyle(Paint.Style.STROKE);
         mPaint.setStrokeJoin(Paint.Join.ROUND);
         mPaint.setStrokeCap(Paint.Cap.ROUND);
         mPaint.setStrokeWidth(12);
-        dv = new DrawingView(this.getContext(),mPaint);
+
+        moduleName = getArguments().getString(EXTRA_MODULE_ID);
+        dv = new DrawingView(this.getContext(),mPaint,getArguments().getString(EXTRA_MODULE_ID),module);
         drawingViewContainer.addView(dv);
         Button done = v.findViewById(R.id.draw);
         done.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 dv.uploadFile();
+                dv.clear();
                 System.out.println("1-touch btn");
             }
         });
+
         Button clear = v.findViewById(R.id.clear);
         clear.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -87,7 +92,6 @@ public class RecorderFragment extends Fragment implements RecognitionListener {
                 System.out.println("1-touch clear");
             }
         });
-        //dv.uploadFile();
         return v;
     }
 
