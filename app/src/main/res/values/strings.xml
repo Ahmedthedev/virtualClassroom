@@ -23,6 +23,7 @@
     <string name="fragment_home_tab_future">To come</string>
     <string name="fragment_home_tab_available">Available</string>
 
+
     <string name="fragment_recorder_tap_on_mic">Click the mic to start</string>
     <string name="fragment_recorder_mic_button_description">Start recording button</string>
     <string name="title_item_list">Items</string>
