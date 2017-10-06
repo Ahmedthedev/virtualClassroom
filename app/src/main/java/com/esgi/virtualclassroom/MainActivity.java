@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         dbRef = FirebaseDatabase.getInstance().getReference();
 
-        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         if (firebaseUser == null) {
             return;
         }
@@ -43,16 +43,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 currentUser = dataSnapshot.getValue(User.class);
+                UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder().setDisplayName(currentUser.name).build();
+                firebaseUser.updateProfile(profileUpdates);
+                firebaseUser.reload();
                 Tools.switchFragment(activity, R.id.fragment_container, HomeFragment.newInstance(), false);
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) { }
         });
-
-        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder().setDisplayName("Kevin KONRAD").build();
-        firebaseUser.updateProfile(profileUpdates);
-        firebaseUser.reload();
     }
 
     @Override
