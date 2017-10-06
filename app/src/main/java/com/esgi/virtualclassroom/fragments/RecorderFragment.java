@@ -1,12 +1,15 @@
 package com.esgi.virtualclassroom.fragments;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
@@ -20,6 +23,8 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -32,9 +37,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+
 public class RecorderFragment extends Fragment implements RecognitionListener {
+    private static final int REQUEST_RECORD_AUDIO_PERMISSION = 200;
     public static String EXTRA_MODULE_ID = "extra_module_id";
+    public static String EXTRA_IS_PROF = "extra_is_prof";
     private String moduleId;
+    private boolean isProf;
     private Module module;
     private DatabaseReference dbRef;
     private DatabaseReference moduleRef;
@@ -43,16 +53,23 @@ public class RecorderFragment extends Fragment implements RecognitionListener {
     private ImageButton btnSpeak;
     private SpeechRecognizer speechRecognizer;
     private Intent recognizerIntent;
+    private String currentSpeech;
     private boolean isListening;
     private FrameLayout drawingViewContainer;
     private Button sendImage;
 
     DrawingView dv ;
     private Paint mPaint;
+    private ScrollView scrollView;
+    private LinearLayout micLayout;
 
-    public static RecorderFragment newInstance(String moduleId) {
+    private boolean permissionToRecordAccepted = false;
+    private String [] permissions = {Manifest.permission.RECORD_AUDIO};
+
+    public static RecorderFragment newInstance(String moduleId, boolean isProf) {
         Bundle args = new Bundle();
         args.putString(EXTRA_MODULE_ID, moduleId);
+        args.putBoolean(EXTRA_IS_PROF, isProf);
         RecorderFragment fragment = new RecorderFragment();
         fragment.setArguments(args);
         return fragment;
@@ -79,9 +96,8 @@ public class RecorderFragment extends Fragment implements RecognitionListener {
         Button done = v.findViewById(R.id.draw);
         done.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                dv.uploadFile();
                 dv.clear();
-                System.out.println("1-touch btn");
+                dv.uploadFile();
             }
         });
 
@@ -89,9 +105,9 @@ public class RecorderFragment extends Fragment implements RecognitionListener {
         clear.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 dv.clear();
-                System.out.println("1-touch clear");
             }
         });
+
         return v;
     }
 
@@ -100,7 +116,9 @@ public class RecorderFragment extends Fragment implements RecognitionListener {
         super.onViewCreated(view, savedInstanceState);
         dbRef = FirebaseDatabase.getInstance().getReference();
         moduleId = getArguments().getString(EXTRA_MODULE_ID);
-       // drawingViewContainer = view.findViewById(R.id.view_drawing_container);
+        isProf = getArguments().getBoolean(EXTRA_IS_PROF);
+
+        requestPermissions(permissions, REQUEST_RECORD_AUDIO_PERMISSION);
 
         ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
         if (actionBar != null) {
@@ -112,6 +130,8 @@ public class RecorderFragment extends Fragment implements RecognitionListener {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 module = dataSnapshot.getValue(Module.class);
+                speechTextView.setText(module.speechText);
+                scrollView.scrollTo(0, scrollView.getBottom());
                 //updateUI();
             }
 
@@ -121,12 +141,17 @@ public class RecorderFragment extends Fragment implements RecognitionListener {
             }
         });
 
+        scrollView = view.findViewById(R.id.speech_scroll_view);
+        micLayout = view.findViewById(R.id.layout_mic_button);
+        micLayout.setVisibility(isProf ? View.VISIBLE : View.GONE);
+
         speechRecognizer = SpeechRecognizer.createSpeechRecognizer(getContext());
         speechRecognizer.setRecognitionListener(this);
         recognizerIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        recognizerIntent.putExtra(RecognizerIntent.EXTRA_PARTIAL_RESULTS, true);
+        recognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "fr-FR");
 
-
-
+        speechTextView = view.findViewById(R.id.txtSpeechInput);
         btnSpeak = view.findViewById(R.id.btnSpeak);
 
         btnSpeak.setOnClickListener(new View.OnClickListener() {
@@ -143,8 +168,18 @@ public class RecorderFragment extends Fragment implements RecognitionListener {
         });
     }
 
-    private void updateUI() {
-        speechTextView.setText(module.speechText);
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode){
+            case REQUEST_RECORD_AUDIO_PERMISSION:
+                permissionToRecordAccepted  = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+                break;
+        }
+
+        if (!permissionToRecordAccepted ) {
+            getActivity().finish();
+        }
     }
 
     @Override
@@ -169,6 +204,7 @@ public class RecorderFragment extends Fragment implements RecognitionListener {
 
     @Override
     public void onEndOfSpeech() {
+        currentSpeech = module.speechText;
         Log.i("SPEECH", "onEndOfSpeech");
     }
 
@@ -220,6 +256,13 @@ public class RecorderFragment extends Fragment implements RecognitionListener {
 
     @Override
     public void onPartialResults(Bundle bundle) {
+        ArrayList<String> voiceText = bundle.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
+        if (voiceText == null) {
+            return;
+        }
+
+        moduleRef.child("speechText").setValue(voiceText.get(0));
+        scrollView.scrollTo(0, scrollView.getBottom());
         Log.i("SPEECH", "onPartialResults");
     }
 

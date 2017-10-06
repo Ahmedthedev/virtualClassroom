@@ -82,7 +82,6 @@ public class DrawingView extends View {
     }
 
     public void uploadFile() {
-
         FirebaseStorage storage = FirebaseStorage.getInstance();
         final StorageReference storageRef = storage.getReference().child("images");
 

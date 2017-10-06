@@ -22,7 +22,7 @@ import java.util.Date;
 public class MainActivity extends AppCompatActivity {
     DatabaseReference dbRef;
     DatabaseReference userRef;
-    User currentUser;
+    public User currentUser;
     AppCompatActivity activity;
 
     @Override

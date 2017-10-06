@@ -19,7 +19,9 @@ public class ClassroomActivity extends AppCompatActivity {
     private DatabaseReference dbRef;
     private DatabaseReference moduleRef;
     public static String EXTRA_MODULE_ID = "extra_module_id";
+    public static String EXTRA_IS_PROF = "extra_is_prof";
     public String moduleId;
+    public boolean isProf;
     public Module module;
     public FirebaseUser currentUser;
 
@@ -29,13 +31,14 @@ public class ClassroomActivity extends AppCompatActivity {
         setContentView(R.layout.activity_classroom);
         dbRef = FirebaseDatabase.getInstance().getReference();
         moduleId = getIntent().getStringExtra(EXTRA_MODULE_ID);
+        isProf = getIntent().getBooleanExtra(EXTRA_IS_PROF, false);
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
         if (moduleId == null || currentUser == null) {
             return;
         }
 
-        Tools.switchFragment(this, R.id.main_fragment_container, RecorderFragment.newInstance(moduleId), true);
+        Tools.switchFragment(this, R.id.main_fragment_container, RecorderFragment.newInstance(moduleId, isProf), true);
         Tools.switchFragment(this, R.id.chat_fragment_container, ChatFragment.newInstance(moduleId), true);
         moduleRef = dbRef.child("modules").child(moduleId);
         moduleRef.addValueEventListener(new ValueEventListener() {

@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.esgi.virtualclassroom.ClassroomActivity;
+import com.esgi.virtualclassroom.MainActivity;
 import com.esgi.virtualclassroom.R;
 import com.esgi.virtualclassroom.models.Module;
 
@@ -45,6 +46,7 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
             public void onClick(View view) {
                 Intent intent = new Intent(activity, ClassroomActivity.class);
                 intent.putExtra(ClassroomActivity.EXTRA_MODULE_ID, module.id);
+                intent.putExtra(ClassroomActivity.EXTRA_IS_PROF, ((MainActivity) activity).currentUser.isProf);
                 activity.startActivity(intent);
             }
         });

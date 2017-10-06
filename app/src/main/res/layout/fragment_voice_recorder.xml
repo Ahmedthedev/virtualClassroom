@@ -5,17 +5,37 @@
     android:orientation="vertical"
     android:weightSum="2">
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+    <ScrollView
+        android:id="@+id/speech_scroll_view"
+        android:padding="10dp"
         android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp">
+
+        <TextView
+            android:id="@+id/txtSpeechInput"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:textSize="22sp"
+            android:ellipsize="end"
+            android:textStyle="normal" />
+
+    </ScrollView>
+
+    <FrameLayout
+        android:padding="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal"
         android:id="@+id/layout_drawing_container"
         >
 
-
-
     </FrameLayout>
+
     <LinearLayout
+        android:layout_gravity="bottom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -23,10 +43,9 @@
             android:id="@+id/draw"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="draw done" />
+            android:text="send" />
 
         <Button
-
             android:id="@+id/clear"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -34,14 +53,12 @@
 
     </LinearLayout>
 
-
-
     <LinearLayout
+        android:id="@+id/layout_mic_button"
         android:padding="10dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:gravity="center"
-        android:layout_weight="1"
         android:orientation="vertical">
 
         <ImageButton
