@@ -79,23 +79,6 @@ public class ChatFragment extends Fragment {
             }
         });
 
-        msgEditText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                sendMsgButton.setVisibility(s.length() > 0 ? View.VISIBLE : View.GONE);
-            }
-        });
-
         sendMsgButton = view.findViewById(R.id.send_button);
         sendMsgButton.setFocusable(false);
         sendMsgButton.setOnClickListener(new View.OnClickListener() {
@@ -136,7 +119,7 @@ public class ChatFragment extends Fragment {
         String text = msgEditText.getText().toString();
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
-        if (firebaseUser == null) {
+        if (firebaseUser == null || text.isEmpty()) {
             return;
         }
 
