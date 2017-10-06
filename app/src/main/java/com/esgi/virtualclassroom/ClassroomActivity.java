@@ -38,8 +38,8 @@ public class ClassroomActivity extends AppCompatActivity {
             return;
         }
 
-        Tools.switchFragment(this, R.id.main_fragment_container, RecorderFragment.newInstance(moduleId, isProf), true);
-        Tools.switchFragment(this, R.id.chat_fragment_container, ChatFragment.newInstance(moduleId), true);
+        Tools.switchFragment(this, R.id.main_fragment_container, RecorderFragment.newInstance(moduleId, isProf), false);
+        Tools.switchFragment(this, R.id.chat_fragment_container, ChatFragment.newInstance(moduleId), false);
         moduleRef = dbRef.child("modules").child(moduleId);
         moduleRef.addValueEventListener(new ValueEventListener() {
             @Override

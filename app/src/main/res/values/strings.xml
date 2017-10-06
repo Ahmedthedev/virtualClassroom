@@ -27,5 +27,6 @@
     <string name="fragment_recorder_mic_button_description">Start recording button</string>
     <string name="title_item_list">Items</string>
     <string name="title_item_detail">Item Detail</string>
-    <string name="fragment_chat_message_hint">Votre message...</string>
+    <string name="fragment_chat_message_hint">Your message…</string>
+    <string name="action_logout">Log out</string>
 </resources>
