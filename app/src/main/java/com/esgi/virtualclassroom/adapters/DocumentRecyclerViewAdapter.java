@@ -1,5 +1,6 @@
 package com.esgi.virtualclassroom.adapters;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,14 +24,15 @@ public class DocumentRecyclerViewAdapter extends RecyclerView.Adapter<DocumentRe
         this.documents = documents;
     }
 
+    @NonNull
     @Override
-    public DocumentRecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public DocumentRecyclerViewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_document_item, parent, false);
         return new ViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(DocumentRecyclerViewAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull DocumentRecyclerViewAdapter.ViewHolder holder, int position) {
         final Document document = documents.get(position);
         holder.documentName.setText(document.name);
         holder.documentUrl.setText(document.url);

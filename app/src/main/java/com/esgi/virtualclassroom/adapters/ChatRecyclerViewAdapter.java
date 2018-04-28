@@ -1,5 +1,6 @@
 package com.esgi.virtualclassroom.adapters;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,14 +22,15 @@ public class ChatRecyclerViewAdapter extends RecyclerView.Adapter<ChatRecyclerVi
         this.messages = messages;
     }
 
+    @NonNull
     @Override
-    public ChatRecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ChatRecyclerViewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_chat_message, parent, false);
         return new ViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(ChatRecyclerViewAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ChatRecyclerViewAdapter.ViewHolder holder, int position) {
         final Message message = messages.get(position);
         holder.messageText.setText(message.text);
         holder.messageUsername.setText(message.user.name);
