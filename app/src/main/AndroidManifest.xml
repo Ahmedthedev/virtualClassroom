@@ -16,22 +16,24 @@
         android:theme="@style/AppThemeNoActionBar">
 
         <activity
-            android:name=".LogInActivity"
+            android:name=".modules.login.LogInActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
+
         <activity
             android:name=".ClassroomActivity"
             android:screenOrientation="portrait">
-
         </activity>
+        <activity android:name=".modules.register.RegisterActivity" />
     </application>
 
 </manifest>

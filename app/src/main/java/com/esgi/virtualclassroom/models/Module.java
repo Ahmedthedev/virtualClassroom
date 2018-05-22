@@ -1,6 +1,5 @@
 package com.esgi.virtualclassroom.models;
 
-import java.nio.file.Files;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;

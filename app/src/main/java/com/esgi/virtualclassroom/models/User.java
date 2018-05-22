@@ -2,6 +2,7 @@ package com.esgi.virtualclassroom.models;
 
 import java.util.List;
 
+
 public class User {
     public String uid;
     public String name;
@@ -9,9 +10,7 @@ public class User {
     public Boolean isProf;
     public List<Module> modules;
 
-    public User() {
-
-    }
+    public User() { }
 
     public User(String uid, String name) {
         this.uid = uid;

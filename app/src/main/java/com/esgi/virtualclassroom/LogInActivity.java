@@ -22,6 +22,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.konradkevin.virtualclassroomlibrary.MyClass;
 
 public class LogInActivity extends AppCompatActivity implements
         CreateAccountFragment.OnCreateAccountInteractionListener,
@@ -35,10 +36,12 @@ public class LogInActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in);
-//        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         dbRef = FirebaseDatabase.getInstance().getReference();
         firebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = firebaseAuth.getCurrentUser();
+
+        MyClass myClass = new MyClass();
+        myClass.getAuth();
 
         if (currentUser != null) {
             goToHomeScreen();

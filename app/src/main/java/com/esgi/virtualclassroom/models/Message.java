@@ -9,9 +9,7 @@ public class Message {
     public Date dateCreation;
     public User user;
 
-    public Message() {
-
-    }
+    public Message() { }
 
     public Message(String text, Date dateCreation, User user) {
         this.text = text;
