@@ -10,6 +10,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.esgi.virtualclassroom.R;
+import com.esgi.virtualclassroom.modules.home.HomeActivity;
 import com.esgi.virtualclassroom.modules.register.RegisterActivity;
 
 import butterknife.BindView;
@@ -24,7 +25,7 @@ public class LogInActivity extends AppCompatActivity implements LoginView {
     @BindView(R.id.log_in_email_edit_text) TextInputEditText emailEditText;
     @BindView(R.id.log_in_password_edit_text) TextInputEditText passwordEditText;
 
-    @OnClick(R.id.log_in_button)
+    @OnClick(R.id.log_in_register_button)
     void onRegisterButtonClick() {
         presenter.onRegisterButtonClick();
     }
@@ -42,6 +43,12 @@ public class LogInActivity extends AppCompatActivity implements LoginView {
         presenter = new LoginPresenter(this);
         setContentView(R.layout.activity_log_in);
         ButterKnife.bind(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        presenter.checkUserLogged();
     }
 
     @Override
@@ -102,6 +109,8 @@ public class LogInActivity extends AppCompatActivity implements LoginView {
 
     @Override
     public void goToHomeActivity() {
+        Intent intent = new Intent(this, HomeActivity.class);
+        startActivity(intent);
         finish();
     }
 }

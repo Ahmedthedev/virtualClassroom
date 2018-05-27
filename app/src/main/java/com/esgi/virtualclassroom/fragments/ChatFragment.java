@@ -6,8 +6,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,9 +14,8 @@ import android.widget.EditText;
 
 import com.esgi.virtualclassroom.R;
 import com.esgi.virtualclassroom.adapters.ChatRecyclerViewAdapter;
-import com.esgi.virtualclassroom.models.Message;
-import com.esgi.virtualclassroom.models.User;
-import com.esgi.virtualclassroom.utils.Tools;
+import com.esgi.virtualclassroom.data.models.Message;
+import com.esgi.virtualclassroom.data.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -74,7 +71,7 @@ public class ChatFragment extends Fragment {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
-                    Tools.closeKeyboard(getActivity());
+//                    Tools.closeKeyboard(getActivity());
                 }
             }
         });
@@ -134,6 +131,6 @@ public class ChatFragment extends Fragment {
         });
 
         msgEditText.setText(null);
-        Tools.closeKeyboard(getActivity());
+//        Tools.closeKeyboard(getActivity());
     }
 }

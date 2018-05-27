@@ -5,11 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.esgi.virtualclassroom.fragments.DocumentFragment;
-import com.esgi.virtualclassroom.fragments.FuturEventFragment;
-import com.esgi.virtualclassroom.fragments.OffertEventFragment;
-import com.esgi.virtualclassroom.fragments.PastEventFragment;
 import com.esgi.virtualclassroom.fragments.RecorderFragment;
-import com.esgi.virtualclassroom.models.Document;
 
 
 public class RecorderViewPagerAdapter extends FragmentStatePagerAdapter {

@@ -75,7 +75,7 @@
 
     <Button
         android:id="@+id/register_validate_button"
-        android:layout_marginTop="@dimen/sixteen_dp"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
         style="@style/Base.Widget.AppCompat.Button.Colored"
         android:text="@string/fragment_create_account_button_text"
         app:layout_constraintTop_toBottomOf="@id/register_password2_layout"

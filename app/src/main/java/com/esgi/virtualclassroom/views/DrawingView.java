@@ -12,8 +12,8 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.esgi.virtualclassroom.models.Document;
-import com.esgi.virtualclassroom.models.Module;
+import com.esgi.virtualclassroom.data.models.Document;
+import com.esgi.virtualclassroom.data.models.Module;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;

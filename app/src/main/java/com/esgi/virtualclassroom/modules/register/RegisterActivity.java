@@ -106,7 +106,7 @@ public class RegisterActivity extends AppCompatActivity implements RegisterView 
     }
 
     @Override
-    public void goToHomeActivity() {
+    public void goToLoginActivity() {
         finish();
     }
 }

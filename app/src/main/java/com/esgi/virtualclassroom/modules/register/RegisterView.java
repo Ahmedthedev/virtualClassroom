@@ -10,5 +10,5 @@ interface RegisterView {
     void showProgressDialog();
     void hideProgressDialog();
     void closeKeyboard();
-    void goToHomeActivity();
+    void goToLoginActivity();
 }

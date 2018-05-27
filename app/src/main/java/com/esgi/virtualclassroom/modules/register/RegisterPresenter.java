@@ -4,28 +4,21 @@ package com.esgi.virtualclassroom.modules.register;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
-import com.esgi.virtualclassroom.models.User;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 class RegisterPresenter {
     private RegisterView view;
     private FirebaseAuth firebaseAuth;
-    private DatabaseReference dbRef;
 
     RegisterPresenter(RegisterView view) {
         this.view = view;
         this.firebaseAuth = FirebaseAuth.getInstance();
-        this.dbRef = FirebaseDatabase.getInstance().getReference();
     }
 
     void onRegisterAttempt(String username, String email, String password1, String password2) {
@@ -74,15 +67,8 @@ class RegisterPresenter {
                 final FirebaseUser user = authResult.getUser();
                 UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder().setDisplayName(username).build();
                 user.updateProfile(profileUpdates);
-
-                User profile = new User(username, user.getEmail(), null, false);
-                dbRef.child("users").child(user.getUid()).setValue(profile).addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        view.hideProgressDialog();
-                        view.goToHomeActivity();
-                    }
-                });
+                view.hideProgressDialog();
+                view.goToLoginActivity();
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override

@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.esgi.virtualclassroom.R;
-import com.esgi.virtualclassroom.models.Message;
+import com.esgi.virtualclassroom.data.models.Message;
 
 import java.text.SimpleDateFormat;
 import java.util.List;

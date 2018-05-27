@@ -27,6 +27,6 @@
 -keepattributes Signature
 -keepattributes *Annotation*
 
--keepclassmembers class com.esgi.virtualclassroom.models.** {
+-keepclassmembers class com.esgi.virtualclassroom.data.models.** {
   *;
 }

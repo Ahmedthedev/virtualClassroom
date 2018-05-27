@@ -2,18 +2,16 @@ package com.esgi.virtualclassroom.modules.login;
 
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
-import android.widget.Toast;
 
-import com.esgi.virtualclassroom.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 class LoginPresenter {
     private LoginView view;
     private FirebaseAuth firebaseAuth;
-
 
     LoginPresenter(LoginView view) {
         this.view = view;
@@ -35,6 +33,13 @@ class LoginPresenter {
         view.closeKeyboard();
         view.showProgressDialog();
         signInWithEmailAndPassword(email, password);
+    }
+
+    void checkUserLogged() {
+        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
+        if (currentUser != null) {
+            view.goToHomeActivity();
+        }
     }
 
     private boolean isFormValid(String email, String password) {

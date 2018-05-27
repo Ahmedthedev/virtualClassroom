@@ -1,4 +1,4 @@
-package com.esgi.virtualclassroom.models;
+package com.esgi.virtualclassroom.data.models;
 
 import java.util.List;
 

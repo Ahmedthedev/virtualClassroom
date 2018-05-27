@@ -3,33 +3,23 @@ package com.esgi.virtualclassroom.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
 
 import com.esgi.virtualclassroom.R;
 import com.esgi.virtualclassroom.adapters.DocumentRecyclerViewAdapter;
-import com.esgi.virtualclassroom.adapters.HomeViewPagerAdapter;
-import com.esgi.virtualclassroom.models.Document;
-import com.esgi.virtualclassroom.models.Message;
+import com.esgi.virtualclassroom.data.models.Document;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class DocumentFragment extends Fragment {

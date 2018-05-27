@@ -8,12 +8,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.esgi.virtualclassroom.R;
-import com.esgi.virtualclassroom.models.Document;
-import com.esgi.virtualclassroom.models.Message;
+import com.esgi.virtualclassroom.data.models.Document;
 
-import java.text.SimpleDateFormat;
-import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 
