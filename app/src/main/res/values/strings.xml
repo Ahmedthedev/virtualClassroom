@@ -23,6 +23,4 @@
     <string name="fragment_recorder_tap_on_mic">Click the mic to start</string>
     <string name="fragment_recorder_mic_button_description">Start recording button</string>
     <string name="fragment_chat_message_hint">Your message…</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
 </resources>
