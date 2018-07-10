@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.esgi.virtualclassroom.R;
+import com.esgi.virtualclassroom.data.models.Classroom;
 import com.esgi.virtualclassroom.modules.home.HomePresenter;
 import com.esgi.virtualclassroom.modules.home.adapters.ClassroomsRecyclerViewAdapter;
 
@@ -41,9 +42,17 @@ public class ClassroomsFragment extends Fragment implements ClassroomsRecyclerVi
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        ArrayList<String> classrooms = new ArrayList<>();
-        classrooms.add("Current classroom 1");
-        classrooms.add("Current classroom 2");
+        ArrayList<Classroom> classrooms = new ArrayList<>();
+
+        Classroom classroom1 = new Classroom();
+        Classroom classroom2 = new Classroom();
+
+        classroom1.setTitle("Current classroom 1");
+        classroom2.setTitle("Current classroom 2");
+        classroom1.setDescription("Current classroom 1 description bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla ");
+        classroom2.setDescription("Current classroom 2 description bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla ");
+        classrooms.add(classroom1);
+        classrooms.add(classroom2);
 
         ClassroomsRecyclerViewAdapter adapter = new ClassroomsRecyclerViewAdapter(classrooms);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
