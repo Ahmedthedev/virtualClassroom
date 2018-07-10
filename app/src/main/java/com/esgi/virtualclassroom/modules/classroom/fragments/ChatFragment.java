@@ -1,9 +1,9 @@
-package com.esgi.virtualclassroom.fragments;
+package com.esgi.virtualclassroom.modules.classroom.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
+import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,11 +13,9 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.esgi.virtualclassroom.R;
-import com.esgi.virtualclassroom.adapters.ChatRecyclerViewAdapter;
+import com.esgi.virtualclassroom.modules.classroom.adapters.ChatRecyclerViewAdapter;
 import com.esgi.virtualclassroom.data.models.Message;
 import com.esgi.virtualclassroom.data.models.User;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -30,7 +28,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class ChatFragment extends Fragment {
+public class ChatFragment extends BottomSheetDialogFragment {
     public static String EXTRA_MODULE_ID = "extra_module_id";
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
@@ -40,6 +38,10 @@ public class ChatFragment extends Fragment {
     private DatabaseReference messagesRef;
     private Button sendMsgButton;
     private EditText msgEditText;
+
+    public ChatFragment() {
+
+    }
 
     public static ChatFragment newInstance(String moduleId) {
         Bundle args = new Bundle();
@@ -58,32 +60,24 @@ public class ChatFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_chat, container, false);
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         msgEditText = view.findViewById(R.id.message_edit_text);
-        msgEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
+        msgEditText.setOnFocusChangeListener((v, hasFocus) -> {
+            if (!hasFocus) {
 //                    Tools.closeKeyboard(getActivity());
-                }
             }
         });
 
         sendMsgButton = view.findViewById(R.id.send_button);
         sendMsgButton.setFocusable(false);
-        sendMsgButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                sendMessage();
-            }
-        });
+        sendMsgButton.setOnClickListener(view1 -> sendMessage());
 
         recyclerView = view.findViewById(R.id.chat_recycler_view);
         recyclerView.setHasFixedSize(true);
@@ -94,7 +88,7 @@ public class ChatFragment extends Fragment {
         messagesRef = dbRef.child("messages").child(moduleId);
         messagesRef.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 messages.clear();
 
                 for (DataSnapshot messageSnapshot: dataSnapshot.getChildren()) {
@@ -106,7 +100,7 @@ public class ChatFragment extends Fragment {
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
         });
@@ -123,12 +117,7 @@ public class ChatFragment extends Fragment {
         User user = new User(firebaseUser.getUid(), firebaseUser.getDisplayName());
         Message message = new Message(text, new Date(), user);
         DatabaseReference newMessageRef = messagesRef.push();
-        newMessageRef.setValue(message).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                recyclerView.scrollToPosition(messages.size() - 1);
-            }
-        });
+        newMessageRef.setValue(message).addOnCompleteListener(task -> recyclerView.scrollToPosition(messages.size() - 1));
 
         msgEditText.setText(null);
 //        Tools.closeKeyboard(getActivity());

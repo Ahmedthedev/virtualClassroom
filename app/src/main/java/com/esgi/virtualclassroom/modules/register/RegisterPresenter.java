@@ -1,6 +1,5 @@
 package com.esgi.virtualclassroom.modules.register;
 
-
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
@@ -61,27 +60,21 @@ class RegisterPresenter {
     }
 
     private void createUserWithEmailAndPassword(String email, String password, final String username) {
-        firebaseAuth.createUserWithEmailAndPassword(email, password).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-            @Override
-            public void onSuccess(AuthResult authResult) {
-                final FirebaseUser user = authResult.getUser();
-                UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder().setDisplayName(username).build();
-                user.updateProfile(profileUpdates);
-                view.hideProgressDialog();
-                view.goToLoginActivity();
+        firebaseAuth.createUserWithEmailAndPassword(email, password).addOnSuccessListener(authResult -> {
+            final FirebaseUser user = authResult.getUser();
+            UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder().setDisplayName(username).build();
+            user.updateProfile(profileUpdates);
+            view.hideProgressDialog();
+            view.goToLoginActivity();
+        }).addOnFailureListener(e -> {
+            if (e instanceof FirebaseAuthUserCollisionException) {
+                view.showRegisterError("You already have an existing account.\\nPlease try another authentication provider.");
+            } else {
+                view.showRegisterError("An error has occurred during the Email authentication process.");
             }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                if (e instanceof FirebaseAuthUserCollisionException) {
-                    view.showRegisterError("You already have an existing account.\\nPlease try another authentication provider.");
-                } else {
-                    view.showRegisterError("An error has occurred during the Email authentication process.");
-                }
 
-                firebaseAuth.signOut();
-                view.hideProgressDialog();
-            }
+            firebaseAuth.signOut();
+            view.hideProgressDialog();
         });
     }
 }

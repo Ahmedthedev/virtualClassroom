@@ -1,4 +1,4 @@
-package com.esgi.virtualclassroom.adapters;
+package com.esgi.virtualclassroom.modules.classroom.adapters;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -25,7 +25,7 @@ public class ChatRecyclerViewAdapter extends RecyclerView.Adapter<ChatRecyclerVi
     @NonNull
     @Override
     public ChatRecyclerViewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_chat_message, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_chat_item, parent, false);
         return new ViewHolder(v);
     }
 

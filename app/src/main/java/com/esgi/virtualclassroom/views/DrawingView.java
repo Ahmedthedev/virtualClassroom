@@ -6,16 +6,12 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.net.Uri;
-import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.esgi.virtualclassroom.data.models.Document;
-import com.esgi.virtualclassroom.data.models.Module;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
+import com.esgi.virtualclassroom.data.models.Attachment;
+import com.esgi.virtualclassroom.data.models.Classroom;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -29,7 +25,7 @@ import java.util.Date;
 public class DrawingView extends View {
 
     private Paint mPaint;
-    private Module module;
+    private Classroom classroom;
     public int width;
     private String moduleId;
     public  int height;
@@ -45,10 +41,10 @@ public class DrawingView extends View {
         super(context);
     }
 
-    public DrawingView(Context c, Paint mPaint,String moduleId,Module module) {
+    public DrawingView(Context c, Paint mPaint,String moduleId,Classroom classroom) {
         super(c);
         context=c;
-        this.module = module;
+        this.classroom = classroom;
         this.moduleId = moduleId;
         this.mPaint = mPaint;
         mPath = new Path();
@@ -84,35 +80,17 @@ public class DrawingView extends View {
         mBitmap.compress(Bitmap.CompressFormat.JPEG, 20, baos);
         byte[] data = baos.toByteArray();
         UploadTask uploadTask = mountainImagesRef.putBytes(data);
-        uploadTask.addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                // Handle unsuccessful uploads
-            }
-        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+        uploadTask.addOnFailureListener(exception -> {
+            // Handle unsuccessful uploads
+        }).addOnSuccessListener(taskSnapshot -> storageRef.child(name).getDownloadUrl().addOnSuccessListener(uri -> {
+            DatabaseReference dbhref = FirebaseDatabase.getInstance().getReference();
+            DatabaseReference moduleRef = dbhref.child("attachments").child(moduleId);
+            DatabaseReference newDocumentRef = moduleRef.push();
+            Attachment img = new Attachment(name,uri.toString());
+           //List<Attachment> l = new L
 
-                storageRef.child(name).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                    @Override
-                    public void onSuccess(Uri uri) {
-                        DatabaseReference dbhref = FirebaseDatabase.getInstance().getReference();
-                        DatabaseReference moduleRef = dbhref.child("modules").child(moduleId).child("documents");
-                        DatabaseReference newDocumentRef = moduleRef.push();
-                        Document img = new Document(name,uri.toString());
-                       //List<Document> l = new L
-
-                        newDocumentRef.setValue(img).addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-
-                                Log.i("test","success");
-                            }
-                        });
-                    }
-                });
-            }
-        });
+            newDocumentRef.setValue(img).addOnSuccessListener(aVoid -> Log.i("test","success"));
+        }));
 
     }
 
@@ -156,7 +134,14 @@ public class DrawingView extends View {
     }
 
     @Override
+    public boolean performClick() {
+        return super.performClick();
+    }
+
+    @Override
     public boolean onTouchEvent(MotionEvent event) {
+        performClick();
+
         float x = event.getX();
         float y = event.getY();
 

@@ -12,19 +12,19 @@ import android.view.ViewGroup;
 
 import com.esgi.virtualclassroom.R;
 import com.esgi.virtualclassroom.modules.home.HomePresenter;
-import com.esgi.virtualclassroom.modules.home.adapters.ClassroomRecyclerViewAdapter;
+import com.esgi.virtualclassroom.modules.home.adapters.ClassroomsRecyclerViewAdapter;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class CurrentClassroomsFragment extends Fragment implements ClassroomRecyclerViewAdapter.Listener {
+public class ClassroomsFragment extends Fragment implements ClassroomsRecyclerViewAdapter.Listener {
     private HomePresenter presenter;
 
     @BindView(R.id.fragment_home_recycler_view) RecyclerView recyclerView;
 
-    public CurrentClassroomsFragment() {}
+    public ClassroomsFragment() {}
 
     public void setPresenter(HomePresenter presenter) {
         this.presenter = presenter;
@@ -45,7 +45,7 @@ public class CurrentClassroomsFragment extends Fragment implements ClassroomRecy
         classrooms.add("Current classroom 1");
         classrooms.add("Current classroom 2");
 
-        ClassroomRecyclerViewAdapter adapter = new ClassroomRecyclerViewAdapter(classrooms);
+        ClassroomsRecyclerViewAdapter adapter = new ClassroomsRecyclerViewAdapter(classrooms);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
         adapter.setListener(this);
@@ -54,6 +54,6 @@ public class CurrentClassroomsFragment extends Fragment implements ClassroomRecy
 
     @Override
     public void onClassroomClick(String classroom) {
-        presenter.goToClassroom(classroom);
+        presenter.onClassroomItemClick(classroom);
     }
 }

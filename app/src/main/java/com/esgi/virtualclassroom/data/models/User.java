@@ -8,7 +8,7 @@ public class User {
     public String name;
     public String email;
     public Boolean isProf;
-    public List<Module> modules;
+    public List<Classroom> classrooms;
 
     public User() { }
 
@@ -17,11 +17,11 @@ public class User {
         this.name = name;
     }
 
-    public User(String name, String email, List<Module> modules, boolean isProf) {
+    public User(String name, String email, List<Classroom> classrooms, boolean isProf) {
         this.name = name;
         this.email = email;
         this.isProf = isProf;
-        this.modules = modules;
+        this.classrooms = classrooms;
     }
 
     public User(String name, String email, boolean isProf) {

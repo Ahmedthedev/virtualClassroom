@@ -7,14 +7,31 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.esgi.virtualclassroom.R;
+import com.esgi.virtualclassroom.modules.classroom.fragments.ChatFragment;
+import com.esgi.virtualclassroom.modules.classroom.fragments.AttachmentsFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class ClassroomActivity extends AppCompatActivity implements ClassroomView {
     private ClassroomPresenter presenter;
 
     @BindView(R.id.toolbar) Toolbar toolbar;
+
+    @OnClick(R.id.classroom_chat_text_view)
+    public void showChatModal() {
+        String moduleId = "-KvcZc4hlr8PXpVDzsIj";
+        ChatFragment bottomSheetFragment = ChatFragment.newInstance(moduleId);
+        bottomSheetFragment.show(getSupportFragmentManager(), bottomSheetFragment.getTag());
+    }
+
+    @OnClick(R.id.classroom_documents_text_view)
+    public void showDocumentsModal() {
+        String moduleId = "-KvcZc4hlr8PXpVDzsIj";
+        AttachmentsFragment bottomSheetFragment = AttachmentsFragment.newInstance(moduleId);
+        bottomSheetFragment.show(getSupportFragmentManager(), bottomSheetFragment.getTag());
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

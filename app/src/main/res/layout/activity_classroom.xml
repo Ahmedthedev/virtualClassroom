@@ -4,6 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     tools:context=".modules.classroom.ClassroomActivity">
 
     <android.support.design.widget.AppBarLayout
@@ -15,17 +16,43 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
+            android:background="@color/colorPrimary"
             app:layout_scrollFlags="scroll|enterAlways"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
     </android.support.design.widget.AppBarLayout>
 
-    <TextView
-        android:text="Hello world!"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+    <LinearLayout
+        android:orientation="vertical"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:textColor="@color/colorPrimary"
+            android:background="@color/colorBackgroundDark"
+            android:padding="@dimen/activity_vertical_margin"
+            android:id="@+id/classroom_chat_text_view"
+            android:text="Open chat"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            />
+
+        <TextView
+            android:layout_marginTop="5dp"
+            android:textColor="@color/colorPrimary"
+            android:background="@color/colorBackgroundDark"
+            android:padding="@dimen/activity_vertical_margin"
+            android:id="@+id/classroom_documents_text_view"
+            android:text="Open attachments"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            />
+
+    </LinearLayout>
+
+
 
 </android.support.design.widget.CoordinatorLayout>

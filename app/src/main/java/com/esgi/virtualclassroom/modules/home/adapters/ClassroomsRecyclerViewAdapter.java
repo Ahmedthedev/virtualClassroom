@@ -15,11 +15,11 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-public class ClassroomRecyclerViewAdapter extends RecyclerView.Adapter<ClassroomRecyclerViewAdapter.ViewHolder> {
+public class ClassroomsRecyclerViewAdapter extends RecyclerView.Adapter<ClassroomsRecyclerViewAdapter.ViewHolder> {
     private ArrayList<String> classrooms;
     private Listener listener;
 
-    public ClassroomRecyclerViewAdapter(ArrayList<String> classrooms) {
+    public ClassroomsRecyclerViewAdapter(ArrayList<String> classrooms) {
         this.classrooms = classrooms;
     }
 
@@ -29,13 +29,13 @@ public class ClassroomRecyclerViewAdapter extends RecyclerView.Adapter<Classroom
 
     @NonNull
     @Override
-    public ClassroomRecyclerViewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ClassroomsRecyclerViewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_home_classroom_item, parent, false);
         return new ViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ClassroomRecyclerViewAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ClassroomsRecyclerViewAdapter.ViewHolder holder, int position) {
         holder.bind(classrooms.get(position));
     }
 
@@ -54,12 +54,9 @@ public class ClassroomRecyclerViewAdapter extends RecyclerView.Adapter<Classroom
 
         void bind(final String classroom) {
             titleTextView.setText(classroom);
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (listener != null) {
-                        listener.onClassroomClick(classroom);
-                    }
+            itemView.setOnClickListener(view -> {
+                if (listener != null) {
+                    listener.onClassroomClick(classroom);
                 }
             });
         }

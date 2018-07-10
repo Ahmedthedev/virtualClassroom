@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.esgi.virtualclassroom">
 
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
@@ -15,6 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/MaterialTheme">
         <activity
+            android:theme="@style/MaterialTheme.FullScreen"
             android:name=".modules.login.LogInActivity"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -34,9 +36,6 @@
             android:name=".modules.classroom.ClassroomActivity"
             android:screenOrientation="portrait"
             />
-        <activity
-            android:name=".ClassroomActivity"
-            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

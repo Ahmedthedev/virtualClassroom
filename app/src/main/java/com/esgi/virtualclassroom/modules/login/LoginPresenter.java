@@ -1,11 +1,7 @@
 package com.esgi.virtualclassroom.modules.login;
 
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -59,19 +55,13 @@ class LoginPresenter {
     }
 
     private void signInWithEmailAndPassword(String email, String password) {
-        firebaseAuth.signInWithEmailAndPassword(email, password).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-            @Override
-            public void onSuccess(AuthResult authResult) {
-                view.hideProgressDialog();
-                view.goToHomeActivity();
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                view.showLoginError("An error has occurred during the Email authentication process.");
-                firebaseAuth.signOut();
-                view.hideProgressDialog();
-            }
+        firebaseAuth.signInWithEmailAndPassword(email, password).addOnSuccessListener(authResult -> {
+            view.hideProgressDialog();
+            view.goToHomeActivity();
+        }).addOnFailureListener(e -> {
+            view.showLoginError("An error has occurred during the Email authentication process.");
+            firebaseAuth.signOut();
+            view.hideProgressDialog();
         });
     }
 }

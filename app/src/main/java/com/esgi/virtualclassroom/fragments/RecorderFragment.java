@@ -26,7 +26,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.esgi.virtualclassroom.R;
-import com.esgi.virtualclassroom.data.models.Module;
+import com.esgi.virtualclassroom.data.models.Classroom;
 import com.esgi.virtualclassroom.views.DrawingView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -42,7 +42,7 @@ public class RecorderFragment extends Fragment implements RecognitionListener {
     public static String EXTRA_IS_PROF = "extra_is_prof";
     private String moduleId;
     private boolean isProf;
-    private Module module;
+    private Classroom classroom;
     private DatabaseReference dbRef;
     private DatabaseReference moduleRef;
     private String moduleName;
@@ -88,7 +88,7 @@ public class RecorderFragment extends Fragment implements RecognitionListener {
         mPaint.setStrokeWidth(12);
 
         moduleName = getArguments().getString(EXTRA_MODULE_ID);
-        dv = new DrawingView(this.getContext(),mPaint,getArguments().getString(EXTRA_MODULE_ID),module);
+        dv = new DrawingView(this.getContext(),mPaint,getArguments().getString(EXTRA_MODULE_ID), classroom);
         drawingViewContainer.addView(dv);
         Button done = v.findViewById(R.id.draw);
         done.setOnClickListener(new View.OnClickListener() {
@@ -122,12 +122,12 @@ public class RecorderFragment extends Fragment implements RecognitionListener {
             actionBar.hide();
         }
 
-        moduleRef = dbRef.child("modules").child(moduleId);
+        moduleRef = dbRef.child("classrooms").child(moduleId);
         moduleRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                module = dataSnapshot.getValue(Module.class);
-                speechTextView.setText(module.speechText);
+                classroom = dataSnapshot.getValue(Classroom.class);
+                speechTextView.setText(classroom.speechText);
                 scrollView.scrollTo(0, scrollView.getBottom());
                 //updateUI();
             }
@@ -201,7 +201,7 @@ public class RecorderFragment extends Fragment implements RecognitionListener {
 
     @Override
     public void onEndOfSpeech() {
-        currentSpeech = module.speechText;
+        currentSpeech = classroom.speechText;
         Log.i("SPEECH", "onEndOfSpeech");
     }
 

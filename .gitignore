@@ -107,7 +107,7 @@ obj/
 .idea/copyright/profiles_settings.xml
 .idea/encodings.xml
 .idea/misc.xml
-.idea/modules.xml
+.idea/classrooms.xml
 .idea/scopes/scope_settings.xml
 .idea/vcs.xml
 .idea/jsLibraryMappings.xml
@@ -210,7 +210,7 @@ cmake-build-debug/
 # Comment Reason: https://github.com/joeblau/gitignore.io/issues/186#issuecomment-215987721
 
 # *.iml
-# modules.xml
+# classrooms.xml
 # .idea/misc.xml
 # *.ipr
 

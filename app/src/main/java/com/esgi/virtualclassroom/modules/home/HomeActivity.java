@@ -10,9 +10,7 @@ import android.support.v7.widget.Toolbar;
 import com.esgi.virtualclassroom.R;
 import com.esgi.virtualclassroom.modules.classroom.ClassroomActivity;
 import com.esgi.virtualclassroom.modules.home.adapters.ViewPagerAdapter;
-import com.esgi.virtualclassroom.modules.home.fragments.CurrentClassroomsFragment;
-import com.esgi.virtualclassroom.modules.home.fragments.PastClassroomsFragment;
-import com.esgi.virtualclassroom.modules.home.fragments.UpcomingClassroomsFragment;
+import com.esgi.virtualclassroom.modules.home.fragments.ClassroomsFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -36,9 +34,9 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
     }
 
     private void initializeViewPager() {
-        CurrentClassroomsFragment currentClassroomsFragment = new CurrentClassroomsFragment();
-        UpcomingClassroomsFragment upcomingClassroomsFragment = new UpcomingClassroomsFragment();
-        PastClassroomsFragment pastClassroomsFragment = new PastClassroomsFragment();
+        ClassroomsFragment currentClassroomsFragment = new ClassroomsFragment();
+        ClassroomsFragment upcomingClassroomsFragment = new ClassroomsFragment();
+        ClassroomsFragment pastClassroomsFragment = new ClassroomsFragment();
         currentClassroomsFragment.setPresenter(presenter);
         upcomingClassroomsFragment.setPresenter(presenter);
         pastClassroomsFragment.setPresenter(presenter);

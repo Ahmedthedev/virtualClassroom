@@ -1,14 +1,13 @@
 package com.esgi.virtualclassroom.data.models;
 
 
-public class Document {
+public class Attachment {
     public String name;
     public String url;
 
-    public Document() { }
+    public Attachment() { }
 
-    public Document(String name, String url) {
-
+    public Attachment(String name, String url) {
         this.name = name;
         this.url = url;
     }

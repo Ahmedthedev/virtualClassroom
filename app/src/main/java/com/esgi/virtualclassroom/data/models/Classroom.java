@@ -5,12 +5,12 @@ import java.util.List;
 import java.util.Map;
 
 
-public class Module {
+public class Classroom {
     public String id;
     public String title;
     public Date start;
     public Date end;
-    public Map<String,Document> documents;
+    public Map<String,Attachment> documents;
     public List<User> student;
     public List<Message> messages;
     public List<Evaluation> evaluations;
@@ -18,11 +18,11 @@ public class Module {
     public String description;
     public String speechText;
 
-    public Module() {
+    public Classroom() {
 
     }
 
-    public Module(String id, String title, Date start, Date end, User teacher) {
+    public Classroom(String id, String title, Date start, Date end, User teacher) {
         this.id = id;
         this.title = title;
         this.start = start;
@@ -30,7 +30,7 @@ public class Module {
         this.teacher = teacher;
     }
 
-    public Module(String title, Date start, Date end, Map<String,Document> documents, List<User> student, List<Message> messages, List<Evaluation> evaluations, User teacher, String description, String speechText) {
+    public Classroom(String title, Date start, Date end, Map<String,Attachment> documents, List<User> student, List<Message> messages, List<Evaluation> evaluations, User teacher, String description, String speechText) {
         this.title = title;
         this.start = start;
         this.end = end;
