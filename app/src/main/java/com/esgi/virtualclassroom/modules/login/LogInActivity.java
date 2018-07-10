@@ -6,7 +6,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.esgi.virtualclassroom.R;
@@ -22,8 +24,9 @@ public class LogInActivity extends AppCompatActivity implements LoginView {
     private LoginPresenter presenter;
     private ProgressDialog progressDialog;
 
-    @BindView(R.id.log_in_email_edit_text) TextInputEditText emailEditText;
-    @BindView(R.id.log_in_password_edit_text) TextInputEditText passwordEditText;
+    @BindView(R.id.log_in_email_edit_text)
+    EditText emailEditText;
+    @BindView(R.id.log_in_password_edit_text) EditText passwordEditText;
 
     @OnClick(R.id.log_in_register_button)
     void onRegisterButtonClick() {
@@ -43,6 +46,7 @@ public class LogInActivity extends AppCompatActivity implements LoginView {
         presenter = new LoginPresenter(this);
         setContentView(R.layout.activity_log_in);
         ButterKnife.bind(this);
+
     }
 
     @Override

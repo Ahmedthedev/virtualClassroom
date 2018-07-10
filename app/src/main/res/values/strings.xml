@@ -10,7 +10,7 @@
 
     <string name="fragment_log_in_logo_desc">Application logo</string>
     <string name="fragment_log_in_loading">Loading…</string>
-    <string name="fragment_log_in_create_account">No account yet ? Create one !</string>
+    <string name="fragment_log_in_create_account">No account ? Signup</string>
     <string name="fragment_log_in_log_in_text">Log in</string>
     <string name="fragment_log_in_email_hint">E-mail address</string>
     <string name="fragment_log_in_name_hint">Username</string>
