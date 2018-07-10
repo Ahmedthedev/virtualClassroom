@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.esgi.virtualclassroom.R;
@@ -19,10 +20,10 @@ public class RegisterActivity extends AppCompatActivity implements RegisterView 
     private RegisterPresenter presenter;
     private ProgressDialog progressDialog;
 
-    @BindView(R.id.register_username_edit_text) TextInputEditText usernameEditText;
-    @BindView(R.id.register_email_edit_text) TextInputEditText emailEditText;
-    @BindView(R.id.register_password1_edit_text) TextInputEditText password1EditText;
-    @BindView(R.id.register_password2_edit_text) TextInputEditText password2EditText;
+    @BindView(R.id.register_username_edit_text) EditText usernameEditText;
+    @BindView(R.id.register_email_edit_text) EditText emailEditText;
+    @BindView(R.id.register_password1_edit_text) EditText password1EditText;
+    @BindView(R.id.register_password2_edit_text) EditText password2EditText;
 
     @OnClick(R.id.register_validate_button)
     void onRegisterValidateButtonClick() {

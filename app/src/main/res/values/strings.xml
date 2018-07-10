@@ -17,7 +17,7 @@
     <string name="fragment_log_in_password_hint">Password</string>
     <string name="fragment_log_in_password_confirm_hint">Repeat password</string>
 
-    <string name="fragment_create_account_button_text">Create account</string>
+    <string name="fragment_create_account_button_text">Sign UP</string>
 
 
     <string name="fragment_recorder_tap_on_mic">Click the mic to start</string>
