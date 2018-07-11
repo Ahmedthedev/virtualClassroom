@@ -41,7 +41,6 @@ public class AttachmentsRecyclerViewAdapter extends RecyclerView.Adapter<Attachm
 
     class ViewHolder extends RecyclerView.ViewHolder{
         @BindView(R.id.attachment_name) TextView attachmentName;
-        @BindView(R.id.attachment_url) TextView attachmentUrl;
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -50,7 +49,6 @@ public class AttachmentsRecyclerViewAdapter extends RecyclerView.Adapter<Attachm
 
         void bind(Attachment attachment) {
             attachmentName.setText(attachment.getName());
-            attachmentUrl.setText(attachment.getUrl());
         }
     }
 }
