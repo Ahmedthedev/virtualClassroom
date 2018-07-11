@@ -39,7 +39,7 @@ public class SWProvider {
 
     public Single<Classroom> getRxPeopleResult() {
         return null;
-//        return rxService.getClassrooms().map(ePeopleResult -> new PeopleResultMapper().map(ePeopleResult));
+//        return rxService.getClassroomsList().map(ePeopleResult -> new PeopleResultMapper().map(ePeopleResult));
     }
 
     public Single<Classroom> getPeople(String id) {

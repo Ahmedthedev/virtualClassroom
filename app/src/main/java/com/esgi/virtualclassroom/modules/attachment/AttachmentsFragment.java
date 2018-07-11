@@ -1,5 +1,4 @@
-package com.esgi.virtualclassroom.modules.classroom.fragments;
-
+package com.esgi.virtualclassroom.modules.attachment;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -12,8 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.esgi.virtualclassroom.R;
-import com.esgi.virtualclassroom.modules.classroom.adapters.AttachmentsRecyclerViewAdapter;
 import com.esgi.virtualclassroom.data.models.Attachment;
+import com.esgi.virtualclassroom.data.models.Classroom;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -25,17 +24,17 @@ import java.util.Map;
 
 public class AttachmentsFragment extends BottomSheetDialogFragment {
 
-    public static String EXTRA_MODULE_ID = "extra_module_id";
+    public static String EXTRA_CLASSROOM = "extra_classroom";
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
     private Map<String, Attachment> attachments = new HashMap<>();
-    private String moduleId;
+    private Classroom classroom;
     private DatabaseReference dbRef;
     private DatabaseReference attachmentsRef;
 
-    public static AttachmentsFragment newInstance(String moduleId) {
+    public static AttachmentsFragment newInstance(Classroom classroom) {
         Bundle args = new Bundle();
-        args.putString(EXTRA_MODULE_ID, moduleId);
+        args.putParcelable(EXTRA_CLASSROOM, classroom);
         AttachmentsFragment fragment = new AttachmentsFragment();
         fragment.setArguments(args);
         return fragment;
@@ -46,7 +45,9 @@ public class AttachmentsFragment extends BottomSheetDialogFragment {
         super.onCreate(savedInstanceState);
 
         dbRef = FirebaseDatabase.getInstance().getReference();
-        moduleId = getArguments().getString(EXTRA_MODULE_ID);
+        if (getArguments() != null) {
+            classroom = getArguments().getParcelable(EXTRA_CLASSROOM);
+        }
     }
 
     @Override
@@ -64,7 +65,7 @@ public class AttachmentsFragment extends BottomSheetDialogFragment {
         adapter = new AttachmentsRecyclerViewAdapter(attachments);
         recyclerView.setAdapter(adapter);
 
-        attachmentsRef = dbRef.child("attachments").child(moduleId);
+        attachmentsRef = dbRef.child("attachments").child(classroom.getId());
         attachmentsRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

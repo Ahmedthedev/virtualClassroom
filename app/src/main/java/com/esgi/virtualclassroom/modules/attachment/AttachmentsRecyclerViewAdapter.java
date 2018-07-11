@@ -1,4 +1,4 @@
-package com.esgi.virtualclassroom.modules.classroom.adapters;
+package com.esgi.virtualclassroom.modules.attachment;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -17,7 +17,7 @@ import java.util.Map;
 public class AttachmentsRecyclerViewAdapter extends RecyclerView.Adapter<AttachmentsRecyclerViewAdapter.ViewHolder>{
     private Map<String, Attachment> attachments;
 
-    public AttachmentsRecyclerViewAdapter(Map<String, Attachment> attachments) {
+    AttachmentsRecyclerViewAdapter(Map<String, Attachment> attachments) {
         this.attachments = attachments;
     }
 
@@ -32,8 +32,8 @@ public class AttachmentsRecyclerViewAdapter extends RecyclerView.Adapter<Attachm
     public void onBindViewHolder(@NonNull AttachmentsRecyclerViewAdapter.ViewHolder holder, int position) {
         String key = new ArrayList<>(attachments.keySet()).get(position);
         final Attachment attachment = attachments.get(key);
-        holder.attachmentName.setText(attachment.name);
-        holder.attachmentUrl.setText(attachment.url);
+        holder.attachmentName.setText(attachment.getName());
+        holder.attachmentUrl.setText(attachment.getUrl());
     }
 
     @Override

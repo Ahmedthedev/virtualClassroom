@@ -1,4 +1,4 @@
-package com.esgi.virtualclassroom.modules.classroom.adapters;
+package com.esgi.virtualclassroom.modules.chat;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -14,11 +14,10 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
 
-
 public class ChatRecyclerViewAdapter extends RecyclerView.Adapter<ChatRecyclerViewAdapter.ViewHolder>{
     private List<Message> messages;
 
-    public ChatRecyclerViewAdapter(List<Message> messages) {
+    ChatRecyclerViewAdapter(List<Message> messages) {
         this.messages = messages;
     }
 
@@ -32,10 +31,10 @@ public class ChatRecyclerViewAdapter extends RecyclerView.Adapter<ChatRecyclerVi
     @Override
     public void onBindViewHolder(@NonNull ChatRecyclerViewAdapter.ViewHolder holder, int position) {
         final Message message = messages.get(position);
-        holder.messageText.setText(message.text);
-        holder.messageUsername.setText(message.user.name);
+        holder.messageText.setText(message.getText());
+        holder.messageUsername.setText(message.getUser().getName());
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.getDefault());
-        String dateString = sdf.format(message.dateCreation);
+        String dateString = sdf.format(message.getDateCreation());
         holder.messageCreationDate.setText(dateString);
     }
 

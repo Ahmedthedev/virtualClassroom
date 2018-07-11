@@ -2,23 +2,23 @@ package com.esgi.virtualclassroom.modules.login;
 
 import android.text.TextUtils;
 
-import com.google.firebase.auth.FirebaseAuth;
+import com.esgi.virtualclassroom.data.api.FirebaseProvider;
 import com.google.firebase.auth.FirebaseUser;
 
 class LoginPresenter {
     private LoginView view;
-    private FirebaseAuth firebaseAuth;
+    private FirebaseProvider firebaseProvider;
 
     LoginPresenter(LoginView view) {
         this.view = view;
-        this.firebaseAuth = FirebaseAuth.getInstance();
+        this.firebaseProvider = FirebaseProvider.getInstance();
     }
 
     void onRegisterButtonClick() {
         view.goToRegisterActivity();
     }
 
-    void onLoginAttempt(String email, String password) {
+    void onLoginButtonClick(String email, String password) {
         view.resetErrors();
 
         boolean valid = isFormValid(email, password);
@@ -28,12 +28,12 @@ class LoginPresenter {
 
         view.closeKeyboard();
         view.showProgressDialog();
-        signInWithEmailAndPassword(email, password);
+        signIn(email, password);
     }
 
     void checkUserLogged() {
-        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
-        if (currentUser != null) {
+        FirebaseUser firebaseUser = this.firebaseProvider.getCurrentUser();
+        if (firebaseUser != null) {
             view.goToHomeActivity();
         }
     }
@@ -54,13 +54,13 @@ class LoginPresenter {
         return valid;
     }
 
-    private void signInWithEmailAndPassword(String email, String password) {
-        firebaseAuth.signInWithEmailAndPassword(email, password).addOnSuccessListener(authResult -> {
+    private void signIn(String email, String password) {
+        this.firebaseProvider.signIn(email, password).addOnSuccessListener(authResult -> {
             view.hideProgressDialog();
             view.goToHomeActivity();
         }).addOnFailureListener(e -> {
             view.showLoginError("An error has occurred during the Email authentication process.");
-            firebaseAuth.signOut();
+            this.firebaseProvider.signOut();
             view.hideProgressDialog();
         });
     }

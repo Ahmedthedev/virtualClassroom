@@ -1,23 +1,17 @@
 package com.esgi.virtualclassroom.modules.register;
 
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
+import com.esgi.virtualclassroom.data.api.FirebaseProvider;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.UserProfileChangeRequest;
 
 class RegisterPresenter {
     private RegisterView view;
-    private FirebaseAuth firebaseAuth;
+    private FirebaseProvider firebaseProvider;
 
     RegisterPresenter(RegisterView view) {
         this.view = view;
-        this.firebaseAuth = FirebaseAuth.getInstance();
+        this.firebaseProvider = FirebaseProvider.getInstance();
     }
 
     void onRegisterAttempt(String username, String email, String password1, String password2) {
@@ -30,7 +24,7 @@ class RegisterPresenter {
 
         view.closeKeyboard();
         view.showProgressDialog();
-        createUserWithEmailAndPassword(email, password1, username);
+        createUser(email, password1, username);
     }
 
     private boolean isFormValid(String username, String email, String password1, String password2) {
@@ -59,21 +53,19 @@ class RegisterPresenter {
         return valid;
     }
 
-    private void createUserWithEmailAndPassword(String email, String password, final String username) {
-        firebaseAuth.createUserWithEmailAndPassword(email, password).addOnSuccessListener(authResult -> {
-            final FirebaseUser user = authResult.getUser();
-            UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder().setDisplayName(username).build();
-            user.updateProfile(profileUpdates);
-            view.hideProgressDialog();
-            view.goToLoginActivity();
-        }).addOnFailureListener(e -> {
+    private void createUser(String email, String password, final String username) {
+        this.firebaseProvider.createUser(email, password).addOnSuccessListener(authResult ->
+            this.firebaseProvider.updateUser(authResult, username).addOnSuccessListener(e -> {
+                view.hideProgressDialog();
+                view.goToLoginActivity();
+        })).addOnFailureListener(e -> {
             if (e instanceof FirebaseAuthUserCollisionException) {
                 view.showRegisterError("You already have an existing account.\\nPlease try another authentication provider.");
             } else {
                 view.showRegisterError("An error has occurred during the Email authentication process.");
             }
 
-            firebaseAuth.signOut();
+            this.firebaseProvider.signOut();
             view.hideProgressDialog();
         });
     }
