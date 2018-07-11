@@ -19,7 +19,7 @@ import android.widget.TextView;
 
 import com.esgi.virtualclassroom.R;
 import com.esgi.virtualclassroom.data.models.Classroom;
-import com.esgi.virtualclassroom.modules.attachment.AttachmentsFragment;
+import com.esgi.virtualclassroom.modules.attachments.AttachmentsFragment;
 import com.esgi.virtualclassroom.modules.chat.ChatFragment;
 
 import java.util.ArrayList;

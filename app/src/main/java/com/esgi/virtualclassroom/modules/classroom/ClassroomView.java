@@ -1,7 +1,7 @@
 package com.esgi.virtualclassroom.modules.classroom;
 
 import com.esgi.virtualclassroom.data.models.Classroom;
-import com.esgi.virtualclassroom.modules.attachment.AttachmentsFragment;
+import com.esgi.virtualclassroom.modules.attachments.AttachmentsFragment;
 import com.esgi.virtualclassroom.modules.chat.ChatFragment;
 
 interface ClassroomView {

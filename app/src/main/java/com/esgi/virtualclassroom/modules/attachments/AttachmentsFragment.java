@@ -1,4 +1,4 @@
-package com.esgi.virtualclassroom.modules.attachment;
+package com.esgi.virtualclassroom.modules.attachments;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
