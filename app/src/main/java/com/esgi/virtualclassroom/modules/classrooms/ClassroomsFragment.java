@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -22,6 +23,7 @@ public class ClassroomsFragment extends Fragment implements ClassroomsView {
     public static String EXTRA_CLASSROOMS_PERIOD = "extra_classrooms_period";
     private ClassroomsPresenter presenter;
     private ClassroomsRecyclerViewAdapter adapter;
+    private ClassroomsUpcomingDialogFragment upcomingClassroomModal;
 
     @BindView(R.id.fragment_home_recycler_view) RecyclerView recyclerView;
 
@@ -73,5 +75,21 @@ public class ClassroomsFragment extends Fragment implements ClassroomsView {
     public void updateClassroomsList() {
         adapter.notifyDataSetChanged();
         recyclerView.scrollToPosition(presenter.getClassroomsList().size() - 1);
+    }
+
+    @Override
+    public void showPopupUpcomingClassroom(Classroom classroom) {
+        upcomingClassroomModal = ClassroomsUpcomingDialogFragment.newInstance(classroom);
+        upcomingClassroomModal.setListener(this.presenter);
+
+        FragmentManager fragmentManager = getFragmentManager();
+        if (fragmentManager != null) {
+            upcomingClassroomModal.show(getFragmentManager(), upcomingClassroomModal.getTag());
+        }
+    }
+
+    @Override
+    public void closePopupUpcomingClassroom() {
+        upcomingClassroomModal.dismiss();
     }
 }

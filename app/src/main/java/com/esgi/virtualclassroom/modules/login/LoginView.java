@@ -1,9 +1,9 @@
 package com.esgi.virtualclassroom.modules.login;
 
 interface LoginView {
-    void showLoginError(String error);
-    void showEmailError(String error);
-    void showPasswordError(String error);
+    void showLoginError(int stringId);
+    void showEmailError(int stringId);
+    void showPasswordError(int stringId);
     void resetErrors();
     void showProgressDialog();
     void hideProgressDialog();

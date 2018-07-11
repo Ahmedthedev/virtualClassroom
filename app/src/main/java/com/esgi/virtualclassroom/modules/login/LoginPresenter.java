@@ -2,6 +2,7 @@ package com.esgi.virtualclassroom.modules.login;
 
 import android.text.TextUtils;
 
+import com.esgi.virtualclassroom.R;
 import com.esgi.virtualclassroom.data.api.FirebaseProvider;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -42,12 +43,12 @@ class LoginPresenter {
         boolean valid = true;
 
         if (TextUtils.isEmpty(password) || password.length() < 5) {
-            view.showPasswordError("Invalid password");
+            view.showPasswordError(R.string.error_invalid_password);
             valid = false;
         }
 
         if (TextUtils.isEmpty(email) || email.length() < 5 || !email.contains("@")) {
-            view.showEmailError("Invalid e-mail");
+            view.showEmailError(R.string.error_invalid_email);
             valid = false;
         }
 
@@ -59,7 +60,7 @@ class LoginPresenter {
             view.hideProgressDialog();
             view.goToHomeActivity();
         }).addOnFailureListener(e -> {
-            view.showLoginError("An error has occurred during the Email authentication process.");
+            view.showLoginError(R.string.error_auth);
             this.firebaseProvider.signOut();
             view.hideProgressDialog();
         });

@@ -7,6 +7,11 @@
     <string name="home_fragment_title_upcoming">Upcoming</string>
     <string name="home_fragment_title_past">Past</string>
 
+    <string name="error_invalid_password">Invalid password</string>
+    <string name="error_invalid_email">Invalid e-mail</string>
+    <string name="error_invalid_username">Invalid username</string>
+    <string name="error_already_member">You already have an existing account.\nPlease try another authentication provider.</string>
+    <string name="error_auth">An error has occurred during the Email authentication process.</string>
 
     <string name="fragment_log_in_logo_desc">Application logo</string>
     <string name="fragment_log_in_loading">Loading…</string>
@@ -18,9 +23,12 @@
     <string name="fragment_log_in_password_confirm_hint">Repeat password</string>
 
     <string name="fragment_create_account_button_text">Sign UP</string>
-
-
     <string name="fragment_recorder_tap_on_mic">Click the mic to start</string>
     <string name="fragment_recorder_mic_button_description">Start recording button</string>
     <string name="fragment_chat_message_hint">Your message…</string>
+    <string name="classroom_send_drawing">send</string>
+    <string name="classroom_clear_drawing">clear</string>
+    <string name="menu_log_out">Log out</string>
+    <string name="fragment_upcoming_dialog_decline">No thanks</string>
+    <string name="fragment_upcoming_dialog_accept">Of course!</string>
 </resources>

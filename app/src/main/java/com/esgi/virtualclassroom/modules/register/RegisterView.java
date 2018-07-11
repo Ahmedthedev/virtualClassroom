@@ -1,11 +1,11 @@
 package com.esgi.virtualclassroom.modules.register;
 
 interface RegisterView {
-    void showRegisterError(String error);
-    void showUsernameError(String error);
-    void showEmailError(String error);
-    void showPassword1Error(String error);
-    void showPassword2Error(String error);
+    void showRegisterError(int stringId);
+    void showUsernameError(int stringId);
+    void showEmailError(int stringId);
+    void showPassword1Error(int stringId);
+    void showPassword2Error(int stringId);
     void resetErrors();
     void showProgressDialog();
     void hideProgressDialog();

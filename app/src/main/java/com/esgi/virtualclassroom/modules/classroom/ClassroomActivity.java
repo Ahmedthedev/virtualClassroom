@@ -132,6 +132,12 @@ public class ClassroomActivity extends AppCompatActivity implements ClassroomVie
     }
 
     @Override
+    protected void onStop() {
+        this.presenter.onStop();
+        super.onStop();
+    }
+
+    @Override
     public void clearDrawing() {
         drawingView.clear();
     }
@@ -226,6 +232,7 @@ public class ClassroomActivity extends AppCompatActivity implements ClassroomVie
 
     @Override
     public void onPartialResults(Bundle bundle) {
+        // TODO : not working
         Log.i("SPEECH", "onPartialResults");
 
         ArrayList<String> voiceText = bundle.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);

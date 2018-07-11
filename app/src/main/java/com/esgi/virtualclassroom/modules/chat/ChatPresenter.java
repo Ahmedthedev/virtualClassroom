@@ -56,7 +56,6 @@ public class ChatPresenter {
 
     public void onSendMessageButtonClick(String text) {
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-
         if (firebaseUser == null || text.isEmpty()) {
             return;
         }

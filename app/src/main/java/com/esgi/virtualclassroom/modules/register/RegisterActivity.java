@@ -3,7 +3,6 @@ package com.esgi.virtualclassroom.modules.register;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.Bundle;
-import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -42,31 +41,31 @@ public class RegisterActivity extends AppCompatActivity implements RegisterView 
     }
 
     @Override
-    public void showRegisterError(String error) {
-        Toast.makeText(this, error, Toast.LENGTH_LONG).show();
+    public void showRegisterError(int stringId) {
+        Toast.makeText(this, getString(stringId), Toast.LENGTH_LONG).show();
     }
 
     @Override
-    public void showUsernameError(String error) {
-        usernameEditText.setError(error);
+    public void showUsernameError(int stringId) {
+        usernameEditText.setError(getString(stringId));
         usernameEditText.requestFocus();
     }
 
     @Override
-    public void showEmailError(String error) {
-        emailEditText.setError(error);
+    public void showEmailError(int stringId) {
+        emailEditText.setError(getString(stringId));
         emailEditText.requestFocus();
     }
 
     @Override
-    public void showPassword1Error(String error) {
-        password1EditText.setError(error);
+    public void showPassword1Error(int stringId) {
+        password1EditText.setError(getString(stringId));
         password1EditText.requestFocus();
     }
 
     @Override
-    public void showPassword2Error(String error) {
-        password2EditText.setError(error);
+    public void showPassword2Error(int stringId) {
+        password2EditText.setError(getString(stringId));
         password2EditText.requestFocus();
     }
 

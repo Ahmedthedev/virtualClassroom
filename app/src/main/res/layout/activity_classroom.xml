@@ -88,13 +88,13 @@
                 android:id="@+id/send_drawing_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="send" />
+                android:text="@string/classroom_send_drawing" />
 
             <Button
                 android:id="@+id/clear_drawing_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="clear" />
+                android:text="@string/classroom_clear_drawing" />
 
         </LinearLayout>
 

@@ -4,14 +4,21 @@ import android.support.annotation.NonNull;
 
 import com.esgi.virtualclassroom.data.api.FirebaseProvider;
 import com.esgi.virtualclassroom.data.models.Classroom;
+import com.esgi.virtualclassroom.data.models.User;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Date;
 
-public class ClassroomsPresenter implements ClassroomsRecyclerViewAdapter.Listener {
+public class ClassroomsPresenter implements ClassroomsRecyclerViewAdapter.Listener, ClassroomsUpcomingDialogFragment.Listener {
+    private static final String PERIOD_LIVE = "live";
+    private static final String PERIOD_UPCOMING = "upcoming";
+    private static final String PERIOD_PAST = "past";
     private ClassroomsView view;
     private ArrayList<Classroom> classrooms;
     private String classroomsPeriod;
@@ -36,7 +43,15 @@ public class ClassroomsPresenter implements ClassroomsRecyclerViewAdapter.Listen
                 classrooms.clear();
 
                 for (DataSnapshot classroomSnapshot: dataSnapshot.getChildren()) {
-                    classrooms.add(classroomSnapshot.getValue(Classroom.class));
+                    Classroom classroom = classroomSnapshot.getValue(Classroom.class);
+
+                    if (classroom == null) {
+                        continue;
+                    }
+
+                    if (!classroomsPeriod.toLowerCase().equals(PERIOD_LIVE) || classroom.getStart().getTime() < new Date().getTime()) {
+                        classrooms.add(classroom);
+                    }
                 }
 
                 view.updateClassroomsList();
@@ -50,12 +65,12 @@ public class ClassroomsPresenter implements ClassroomsRecyclerViewAdapter.Listen
     }
 
     private Query getClassrooms(String classroomsPeriod) {
-        switch (classroomsPeriod) {
-            case "Live":
+        switch (classroomsPeriod.toLowerCase()) {
+            case PERIOD_LIVE:
                 return this.firebaseProvider.getClassroomsLive();
-            case "Upcoming":
+            case PERIOD_UPCOMING:
                 return this.firebaseProvider.getClassroomsUpcoming();
-            case "Past":
+            case PERIOD_PAST:
                 return this.firebaseProvider.getClassroomsPast();
             default:
                 return this.firebaseProvider.getClassroomsLive();
@@ -64,6 +79,36 @@ public class ClassroomsPresenter implements ClassroomsRecyclerViewAdapter.Listen
 
     @Override
     public void onClassroomClick(Classroom classroom) {
-        view.goToClassroom(classroom);
+        switch (classroomsPeriod.toLowerCase()) {
+            case PERIOD_LIVE:
+                view.goToClassroom(classroom);
+                break;
+            case PERIOD_UPCOMING:
+                onUpcomingClassroomClick(classroom);
+                break;
+            case PERIOD_PAST:
+                view.goToClassroom(classroom);
+                break;
+        }
+    }
+
+    private void onUpcomingClassroomClick(Classroom classroom) {
+        view.showPopupUpcomingClassroom(classroom);
+    }
+
+    @Override
+    public void onAcceptClick(Classroom classroom) {
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (firebaseUser == null) {
+            return;
+        }
+
+        User user = new User(firebaseUser.getUid(), firebaseUser.getDisplayName());
+        this.firebaseProvider.subscribeClassroom(classroom, user);
+    }
+
+    @Override
+    public void onDeclineClick(Classroom classroom) {
+        this.view.closePopupUpcomingClassroom();
     }
 }

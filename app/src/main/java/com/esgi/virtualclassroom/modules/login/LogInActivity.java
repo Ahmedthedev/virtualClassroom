@@ -51,19 +51,19 @@ public class LogInActivity extends AppCompatActivity implements LoginView {
     }
 
     @Override
-    public void showLoginError(String error) {
-        Toast.makeText(this, error, Toast.LENGTH_LONG).show();
+    public void showLoginError(int stringId) {
+        Toast.makeText(this, stringId, Toast.LENGTH_LONG).show();
     }
 
     @Override
-    public void showEmailError(String error) {
-        emailEditText.setError(error);
+    public void showEmailError(int stringId) {
+        emailEditText.setError(getString(stringId));
         emailEditText.requestFocus();
     }
 
     @Override
-    public void showPasswordError(String error) {
-        passwordEditText.setError(error);
+    public void showPasswordError(int stringId) {
+        passwordEditText.setError(getString(stringId));
         passwordEditText.requestFocus();
     }
 
