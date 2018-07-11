@@ -19,7 +19,7 @@ import butterknife.ButterKnife;
 public class AttachmentsFragment extends BottomSheetDialogFragment implements AttachmentsView {
     public static String EXTRA_CLASSROOM = "extra_classroom";
     private AttachmentsPresenter presenter;
-    private RecyclerView.Adapter adapter;
+    private AttachmentsRecyclerViewAdapter adapter;
 
     @BindView(R.id.attachments_recycler_view) RecyclerView recyclerView;
 
@@ -56,6 +56,7 @@ public class AttachmentsFragment extends BottomSheetDialogFragment implements At
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new AttachmentsRecyclerViewAdapter(presenter.getAttachmentsList());
+        adapter.setListener(this.presenter);
         recyclerView.setAdapter(adapter);
     }
 

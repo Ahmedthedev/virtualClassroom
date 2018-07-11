@@ -1,7 +1,9 @@
 package com.esgi.virtualclassroom.data.api;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
+import com.esgi.virtualclassroom.data.models.Attachment;
 import com.esgi.virtualclassroom.data.models.Classroom;
 import com.esgi.virtualclassroom.data.models.Message;
 import com.esgi.virtualclassroom.data.models.User;
@@ -19,6 +21,8 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
 import java.util.Date;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class FirebaseProvider {
     private static FirebaseProvider instance;
@@ -99,10 +103,6 @@ public class FirebaseProvider {
         return this.dbRef.child(SUBSCRIPTIONS_REFERENCE).child(classroom.getId());
     }
 
-    public StorageReference getFile(Classroom classroom, String name) {
-        return this.storageRef.child(classroom.getId()).child(name);
-    }
-
     public Task<Void> postMessage(Classroom classroom, Message message) {
         DatabaseReference messageRef = getMessages(classroom).push();
         return messageRef.setValue(message);
@@ -133,7 +133,18 @@ public class FirebaseProvider {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 20, stream);
         byte[] data = stream.toByteArray();
-        StorageReference imageRef = this.storageRef.child(classroom.getId()).child(name);
+        StorageReference imageRef = this.storageRef.child(CLASSROOM_REFERENCE).child(classroom.getId()).child(name);
         return imageRef.putBytes(data);
+    }
+
+    public void downloadPicture(String url, CircleImageView imageView) {
+        this.storageRef.child(url).getBytes(Long.MAX_VALUE).addOnSuccessListener(bytes -> {
+            Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+            imageView.setImageBitmap(bitmap);
+        });
+    }
+
+    public void downloadFile(Attachment attachment) {
+        //this.storageRef.child(attachment.getUrl()).
     }
 }

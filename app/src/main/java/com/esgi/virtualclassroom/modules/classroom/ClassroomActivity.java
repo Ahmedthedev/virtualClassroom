@@ -102,7 +102,7 @@ public class ClassroomActivity extends AppCompatActivity implements ClassroomVie
         layoutDrawingContainer.addView(drawingView);
 
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        if (firebaseUser != null && classroom.getTeacherId().equals(firebaseUser.getUid())) {
+        if (firebaseUser != null && classroom.getTeacher().getUid().equals(firebaseUser.getUid())) {
             layoutDrawingContainer.setVisibility(View.VISIBLE);
             speechButton.setVisibility(View.VISIBLE);
             sendDrawingButton.setVisibility(View.VISIBLE);
