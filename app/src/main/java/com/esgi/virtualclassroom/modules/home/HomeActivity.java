@@ -1,16 +1,13 @@
 package com.esgi.virtualclassroom.modules.home;
 
-import android.content.Intent;
+import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 
 import com.esgi.virtualclassroom.R;
-import com.esgi.virtualclassroom.modules.classroom.ClassroomActivity;
-import com.esgi.virtualclassroom.modules.home.adapters.ViewPagerAdapter;
-import com.esgi.virtualclassroom.modules.home.fragments.ClassroomsFragment;
+import com.esgi.virtualclassroom.modules.classrooms.ClassroomsFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -30,29 +27,13 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
         ButterKnife.bind(this);
 
         setSupportActionBar(toolbar);
-        initializeViewPager();
-    }
 
-    private void initializeViewPager() {
-        ClassroomsFragment currentClassroomsFragment = new ClassroomsFragment();
-        ClassroomsFragment upcomingClassroomsFragment = new ClassroomsFragment();
-        ClassroomsFragment pastClassroomsFragment = new ClassroomsFragment();
-        currentClassroomsFragment.setPresenter(presenter);
-        upcomingClassroomsFragment.setPresenter(presenter);
-        pastClassroomsFragment.setPresenter(presenter);
-
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(currentClassroomsFragment, getString(R.string.home_fragment_title_current));
-        adapter.addFragment(upcomingClassroomsFragment, getString(R.string.home_fragment_title_upcoming));
-        adapter.addFragment(pastClassroomsFragment, getString(R.string.home_fragment_title_past));
+        HomeViewPagerAdapter adapter = new HomeViewPagerAdapter(getSupportFragmentManager());
+        adapter.addFragment(ClassroomsFragment.newInstance(getString(R.string.home_fragment_title_live)), getString(R.string.home_fragment_title_live));
+        adapter.addFragment(ClassroomsFragment.newInstance(getString(R.string.home_fragment_title_upcoming)), getString(R.string.home_fragment_title_upcoming));
+        adapter.addFragment(ClassroomsFragment.newInstance(getString(R.string.home_fragment_title_past)), getString(R.string.home_fragment_title_past));
 
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
-    }
-
-    @Override
-    public void goToClassroom(String classroom) {
-        Intent intent = new Intent(this, ClassroomActivity.class);
-        startActivity(intent);
     }
 }

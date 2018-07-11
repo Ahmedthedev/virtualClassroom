@@ -4,10 +4,10 @@ import java.util.Date;
 
 
 public class Message {
-    public String id;
-    public String text;
-    public Date dateCreation;
-    public User user;
+    private String id;
+    private String text;
+    private Date dateCreation;
+    private User user;
 
     public Message() { }
 
@@ -15,5 +15,21 @@ public class Message {
         this.text = text;
         this.dateCreation = dateCreation;
         this.user = user;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public Date getDateCreation() {
+        return dateCreation;
+    }
+
+    public User getUser() {
+        return user;
     }
 }

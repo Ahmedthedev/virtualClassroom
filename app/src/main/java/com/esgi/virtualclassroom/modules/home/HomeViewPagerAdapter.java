@@ -1,4 +1,4 @@
-package com.esgi.virtualclassroom.modules.home.adapters;
+package com.esgi.virtualclassroom.modules.home;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -7,11 +7,11 @@ import android.support.v4.app.FragmentPagerAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ViewPagerAdapter extends FragmentPagerAdapter {
+public class HomeViewPagerAdapter extends FragmentPagerAdapter {
     private final List<Fragment> fragments = new ArrayList<>();
     private final List<String> fragmentTitles = new ArrayList<>();
 
-    public ViewPagerAdapter(FragmentManager manager) {
+    HomeViewPagerAdapter(FragmentManager manager) {
         super(manager);
     }
 

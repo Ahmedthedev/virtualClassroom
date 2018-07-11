@@ -19,7 +19,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-
 public class LogInActivity extends AppCompatActivity implements LoginView {
     private LoginPresenter presenter;
     private ProgressDialog progressDialog;
@@ -37,7 +36,7 @@ public class LogInActivity extends AppCompatActivity implements LoginView {
     void onLoginButtonClick() {
         String email = emailEditText.getText().toString();
         String password = passwordEditText.getText().toString();
-        presenter.onLoginAttempt(email, password);
+        presenter.onLoginButtonClick(email, password);
     }
 
     @Override

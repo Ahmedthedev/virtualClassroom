@@ -1,4 +1,4 @@
-package com.esgi.virtualclassroom.modules.classroom.adapters;
+package com.esgi.virtualclassroom.modules.attachments;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -10,14 +10,15 @@ import android.widget.TextView;
 import com.esgi.virtualclassroom.R;
 import com.esgi.virtualclassroom.data.models.Attachment;
 
-import java.util.ArrayList;
-import java.util.Map;
+import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class AttachmentsRecyclerViewAdapter extends RecyclerView.Adapter<AttachmentsRecyclerViewAdapter.ViewHolder>{
-    private Map<String, Attachment> attachments;
+    private List<Attachment> attachments;
 
-    public AttachmentsRecyclerViewAdapter(Map<String, Attachment> attachments) {
+    AttachmentsRecyclerViewAdapter(List<Attachment> attachments) {
         this.attachments = attachments;
     }
 
@@ -30,10 +31,7 @@ public class AttachmentsRecyclerViewAdapter extends RecyclerView.Adapter<Attachm
 
     @Override
     public void onBindViewHolder(@NonNull AttachmentsRecyclerViewAdapter.ViewHolder holder, int position) {
-        String key = new ArrayList<>(attachments.keySet()).get(position);
-        final Attachment attachment = attachments.get(key);
-        holder.attachmentName.setText(attachment.name);
-        holder.attachmentUrl.setText(attachment.url);
+        holder.bind(attachments.get(position));
     }
 
     @Override
@@ -42,13 +40,17 @@ public class AttachmentsRecyclerViewAdapter extends RecyclerView.Adapter<Attachm
     }
 
     class ViewHolder extends RecyclerView.ViewHolder{
-        TextView attachmentName;
-        TextView attachmentUrl;
+        @BindView(R.id.attachment_name) TextView attachmentName;
+        @BindView(R.id.attachment_url) TextView attachmentUrl;
 
         ViewHolder(View itemView) {
             super(itemView);
-            attachmentName = itemView.findViewById(R.id.attachment_name);
-            attachmentUrl = itemView.findViewById(R.id.attachment_url);
+            ButterKnife.bind(this, itemView);
+        }
+
+        void bind(Attachment attachment) {
+            attachmentName.setText(attachment.getName());
+            attachmentUrl.setText(attachment.getUrl());
         }
     }
 }

@@ -15,7 +15,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-
 public class RegisterActivity extends AppCompatActivity implements RegisterView {
     private RegisterPresenter presenter;
     private ProgressDialog progressDialog;
@@ -26,7 +25,7 @@ public class RegisterActivity extends AppCompatActivity implements RegisterView 
     @BindView(R.id.register_password2_edit_text) EditText password2EditText;
 
     @OnClick(R.id.register_validate_button)
-    void onRegisterValidateButtonClick() {
+    void onRegisterAttempt() {
         String username = usernameEditText.getText().toString();
         String email = emailEditText.getText().toString();
         String password1 = password1EditText.getText().toString();

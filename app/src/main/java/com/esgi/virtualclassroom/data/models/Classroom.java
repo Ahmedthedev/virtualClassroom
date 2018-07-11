@@ -1,46 +1,59 @@
 package com.esgi.virtualclassroom.data.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.Date;
-import java.util.List;
-import java.util.Map;
 
+public class Classroom implements Parcelable {
+    private String id;
+    private String title;
+    private String description;
+    private Date start;
+    private Date end;
+    private int attachmentsCount;
+    private int studentsCount;
+    private String speechText;
+    private String teacherId;
 
-public class Classroom {
-    public String id;
-    public String title;
-    public Date start;
-    public Date end;
-    public Map<String,Attachment> documents;
-    public List<User> student;
-    public List<Message> messages;
-    public List<Evaluation> evaluations;
-    public User teacher;
-    public String description;
-    public String speechText;
+    public Classroom() { }
 
-    public Classroom() {
-
+    protected Classroom(Parcel in) {
+        id = in.readString();
+        title = in.readString();
+        description = in.readString();
+        attachmentsCount = in.readInt();
+        studentsCount = in.readInt();
+        speechText = in.readString();
+        teacherId = in.readString();
     }
 
-    public Classroom(String id, String title, Date start, Date end, User teacher) {
-        this.id = id;
-        this.title = title;
-        this.start = start;
-        this.end = end;
-        this.teacher = teacher;
+    public static final Creator<Classroom> CREATOR = new Creator<Classroom>() {
+        @Override
+        public Classroom createFromParcel(Parcel in) {
+            return new Classroom(in);
+        }
+
+        @Override
+        public Classroom[] newArray(int size) {
+            return new Classroom[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
-    public Classroom(String title, Date start, Date end, Map<String,Attachment> documents, List<User> student, List<Message> messages, List<Evaluation> evaluations, User teacher, String description, String speechText) {
-        this.title = title;
-        this.start = start;
-        this.end = end;
-        this.documents = documents;
-        this.student = student;
-        this.messages = messages;
-        this.evaluations = evaluations;
-        this.teacher = teacher;
-        this.description = description;
-        this.speechText = speechText;
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(id);
+        parcel.writeString(title);
+        parcel.writeString(description);
+        parcel.writeInt(attachmentsCount);
+        parcel.writeInt(studentsCount);
+        parcel.writeString(speechText);
+        parcel.writeString(teacherId);
     }
 
     public String getId() {
@@ -71,36 +84,12 @@ public class Classroom {
         this.end = end;
     }
 
-    public List<User> getStudent() {
-        return student;
+    public String getTeacherId() {
+        return teacherId;
     }
 
-    public void setStudent(List<User> student) {
-        this.student = student;
-    }
-
-    public List<Message> getMessages() {
-        return messages;
-    }
-
-    public void setMessages(List<Message> messages) {
-        this.messages = messages;
-    }
-
-    public List<Evaluation> getEvaluations() {
-        return evaluations;
-    }
-
-    public void setEvaluations(List<Evaluation> evaluations) {
-        this.evaluations = evaluations;
-    }
-
-    public User getTeacher() {
-        return teacher;
-    }
-
-    public void setTeacher(User teacher) {
-        this.teacher = teacher;
+    public void setTeacherId(String teacherId) {
+        this.teacherId = teacherId;
     }
 
     public String getDescription() {

@@ -1,4 +1,4 @@
-package com.esgi.virtualclassroom.modules.home.adapters;
+package com.esgi.virtualclassroom.modules.classrooms;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -15,12 +15,11 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-
 public class ClassroomsRecyclerViewAdapter extends RecyclerView.Adapter<ClassroomsRecyclerViewAdapter.ViewHolder> {
     private ArrayList<Classroom> classrooms;
     private Listener listener;
 
-    public ClassroomsRecyclerViewAdapter(ArrayList<Classroom> classrooms) {
+    ClassroomsRecyclerViewAdapter(ArrayList<Classroom> classrooms) {
         this.classrooms = classrooms;
     }
 
@@ -59,13 +58,13 @@ public class ClassroomsRecyclerViewAdapter extends RecyclerView.Adapter<Classroo
             descriptionTextView.setText(classroom.getDescription());
             itemView.setOnClickListener(view -> {
                 if (listener != null) {
-                    listener.onClassroomClick(classroom.title);
+                    listener.onClassroomClick(classroom);
                 }
             });
         }
     }
 
     public interface Listener {
-        void onClassroomClick(String classroom);
+        void onClassroomClick(Classroom classroom);
     }
 }
