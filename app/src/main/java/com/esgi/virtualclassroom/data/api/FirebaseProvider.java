@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 
 import com.esgi.virtualclassroom.data.models.Classroom;
 import com.esgi.virtualclassroom.data.models.Message;
+import com.esgi.virtualclassroom.data.models.User;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -21,7 +22,10 @@ import java.util.Date;
 
 public class FirebaseProvider {
     private static FirebaseProvider instance;
-    private static final String BASE_URL = "https://us-central1-virtualclassroom-aa052.cloudfunctions.net/";
+    private static final String CLASSROOM_REFERENCE = "classrooms";
+    private static final String MESSAGES_REFERENCE = "messages";
+    private static final String ATTACHMENTS_REFERENCE = "attachments";
+    private static final String VIEWERS_REFERENCE = "viewers";
     private FirebaseAuth firebaseAuth;
     private DatabaseReference dbRef;
     private StorageReference storageRef;
@@ -63,28 +67,27 @@ public class FirebaseProvider {
     }
 
     public Query getClassroomsUpcoming() {
-        return this.dbRef.child("classrooms").orderByChild("start/time").startAt(new Date().getTime());
+        return this.dbRef.child(CLASSROOM_REFERENCE).orderByChild("start/time").startAt(new Date().getTime());
     }
 
     public Query getClassroomsPast() {
-        return this.dbRef.child("classrooms").orderByChild("end/time").endAt(new Date().getTime());
+        return this.dbRef.child(CLASSROOM_REFERENCE).orderByChild("end/time").endAt(new Date().getTime());
     }
 
     public Query getClassroomsLive() {
-        // TODO : subrequest to orderByChild("end/time").startAt(new Date().getTime());
-        return this.dbRef.child("classrooms").orderByChild("start/time").endAt(new Date().getTime());
+        return this.dbRef.child(CLASSROOM_REFERENCE).orderByChild("end/time").startAt(new Date().getTime());
     }
 
     public DatabaseReference getClassroom(Classroom classroom) {
-        return this.dbRef.child("classrooms").child(classroom.getId());
+        return this.dbRef.child(CLASSROOM_REFERENCE).child(classroom.getId());
     }
 
     public DatabaseReference getMessages(Classroom classroom) {
-        return this.dbRef.child("messages").child(classroom.getId());
+        return this.dbRef.child(MESSAGES_REFERENCE).child(classroom.getId());
     }
 
     public DatabaseReference getAttachments(Classroom classroom) {
-        return this.dbRef.child("attachments").child(classroom.getId());
+        return this.dbRef.child(ATTACHMENTS_REFERENCE).child(classroom.getId());
     }
 
     public Task<Void> postMessage(Classroom classroom, Message message) {
@@ -103,5 +106,23 @@ public class FirebaseProvider {
 
     public StorageReference getFile(Classroom classroom, String name) {
         return this.storageRef.child(classroom.getId()).child(name);
+    }
+
+    public DatabaseReference getViewers(Classroom classroom) {
+        return this.dbRef.child(VIEWERS_REFERENCE).child(classroom.getId());
+    }
+
+    public Task<Void> postViewer(Classroom classroom, User user, boolean isViewer) {
+        DatabaseReference viewersRef = getViewers(classroom).child(user.getUid());
+
+        if (isViewer) {
+           return viewersRef.setValue(isViewer);
+        } else {
+            return viewersRef.setValue(null);
+        }
+    }
+
+    public void subscribeClassroom(Classroom classroom, User user) {
+        // TODO : subscribe to notifications
     }
 }

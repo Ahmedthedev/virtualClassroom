@@ -12,7 +12,7 @@ public class Classroom implements Parcelable {
     private Date start;
     private Date end;
     private int attachmentsCount;
-    private int studentsCount;
+    private int viewersCount;
     private String speechText;
     private String teacherId;
 
@@ -23,7 +23,7 @@ public class Classroom implements Parcelable {
         title = in.readString();
         description = in.readString();
         attachmentsCount = in.readInt();
-        studentsCount = in.readInt();
+        viewersCount = in.readInt();
         speechText = in.readString();
         teacherId = in.readString();
     }
@@ -51,7 +51,7 @@ public class Classroom implements Parcelable {
         parcel.writeString(title);
         parcel.writeString(description);
         parcel.writeInt(attachmentsCount);
-        parcel.writeInt(studentsCount);
+        parcel.writeInt(viewersCount);
         parcel.writeString(speechText);
         parcel.writeString(teacherId);
     }
@@ -84,14 +84,6 @@ public class Classroom implements Parcelable {
         this.end = end;
     }
 
-    public String getTeacherId() {
-        return teacherId;
-    }
-
-    public void setTeacherId(String teacherId) {
-        this.teacherId = teacherId;
-    }
-
     public String getDescription() {
         return description;
     }
@@ -104,7 +96,4 @@ public class Classroom implements Parcelable {
         return speechText;
     }
 
-    public void setSpeechText(String speechText) {
-        this.speechText = speechText;
-    }
 }

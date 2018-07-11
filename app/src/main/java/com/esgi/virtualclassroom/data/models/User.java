@@ -1,13 +1,10 @@
 package com.esgi.virtualclassroom.data.models;
 
-import java.util.List;
-
 public class User {
     private String uid;
     private String name;
     private String email;
     private Boolean isProf;
-    private List<Classroom> classrooms;
 
     public User() { }
 
@@ -16,11 +13,19 @@ public class User {
         this.name = name;
     }
 
+    public String getUid() {
+        return uid;
+    }
+
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Boolean getProf() {
+        return isProf;
     }
 }

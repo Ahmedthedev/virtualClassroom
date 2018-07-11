@@ -6,8 +6,11 @@ import android.support.annotation.NonNull;
 
 import com.esgi.virtualclassroom.data.api.FirebaseProvider;
 import com.esgi.virtualclassroom.data.models.Classroom;
+import com.esgi.virtualclassroom.data.models.User;
 import com.esgi.virtualclassroom.modules.attachments.AttachmentsFragment;
 import com.esgi.virtualclassroom.modules.chat.ChatFragment;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -45,6 +48,15 @@ public class ClassroomPresenter {
 
             }
         });
+
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (firebaseUser == null) {
+            return;
+        }
+
+        User user = new User(firebaseUser.getUid(), firebaseUser.getDisplayName());
+        this.firebaseProvider.postViewer(classroom, user, true)
+                .addOnFailureListener(Throwable::printStackTrace);
     }
 
     public void onChatItemClick() {
@@ -95,5 +107,15 @@ public class ClassroomPresenter {
         this.firebaseProvider.getClassroom(classroom).child("speechText").setValue(speechText)
                 .addOnSuccessListener(aVoid -> view.updateView(classroom))
                 .addOnFailureListener(Throwable::printStackTrace);
+    }
+
+    public void onStop() {
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (firebaseUser == null) {
+            return;
+        }
+
+        User user = new User(firebaseUser.getUid(), firebaseUser.getDisplayName());
+        this.firebaseProvider.postViewer(classroom, user, false);
     }
 }

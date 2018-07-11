@@ -2,6 +2,7 @@ package com.esgi.virtualclassroom.modules.register;
 
 import android.text.TextUtils;
 
+import com.esgi.virtualclassroom.R;
 import com.esgi.virtualclassroom.data.api.FirebaseProvider;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 
@@ -31,22 +32,22 @@ class RegisterPresenter {
         boolean valid = true;
 
         if (TextUtils.isEmpty(password2) || password2.length() < 5) {
-            view.showPassword2Error("Invalid password");
+            view.showPassword2Error(R.string.error_invalid_password);
             valid = false;
         }
 
         if (TextUtils.isEmpty(password1) || password1.length() < 5) {
-            view.showPassword1Error("Invalid password");
+            view.showPassword1Error(R.string.error_invalid_password);
             valid = false;
         }
 
         if (TextUtils.isEmpty(email) || email.length() < 5 || !email.contains("@")) {
-            view.showEmailError("Invalid e-mail");
+            view.showEmailError(R.string.error_invalid_email);
             valid = false;
         }
 
         if (TextUtils.isEmpty(username)) {
-            view.showUsernameError("Invalid username");
+            view.showUsernameError(R.string.error_invalid_username);
             valid = false;
         }
 
@@ -60,9 +61,9 @@ class RegisterPresenter {
                 view.goToLoginActivity();
         })).addOnFailureListener(e -> {
             if (e instanceof FirebaseAuthUserCollisionException) {
-                view.showRegisterError("You already have an existing account.\\nPlease try another authentication provider.");
+                view.showRegisterError(R.string.error_already_member);
             } else {
-                view.showRegisterError("An error has occurred during the Email authentication process.");
+                view.showRegisterError(R.string.error_auth);
             }
 
             this.firebaseProvider.signOut();
