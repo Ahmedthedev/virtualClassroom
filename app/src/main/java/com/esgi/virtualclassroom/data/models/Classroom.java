@@ -13,6 +13,7 @@ public class Classroom implements Parcelable {
     private Date end;
     private int attachmentsCount;
     private int viewersCount;
+    private int subscriptionsCount;
     private String speechText;
     private String teacherId;
 
@@ -24,6 +25,7 @@ public class Classroom implements Parcelable {
         description = in.readString();
         attachmentsCount = in.readInt();
         viewersCount = in.readInt();
+        subscriptionsCount = in.readInt();
         speechText = in.readString();
         teacherId = in.readString();
     }
@@ -52,6 +54,7 @@ public class Classroom implements Parcelable {
         parcel.writeString(description);
         parcel.writeInt(attachmentsCount);
         parcel.writeInt(viewersCount);
+        parcel.writeInt(subscriptionsCount);
         parcel.writeString(speechText);
         parcel.writeString(teacherId);
     }
@@ -96,4 +99,43 @@ public class Classroom implements Parcelable {
         return speechText;
     }
 
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public int getAttachmentsCount() {
+        return attachmentsCount;
+    }
+
+    public void setAttachmentsCount(int attachmentsCount) {
+        this.attachmentsCount = attachmentsCount;
+    }
+
+    public int getViewersCount() {
+        return viewersCount;
+    }
+
+    public void setViewersCount(int viewersCount) {
+        this.viewersCount = viewersCount;
+    }
+
+    public int getSubscriptionsCount() {
+        return subscriptionsCount;
+    }
+
+    public void setSubscriptionsCount(int subscriptionsCount) {
+        this.subscriptionsCount = subscriptionsCount;
+    }
+
+    public void setSpeechText(String speechText) {
+        this.speechText = speechText;
+    }
+
+    public String getTeacherId() {
+        return teacherId;
+    }
+
+    public void setTeacherId(String teacherId) {
+        this.teacherId = teacherId;
+    }
 }

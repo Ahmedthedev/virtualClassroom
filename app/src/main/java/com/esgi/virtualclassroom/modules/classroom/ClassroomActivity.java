@@ -7,13 +7,15 @@ import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -21,8 +23,11 @@ import com.esgi.virtualclassroom.R;
 import com.esgi.virtualclassroom.data.models.Classroom;
 import com.esgi.virtualclassroom.modules.attachments.AttachmentsFragment;
 import com.esgi.virtualclassroom.modules.chat.ChatFragment;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -35,11 +40,15 @@ public class ClassroomActivity extends AppCompatActivity implements ClassroomVie
     private DrawingView drawingView;
     private SpeechRecognizer speechRecognizer;
     private Intent recognizerIntent;
+    private Classroom classroom;
 
     @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.speech_scroll_view) ScrollView speechScrollView;
     @BindView(R.id.speech_text_view) TextView speechTextView;
     @BindView(R.id.layout_drawing_container) FrameLayout layoutDrawingContainer;
+    @BindView(R.id.speech_button) FloatingActionButton speechButton;
+    @BindView(R.id.send_drawing_button) Button sendDrawingButton;
+    @BindView(R.id.clear_drawing_button) Button clearDrawingButton;
 
     @OnClick(R.id.speech_button)
     public void onSpeechButtonClick() {
@@ -72,7 +81,7 @@ public class ClassroomActivity extends AppCompatActivity implements ClassroomVie
         setContentView(R.layout.activity_classroom);
         ButterKnife.bind(this);
 
-        Classroom classroom = getIntent().getParcelableExtra(EXTRA_CLASSROOM);
+        classroom = getIntent().getParcelableExtra(EXTRA_CLASSROOM);
         presenter = new ClassroomPresenter(this, classroom);
 
         setSupportActionBar(toolbar);
@@ -82,6 +91,9 @@ public class ClassroomActivity extends AppCompatActivity implements ClassroomVie
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
+        //String[] permissions = {Manifest.permission.RECORD_AUDIO};
+        //requestPermissions(permissions, REQUEST_RECORD_AUDIO_PERMISSION);
+
         this.init();
     }
 
@@ -89,11 +101,21 @@ public class ClassroomActivity extends AppCompatActivity implements ClassroomVie
         drawingView = new DrawingView(this);
         layoutDrawingContainer.addView(drawingView);
 
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (firebaseUser != null && classroom.getTeacherId().equals(firebaseUser.getUid())) {
+            layoutDrawingContainer.setVisibility(View.VISIBLE);
+            speechButton.setVisibility(View.VISIBLE);
+            sendDrawingButton.setVisibility(View.VISIBLE);
+            clearDrawingButton.setVisibility(View.VISIBLE);
+        }
+
         speechRecognizer = SpeechRecognizer.createSpeechRecognizer(this);
         speechRecognizer.setRecognitionListener(this);
         recognizerIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         recognizerIntent.putExtra(RecognizerIntent.EXTRA_PARTIAL_RESULTS, true);
-        recognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "fr-FR");
+        recognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
+        recognizerIntent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS, 600000);
+        recognizerIntent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_POSSIBLY_COMPLETE_SILENCE_LENGTH_MILLIS, 600000);
     }
 
     @Override
@@ -143,8 +165,6 @@ public class ClassroomActivity extends AppCompatActivity implements ClassroomVie
 
     @Override
     public void startSpeech() {
-        String[] permissions = {Manifest.permission.RECORD_AUDIO};
-        requestPermissions(permissions, REQUEST_RECORD_AUDIO_PERMISSION);
         speechRecognizer.startListening(recognizerIntent);
     }
 
@@ -231,7 +251,6 @@ public class ClassroomActivity extends AppCompatActivity implements ClassroomVie
 
     @Override
     public void onPartialResults(Bundle bundle) {
-        // TODO : not working
         Log.i("SPEECH", "onPartialResults");
 
         ArrayList<String> voiceText = bundle.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);

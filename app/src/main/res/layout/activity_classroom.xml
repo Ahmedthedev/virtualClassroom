@@ -55,6 +55,7 @@
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/speech_button"
+        android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
@@ -64,8 +65,8 @@
         android:backgroundTint="@color/colorPrimary"
         android:tint="@color/white"
         android:src="@drawable/mic"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/fabChat" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/fabAttachment" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -78,9 +79,9 @@
         <ScrollView
             android:id="@+id/speech_scroll_view"
             android:layout_width="match_parent"
-            android:layout_height="130dp"
+            android:layout_height="0dp"
             android:layout_weight="1"
-            android:background="#d8d8d8"
+            android:background="#f5f5f5"
             android:padding="10dp">
 
             <TextView
@@ -88,16 +89,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
-                android:textSize="22sp"
+                android:textSize="18sp"
                 android:textStyle="normal" />
 
         </ScrollView>
 
         <FrameLayout
             android:id="@+id/layout_drawing_container"
+            android:visibility="gone"
             android:layout_width="match_parent"
-            android:layout_height="300dp"
-            android:layout_weight="1"
+            android:layout_height="0dp"
+            android:layout_weight="1.1"
             android:background="@drawable/bg_gradient"
             android:orientation="horizontal"
             android:padding="10dp">
@@ -107,6 +109,7 @@
 
     <Button
         android:id="@+id/send_drawing_button"
+        android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -119,6 +122,7 @@
 
     <Button
         android:id="@+id/clear_drawing_button"
+        android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"

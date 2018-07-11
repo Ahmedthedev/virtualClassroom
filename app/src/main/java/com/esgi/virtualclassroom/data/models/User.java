@@ -4,7 +4,6 @@ public class User {
     private String uid;
     private String name;
     private String email;
-    private Boolean isProf;
 
     public User() { }
 
@@ -25,7 +24,15 @@ public class User {
         this.name = name;
     }
 
-    public Boolean getProf() {
-        return isProf;
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

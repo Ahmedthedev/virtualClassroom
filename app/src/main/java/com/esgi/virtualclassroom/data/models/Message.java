@@ -32,4 +32,20 @@ public class Message {
     public User getUser() {
         return user;
     }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public void setDateCreation(Date dateCreation) {
+        this.dateCreation = dateCreation;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 }

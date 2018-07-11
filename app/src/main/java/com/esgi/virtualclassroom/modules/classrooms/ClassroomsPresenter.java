@@ -104,11 +104,19 @@ public class ClassroomsPresenter implements ClassroomsRecyclerViewAdapter.Listen
         }
 
         User user = new User(firebaseUser.getUid(), firebaseUser.getDisplayName());
-        this.firebaseProvider.subscribeClassroom(classroom, user);
+        this.firebaseProvider.postSubscription(classroom, user)
+                .addOnFailureListener(Throwable::printStackTrace);
     }
 
     @Override
     public void onDeclineClick(Classroom classroom) {
-        this.view.closePopupUpcomingClassroom();
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (firebaseUser == null) {
+            return;
+        }
+
+        User user = new User(firebaseUser.getUid(), firebaseUser.getDisplayName());
+        this.firebaseProvider.deleteSubscription(classroom, user)
+                .addOnFailureListener(Throwable::printStackTrace);
     }
 }
