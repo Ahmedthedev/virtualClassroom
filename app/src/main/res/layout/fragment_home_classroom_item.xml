@@ -5,13 +5,13 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="@dimen/activity_vertical_margin">
+    android:paddingStart="@dimen/activity_vertical_margin"
+    android:paddingEnd="@dimen/activity_vertical_margin">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/imageView"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_marginBottom="8dp"
         android:src="@drawable/logo"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -22,6 +22,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
         android:textColor="@color/colorBackgroundDark"
         android:textSize="16sp"
         app:layout_constraintStart_toEndOf="@+id/imageView"
@@ -32,9 +33,9 @@
         android:id="@+id/classroom_description_text_view"
         android:layout_width="262dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
         android:layout_marginStart="8dp"
         android:lines="2"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/imageView"
         app:layout_constraintTop_toBottomOf="@+id/classroom_title_text_view"
@@ -44,12 +45,20 @@
         android:id="@+id/imageView2"
         android:layout_width="25dp"
         android:layout_height="25dp"
-        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginTop="8dp"
         android:src="@drawable/favorite"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:background="@color/light_grey"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
 
 </android.support.constraint.ConstraintLayout>

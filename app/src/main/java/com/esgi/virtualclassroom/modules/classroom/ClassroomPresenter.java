@@ -55,7 +55,7 @@ public class ClassroomPresenter {
         }
 
         User user = new User(firebaseUser.getUid(), firebaseUser.getDisplayName());
-        this.firebaseProvider.postViewer(classroom, user, true)
+        this.firebaseProvider.postViewer(classroom, user)
                 .addOnFailureListener(Throwable::printStackTrace);
     }
 
@@ -116,6 +116,7 @@ public class ClassroomPresenter {
         }
 
         User user = new User(firebaseUser.getUid(), firebaseUser.getDisplayName());
-        this.firebaseProvider.postViewer(classroom, user, false);
+        this.firebaseProvider.deleteViewer(classroom, user)
+                .addOnFailureListener(Throwable::printStackTrace);
     }
 }

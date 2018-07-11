@@ -26,6 +26,7 @@ public class FirebaseProvider {
     private static final String MESSAGES_REFERENCE = "messages";
     private static final String ATTACHMENTS_REFERENCE = "attachments";
     private static final String VIEWERS_REFERENCE = "viewers";
+    private static final String SUBSCRIPTIONS_REFERENCE = "subscriptions";
     private FirebaseAuth firebaseAuth;
     private DatabaseReference dbRef;
     private StorageReference storageRef;
@@ -90,10 +91,42 @@ public class FirebaseProvider {
         return this.dbRef.child(ATTACHMENTS_REFERENCE).child(classroom.getId());
     }
 
+    public DatabaseReference getViewers(Classroom classroom) {
+        return this.dbRef.child(VIEWERS_REFERENCE).child(classroom.getId());
+    }
+
+    public DatabaseReference getSubscriptions(Classroom classroom) {
+        return this.dbRef.child(SUBSCRIPTIONS_REFERENCE).child(classroom.getId());
+    }
+
+    public StorageReference getFile(Classroom classroom, String name) {
+        return this.storageRef.child(classroom.getId()).child(name);
+    }
+
     public Task<Void> postMessage(Classroom classroom, Message message) {
         DatabaseReference messageRef = getMessages(classroom).push();
-        // TODO : bug user uid not saved in database
         return messageRef.setValue(message);
+    }
+
+    public Task<Void> postViewer(Classroom classroom, User user) {
+        DatabaseReference viewersRef = getViewers(classroom).child(user.getUid());
+       return viewersRef.setValue(true);
+    }
+
+    public Task<Void> deleteViewer(Classroom classroom, User user) {
+        DatabaseReference viewersRef = getViewers(classroom).child(user.getUid());
+        return viewersRef.setValue(null);
+    }
+
+    public Task<Void> postSubscription(Classroom classroom, User user) {
+        // TODO : schedule notification
+        DatabaseReference subscriptionsRef = getSubscriptions(classroom).child(user.getUid());
+        return subscriptionsRef.setValue(true);
+    }
+
+    public Task<Void> deleteSubscription(Classroom classroom, User user) {
+        DatabaseReference subscriptionsRef = getSubscriptions(classroom).child(user.getUid());
+        return subscriptionsRef.setValue(null);
     }
 
     public UploadTask uploadImage(Classroom classroom, String name, Bitmap bitmap) {
@@ -102,27 +135,5 @@ public class FirebaseProvider {
         byte[] data = stream.toByteArray();
         StorageReference imageRef = this.storageRef.child(classroom.getId()).child(name);
         return imageRef.putBytes(data);
-    }
-
-    public StorageReference getFile(Classroom classroom, String name) {
-        return this.storageRef.child(classroom.getId()).child(name);
-    }
-
-    public DatabaseReference getViewers(Classroom classroom) {
-        return this.dbRef.child(VIEWERS_REFERENCE).child(classroom.getId());
-    }
-
-    public Task<Void> postViewer(Classroom classroom, User user, boolean isViewer) {
-        DatabaseReference viewersRef = getViewers(classroom).child(user.getUid());
-
-        if (isViewer) {
-           return viewersRef.setValue(isViewer);
-        } else {
-            return viewersRef.setValue(null);
-        }
-    }
-
-    public void subscribeClassroom(Classroom classroom, User user) {
-        // TODO : subscribe to notifications
     }
 }
