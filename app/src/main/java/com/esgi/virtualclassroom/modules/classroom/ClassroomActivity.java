@@ -40,7 +40,6 @@ public class ClassroomActivity extends AppCompatActivity implements ClassroomVie
     @BindView(R.id.speech_scroll_view) ScrollView speechScrollView;
     @BindView(R.id.speech_text_view) TextView speechTextView;
     @BindView(R.id.layout_drawing_container) FrameLayout layoutDrawingContainer;
-    @BindView(R.id.layout_microphone_container) LinearLayout layoutMicrophoneContainer;
 
     @OnClick(R.id.speech_button)
     public void onSpeechButtonClick() {
@@ -57,12 +56,12 @@ public class ClassroomActivity extends AppCompatActivity implements ClassroomVie
         this.presenter.onClearDrawingClick();
     }
 
-    @OnClick(R.id.classroom_chat_text_view)
+    @OnClick(R.id.fabChat)
     public void onChatItemClick() {
         this.presenter.onChatItemClick();
     }
 
-    @OnClick(R.id.classroom_documents_text_view)
+    @OnClick(R.id.fabAttachment)
     public void onAttachmentsItemClick() {
         this.presenter.onAttachmentsItemClick();
     }
