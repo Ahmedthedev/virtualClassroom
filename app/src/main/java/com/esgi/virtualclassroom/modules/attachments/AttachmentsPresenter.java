@@ -13,7 +13,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AttachmentsPresenter {
+public class AttachmentsPresenter implements AttachmentsRecyclerViewAdapter.Listener {
     private AttachmentsView view;
     private FirebaseProvider firebaseProvider;
     private Classroom classroom;
@@ -54,5 +54,10 @@ public class AttachmentsPresenter {
     public void onSendAttachmentButtonClick(String name, Bitmap file) {
         this.firebaseProvider.uploadImage(classroom, name, file)
                 .addOnFailureListener(Throwable::printStackTrace);
+    }
+
+    @Override
+    public void onAttachmentDownloadButtonClick(Attachment attachment) {
+        this.firebaseProvider.downloadFile(attachment);
     }
 }

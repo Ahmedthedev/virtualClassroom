@@ -47,6 +47,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.503"
         app:layout_constraintStart_toStartOf="parent"
+        android:inputType="textEmailAddress"
         app:layout_constraintTop_toBottomOf="@+id/login_in_message_txtview" />
 
     <EditText

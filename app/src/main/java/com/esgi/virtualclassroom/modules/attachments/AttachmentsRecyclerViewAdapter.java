@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.esgi.virtualclassroom.R;
@@ -17,9 +18,14 @@ import butterknife.ButterKnife;
 
 public class AttachmentsRecyclerViewAdapter extends RecyclerView.Adapter<AttachmentsRecyclerViewAdapter.ViewHolder>{
     private List<Attachment> attachments;
+    private Listener listener;
 
     AttachmentsRecyclerViewAdapter(List<Attachment> attachments) {
         this.attachments = attachments;
+    }
+
+    public void setListener(Listener listener) {
+        this.listener = listener;
     }
 
     @NonNull
@@ -41,6 +47,7 @@ public class AttachmentsRecyclerViewAdapter extends RecyclerView.Adapter<Attachm
 
     class ViewHolder extends RecyclerView.ViewHolder{
         @BindView(R.id.attachment_name) TextView attachmentName;
+        @BindView(R.id.attachment_download_button) ImageView attachmentDownloadButton;
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -49,6 +56,11 @@ public class AttachmentsRecyclerViewAdapter extends RecyclerView.Adapter<Attachm
 
         void bind(Attachment attachment) {
             attachmentName.setText(attachment.getName());
+            attachmentDownloadButton.setOnClickListener(view -> listener.onAttachmentDownloadButtonClick(attachment));
         }
+    }
+
+    public interface Listener {
+        void onAttachmentDownloadButtonClick(Attachment attachment);
     }
 }

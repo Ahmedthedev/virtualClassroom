@@ -15,6 +15,8 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Date;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class ClassroomsPresenter implements ClassroomsRecyclerViewAdapter.Listener, ClassroomsUpcomingDialogFragment.Listener {
     private static final String PERIOD_LIVE = "live";
     private static final String PERIOD_UPCOMING = "upcoming";
@@ -90,6 +92,11 @@ public class ClassroomsPresenter implements ClassroomsRecyclerViewAdapter.Listen
                 view.goToClassroom(classroom);
                 break;
         }
+    }
+
+    @Override
+    public void loadImage(String pictureUrl, CircleImageView circleImageView) {
+        this.firebaseProvider.downloadPicture(pictureUrl, circleImageView);
     }
 
     private void onUpcomingClassroomClick(Classroom classroom) {

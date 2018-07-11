@@ -14,6 +14,7 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ClassroomsRecyclerViewAdapter extends RecyclerView.Adapter<ClassroomsRecyclerViewAdapter.ViewHolder> {
     private ArrayList<Classroom> classrooms;
@@ -47,6 +48,7 @@ public class ClassroomsRecyclerViewAdapter extends RecyclerView.Adapter<Classroo
     class ViewHolder extends RecyclerView.ViewHolder{
         @BindView(R.id.classroom_title_text_view) TextView titleTextView;
         @BindView(R.id.classroom_description_text_view) TextView descriptionTextView;
+        @BindView(R.id.imageView) CircleImageView circleImageView;
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -56,6 +58,7 @@ public class ClassroomsRecyclerViewAdapter extends RecyclerView.Adapter<Classroo
         void bind(final Classroom classroom) {
             titleTextView.setText(classroom.getTitle());
             descriptionTextView.setText(classroom.getDescription());
+            listener.loadImage(classroom.getTeacher().getPictureUrl(), circleImageView);
             itemView.setOnClickListener(view -> {
                 if (listener != null) {
                     listener.onClassroomClick(classroom);
@@ -66,5 +69,6 @@ public class ClassroomsRecyclerViewAdapter extends RecyclerView.Adapter<Classroo
 
     public interface Listener {
         void onClassroomClick(Classroom classroom);
+        void loadImage(String pictureUrl, CircleImageView circleImageView);
     }
 }

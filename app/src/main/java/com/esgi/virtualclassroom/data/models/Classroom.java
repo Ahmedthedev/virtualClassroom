@@ -15,7 +15,7 @@ public class Classroom implements Parcelable {
     private int viewersCount;
     private int subscriptionsCount;
     private String speechText;
-    private String teacherId;
+    private User teacher;
 
     public Classroom() { }
 
@@ -27,7 +27,7 @@ public class Classroom implements Parcelable {
         viewersCount = in.readInt();
         subscriptionsCount = in.readInt();
         speechText = in.readString();
-        teacherId = in.readString();
+        teacher = in.readParcelable(getClass().getClassLoader());
     }
 
     public static final Creator<Classroom> CREATOR = new Creator<Classroom>() {
@@ -56,7 +56,7 @@ public class Classroom implements Parcelable {
         parcel.writeInt(viewersCount);
         parcel.writeInt(subscriptionsCount);
         parcel.writeString(speechText);
-        parcel.writeString(teacherId);
+        parcel.writeParcelable(teacher, i);
     }
 
     public String getId() {
@@ -131,11 +131,11 @@ public class Classroom implements Parcelable {
         this.speechText = speechText;
     }
 
-    public String getTeacherId() {
-        return teacherId;
+    public User getTeacher() {
+        return teacher;
     }
 
-    public void setTeacherId(String teacherId) {
-        this.teacherId = teacherId;
+    public void setTeacher(User teacher) {
+        this.teacher = teacher;
     }
 }
