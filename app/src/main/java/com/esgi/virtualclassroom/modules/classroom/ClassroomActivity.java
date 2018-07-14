@@ -2,6 +2,7 @@ package com.esgi.virtualclassroom.modules.classroom;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
@@ -27,7 +28,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
-import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -91,8 +91,9 @@ public class ClassroomActivity extends AppCompatActivity implements ClassroomVie
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        //String[] permissions = {Manifest.permission.RECORD_AUDIO};
-        //requestPermissions(permissions, REQUEST_RECORD_AUDIO_PERMISSION);
+        if (checkSelfPermission(Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.RECORD_AUDIO}, REQUEST_RECORD_AUDIO_PERMISSION);
+        }
 
         this.init();
     }
@@ -112,10 +113,11 @@ public class ClassroomActivity extends AppCompatActivity implements ClassroomVie
         speechRecognizer = SpeechRecognizer.createSpeechRecognizer(this);
         speechRecognizer.setRecognitionListener(this);
         recognizerIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        recognizerIntent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, this.getPackageName());
+        recognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_WEB_SEARCH);
         recognizerIntent.putExtra(RecognizerIntent.EXTRA_PARTIAL_RESULTS, true);
-        recognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
-        recognizerIntent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS, 600000);
-        recognizerIntent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_POSSIBLY_COMPLETE_SILENCE_LENGTH_MILLIS, 600000);
+        recognizerIntent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_MINIMUM_LENGTH_MILLIS, 60000);
+        recognizerIntent.putExtra("android.speech.extra.DICTATION_MODE", true);
     }
 
     @Override
@@ -155,6 +157,7 @@ public class ClassroomActivity extends AppCompatActivity implements ClassroomVie
     @Override
     protected void onStop() {
         this.presenter.onStop();
+        this.speechRecognizer.destroy();
         super.onStop();
     }
 

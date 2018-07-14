@@ -3,6 +3,7 @@ package com.esgi.virtualclassroom.data.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 public class Classroom implements Parcelable {
@@ -16,8 +17,11 @@ public class Classroom implements Parcelable {
     private int subscriptionsCount;
     private String speechText;
     private User teacher;
+    private ArrayList<String> subscriptions;
 
-    public Classroom() { }
+    public Classroom() {
+        this.subscriptions = new ArrayList<>();
+    }
 
     protected Classroom(Parcel in) {
         id = in.readString();
@@ -28,6 +32,7 @@ public class Classroom implements Parcelable {
         subscriptionsCount = in.readInt();
         speechText = in.readString();
         teacher = in.readParcelable(getClass().getClassLoader());
+//        subscriptions = in.readBooleanArray();
     }
 
     public static final Creator<Classroom> CREATOR = new Creator<Classroom>() {
@@ -137,5 +142,13 @@ public class Classroom implements Parcelable {
 
     public void setTeacher(User teacher) {
         this.teacher = teacher;
+    }
+
+    public ArrayList<String> getSubscriptions() {
+        return subscriptions;
+    }
+
+    public void setSubscriptions(ArrayList<String> subscriptions) {
+        this.subscriptions = subscriptions;
     }
 }

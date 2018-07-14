@@ -79,4 +79,8 @@ public class User implements Parcelable {
     public void setPictureUrl(String pictureUrl) {
         this.pictureUrl = pictureUrl;
     }
+
+    public boolean hasSubscribed(Classroom classroom) {
+        return classroom.getSubscriptions().contains(getUid());
+    }
 }

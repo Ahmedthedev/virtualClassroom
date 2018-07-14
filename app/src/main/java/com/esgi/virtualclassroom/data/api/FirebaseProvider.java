@@ -1,7 +1,7 @@
 package com.esgi.virtualclassroom.data.api;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.os.Environment;
 
 import com.esgi.virtualclassroom.data.models.Attachment;
 import com.esgi.virtualclassroom.data.models.Classroom;
@@ -15,14 +15,14 @@ import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.util.Date;
-
-import de.hdodenhof.circleimageview.CircleImageView;
 
 public class FirebaseProvider {
     private static FirebaseProvider instance;
@@ -137,14 +137,12 @@ public class FirebaseProvider {
         return imageRef.putBytes(data);
     }
 
-    public void downloadPicture(String url, CircleImageView imageView) {
-        this.storageRef.child(url).getBytes(Long.MAX_VALUE).addOnSuccessListener(bytes -> {
-            Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-            imageView.setImageBitmap(bitmap);
-        });
+    public StorageReference getFileRef(String url) {
+        return this.storageRef.child(url);
     }
 
-    public void downloadFile(Attachment attachment) {
-        //this.storageRef.child(attachment.getUrl()).
+    public FileDownloadTask downloadFile(Attachment attachment) {
+        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), attachment.getName());
+        return this.storageRef.child(attachment.getUrl()).getFile(file);
     }
 }

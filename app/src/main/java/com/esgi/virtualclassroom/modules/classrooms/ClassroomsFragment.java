@@ -11,10 +11,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.esgi.virtualclassroom.R;
 import com.esgi.virtualclassroom.data.models.Classroom;
 import com.esgi.virtualclassroom.modules.classroom.ClassroomActivity;
+import com.firebase.ui.storage.images.FirebaseImageLoader;
+import com.google.firebase.storage.StorageReference;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -23,7 +27,6 @@ public class ClassroomsFragment extends Fragment implements ClassroomsView {
     public static String EXTRA_CLASSROOMS_PERIOD = "extra_classrooms_period";
     private ClassroomsPresenter presenter;
     private ClassroomsRecyclerViewAdapter adapter;
-    private ClassroomsUpcomingDialogFragment upcomingClassroomModal;
 
     @BindView(R.id.fragment_home_recycler_view) RecyclerView recyclerView;
 
@@ -42,7 +45,7 @@ public class ClassroomsFragment extends Fragment implements ClassroomsView {
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-            presenter = new ClassroomsPresenter(this, getArguments().getString(EXTRA_CLASSROOMS_PERIOD));
+            presenter = new ClassroomsPresenter(this.getActivity(), this, getArguments().getString(EXTRA_CLASSROOMS_PERIOD));
         }
     }
 
@@ -79,7 +82,7 @@ public class ClassroomsFragment extends Fragment implements ClassroomsView {
 
     @Override
     public void showPopupUpcomingClassroom(Classroom classroom) {
-        upcomingClassroomModal = ClassroomsUpcomingDialogFragment.newInstance(classroom);
+        ClassroomsUpcomingDialogFragment upcomingClassroomModal = ClassroomsUpcomingDialogFragment.newInstance(classroom);
         upcomingClassroomModal.setListener(this.presenter);
 
         FragmentManager fragmentManager = getFragmentManager();
@@ -89,7 +92,10 @@ public class ClassroomsFragment extends Fragment implements ClassroomsView {
     }
 
     @Override
-    public void closePopupUpcomingClassroom() {
-        upcomingClassroomModal.dismiss();
+    public void loadImage(StorageReference ref, ImageView imageView) {
+        Glide.with(this)
+                .using(new FirebaseImageLoader())
+                .load(ref)
+                .into(imageView);
     }
 }

@@ -24,12 +24,10 @@ public class ClassroomPresenter {
     private Classroom classroom;
     private FirebaseProvider firebaseProvider;
     private boolean isSpeaking;
-    private boolean permissionToRecordAccepted;
 
     ClassroomPresenter(ClassroomView view, Classroom classroom) {
         this.view = view;
         this.classroom = classroom;
-        this.permissionToRecordAccepted = false;
         this.firebaseProvider = FirebaseProvider.getInstance();
         this.isSpeaking = false;
         this.init();
@@ -70,9 +68,9 @@ public class ClassroomPresenter {
     }
 
     public void onSendDrawingClick(Bitmap bitmap) {
-        this.view.clearDrawing();
         final String name = new Date().getTime() + ".jpg";
         this.firebaseProvider.uploadImage(classroom, name, bitmap).addOnFailureListener(Throwable::printStackTrace);
+        this.view.clearDrawing();
     }
 
     public void onClearDrawingClick() {
@@ -92,14 +90,11 @@ public class ClassroomPresenter {
     public void onRequestPermissionsResult(int requestCode, int[] grantResults) {
         switch (requestCode){
             case REQUEST_RECORD_AUDIO_PERMISSION:
-                permissionToRecordAccepted  = grantResults[0] == PackageManager.PERMISSION_GRANTED;
-                break;
-        }
+                if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                    this.view.exit();
+                }
 
-        if (!permissionToRecordAccepted) {
-            this.view.exit();
-        } else {
-            this.view.startSpeech();
+                break;
         }
     }
 

@@ -116,7 +116,7 @@
         android:layout_marginStart="8dp"
         android:backgroundTint="@color/colorPrimary"
         android:textColor="@color/white"
-        android:text="send"
+        android:text="@string/classroom_send_drawing_button_text"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -127,7 +127,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginStart="8dp"
-        android:text="clear"
+        android:text="@string/classroom_clear_drawing_button_text"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/send_drawing_button" />
 

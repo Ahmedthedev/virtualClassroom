@@ -5,7 +5,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.esgi.virtualclassroom.R;
@@ -48,6 +50,8 @@ public class AttachmentsRecyclerViewAdapter extends RecyclerView.Adapter<Attachm
     class ViewHolder extends RecyclerView.ViewHolder{
         @BindView(R.id.attachment_name) TextView attachmentName;
         @BindView(R.id.attachment_download_button) ImageView attachmentDownloadButton;
+        @BindView(R.id.attachment_download_progress) ProgressBar attachmentDownloadProgress;
+        @BindView(R.id.attachment_open_button) Button attachmentOpenButton;
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -56,11 +60,17 @@ public class AttachmentsRecyclerViewAdapter extends RecyclerView.Adapter<Attachm
 
         void bind(Attachment attachment) {
             attachmentName.setText(attachment.getName());
-            attachmentDownloadButton.setOnClickListener(view -> listener.onAttachmentDownloadButtonClick(attachment));
+
+            attachmentDownloadButton.setVisibility(attachment.isDownloaded() ? View.GONE : View.VISIBLE);
+            attachmentDownloadButton.setOnClickListener(view -> listener.onAttachmentDownloadButtonClick(attachment, this));
+
+            attachmentOpenButton.setVisibility(attachment.isDownloaded() ? View.VISIBLE : View.GONE);
+            attachmentOpenButton.setOnClickListener(view -> listener.onAttachmentOpenButtonClick(attachment));
         }
     }
 
     public interface Listener {
-        void onAttachmentDownloadButtonClick(Attachment attachment);
+        void onAttachmentOpenButtonClick(Attachment attachment);
+        void onAttachmentDownloadButtonClick(Attachment attachment, ViewHolder viewHolder);
     }
 }

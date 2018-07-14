@@ -11,12 +11,10 @@ import android.view.View;
 
 public class DrawingView extends View {
     private Paint paint;
-    public int height;
     private Bitmap bitmap;
     private Canvas canvas;
     private Path path;
     private Paint bitmapPaint;
-    Context context;
     private Paint circlePaint;
     private Path circlePath;
     private float mX;
@@ -25,8 +23,6 @@ public class DrawingView extends View {
 
     public DrawingView(Context context) {
         super(context);
-        this.context = context;
-
         path = new Path();
         bitmapPaint = new Paint(Paint.DITHER_FLAG);
 

@@ -5,10 +5,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.esgi.virtualclassroom.R;
 import com.esgi.virtualclassroom.data.models.Classroom;
+import com.esgi.virtualclassroom.data.models.User;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 
@@ -19,8 +23,15 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class ClassroomsRecyclerViewAdapter extends RecyclerView.Adapter<ClassroomsRecyclerViewAdapter.ViewHolder> {
     private ArrayList<Classroom> classrooms;
     private Listener listener;
+    private User user;
 
     ClassroomsRecyclerViewAdapter(ArrayList<Classroom> classrooms) {
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (firebaseUser == null) {
+            return;
+        }
+
+        this.user = new User(firebaseUser.getUid(), firebaseUser.getDisplayName());
         this.classrooms = classrooms;
     }
 
@@ -49,6 +60,12 @@ public class ClassroomsRecyclerViewAdapter extends RecyclerView.Adapter<Classroo
         @BindView(R.id.classroom_title_text_view) TextView titleTextView;
         @BindView(R.id.classroom_description_text_view) TextView descriptionTextView;
         @BindView(R.id.imageView) CircleImageView circleImageView;
+        @BindView(R.id.attachment_favorite_full) ImageView favoriteButtonFull;
+        @BindView(R.id.attachment_favorite_empty) ImageView favoriteButtonEmpty;
+
+        @BindView(R.id.classroom_viewers_count_text_view) TextView viewersCountTextView;
+        @BindView(R.id.classroom_subscriptions_count_text_view) TextView subscriptionsCountTextView;
+        @BindView(R.id.classroom_attachments_count_text_view) TextView attachmentsCountTextView;
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -58,17 +75,24 @@ public class ClassroomsRecyclerViewAdapter extends RecyclerView.Adapter<Classroo
         void bind(final Classroom classroom) {
             titleTextView.setText(classroom.getTitle());
             descriptionTextView.setText(classroom.getDescription());
+            viewersCountTextView.setText(String.valueOf(classroom.getViewersCount()));
+            subscriptionsCountTextView.setText(String.valueOf(classroom.getSubscriptionsCount()));
+            attachmentsCountTextView.setText(String.valueOf(classroom.getAttachmentsCount()));
             listener.loadImage(classroom.getTeacher().getPictureUrl(), circleImageView);
-            itemView.setOnClickListener(view -> {
-                if (listener != null) {
-                    listener.onClassroomClick(classroom);
-                }
-            });
+            itemView.setOnClickListener(view -> listener.onClassroomClick(classroom));
+
+            favoriteButtonEmpty.setVisibility(user.hasSubscribed(classroom) ? View.GONE : View.VISIBLE);
+            favoriteButtonEmpty.setOnClickListener(view -> listener.postSubscription(classroom));
+
+            favoriteButtonFull.setVisibility(user.hasSubscribed(classroom) ? View.VISIBLE : View.GONE);
+            favoriteButtonFull.setOnClickListener(view -> listener.deleteSubscription(classroom));
         }
     }
 
     public interface Listener {
         void onClassroomClick(Classroom classroom);
-        void loadImage(String pictureUrl, CircleImageView circleImageView);
+        void loadImage(String url, ImageView imageView);
+        void postSubscription(Classroom classroom);
+        void deleteSubscription(Classroom classroom);
     }
 }
