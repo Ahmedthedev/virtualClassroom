@@ -34,12 +34,13 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
         setSupportActionBar(toolbar);
 
         HomeViewPagerAdapter adapter = new HomeViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(ClassroomsFragment.newInstance(getString(R.string.home_fragment_title_live)), getString(R.string.home_fragment_title_live));
         adapter.addFragment(ClassroomsFragment.newInstance(getString(R.string.home_fragment_title_upcoming)), getString(R.string.home_fragment_title_upcoming));
+        adapter.addFragment(ClassroomsFragment.newInstance(getString(R.string.home_fragment_title_live)), getString(R.string.home_fragment_title_live));
         adapter.addFragment(ClassroomsFragment.newInstance(getString(R.string.home_fragment_title_past)), getString(R.string.home_fragment_title_past));
 
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
+        viewPager.setCurrentItem(1);
     }
 
     @Override
