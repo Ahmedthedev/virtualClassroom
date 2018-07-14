@@ -119,7 +119,6 @@ public class FirebaseProvider {
     }
 
     public Task<Void> postSubscription(Classroom classroom, User user) {
-        // TODO : schedule notification
         DatabaseReference subscriptionsRef = getSubscriptions(classroom).child(user.getUid());
         return subscriptionsRef.setValue(true);
     }
