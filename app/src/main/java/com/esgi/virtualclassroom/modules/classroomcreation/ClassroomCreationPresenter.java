@@ -50,8 +50,4 @@ class ClassroomCreationPresenter {
                 .addOnFailureListener(e -> view.showCreationError(R.string.error_auth))
                 .addOnCompleteListener(task -> view.hideProgressDialog());
     }
-
-    public void onCancelButtonClick() {
-        this.view.exit();
-    }
 }

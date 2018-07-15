@@ -33,4 +33,6 @@
     <string name="classroom_creation_cancel_text">Reset</string>
     <string name="classroom_creation_confirm_text">Done</string>
     <string name="error_invalid_title">Invalid classroom title</string>
+    <string name="classroom_creation_description_hint">Description</string>
+    <string name="classroom_creation_title_hint">Title</string>
 </resources>
