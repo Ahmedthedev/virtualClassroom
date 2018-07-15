@@ -11,11 +11,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.esgi.virtualclassroom.R;
+import com.esgi.virtualclassroom.modules.classroomcreation.ClassroomCreationActivity;
 import com.esgi.virtualclassroom.modules.classrooms.ClassroomsFragment;
 import com.esgi.virtualclassroom.modules.login.LogInActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class HomeActivity extends AppCompatActivity implements HomeView {
     private HomePresenter presenter;
@@ -23,6 +25,11 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
     @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.home_view_pager) ViewPager viewPager;
     @BindView(R.id.home_tab_layout) TabLayout tabLayout;
+
+    @OnClick(R.id.classroom_add_button)
+    void onClassroomAddButtonClick() {
+        this.presenter.onClassroomAddButtonClick();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,5 +73,11 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
         Intent intent = new Intent(this, LogInActivity.class);
         startActivity(intent);
         finish();
+    }
+
+    @Override
+    public void showClassroomCreationActivity() {
+        Intent intent = new Intent(this, ClassroomCreationActivity.class);
+        startActivity(intent);
     }
 }

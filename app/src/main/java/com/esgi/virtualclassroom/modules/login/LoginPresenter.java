@@ -1,10 +1,16 @@
 package com.esgi.virtualclassroom.modules.login;
 
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.esgi.virtualclassroom.R;
+import com.esgi.virtualclassroom.data.AuthenticationProvider;
 import com.esgi.virtualclassroom.data.api.FirebaseProvider;
+import com.esgi.virtualclassroom.data.models.User;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 
 class LoginPresenter {
     private LoginView view;
@@ -35,7 +41,7 @@ class LoginPresenter {
     void checkUserLogged() {
         FirebaseUser firebaseUser = this.firebaseProvider.getCurrentUser();
         if (firebaseUser != null) {
-            view.goToHomeActivity();
+            createUserAndGoToHome(firebaseUser);
         }
     }
 
@@ -56,13 +62,35 @@ class LoginPresenter {
     }
 
     private void signIn(String email, String password) {
-        this.firebaseProvider.signIn(email, password).addOnSuccessListener(authResult -> {
-            view.hideProgressDialog();
-            view.goToHomeActivity();
-        }).addOnFailureListener(e -> {
-            view.showLoginError(R.string.error_auth);
-            this.firebaseProvider.signOut();
-            view.hideProgressDialog();
-        });
+        this.firebaseProvider.signIn(email, password)
+                .addOnSuccessListener(authResult -> createUserAndGoToHome(authResult.getUser()))
+                .addOnFailureListener(e -> {
+                    view.showLoginError(R.string.error_auth);
+                    this.firebaseProvider.signOut();
+                    view.hideProgressDialog();
+                });
+    }
+
+    private void createUserAndGoToHome(FirebaseUser firebaseUser) {
+        this.firebaseProvider.getUser(firebaseUser.getUid())
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        User user = dataSnapshot.getValue(User.class);
+                        if (user == null) {
+                            return;
+                        }
+
+                        user.setUid(dataSnapshot.getKey());
+                        AuthenticationProvider.setCurrentUser(user);
+                        view.hideProgressDialog();
+                        view.goToHomeActivity();
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        view.hideProgressDialog();
+                    }
+                });
     }
 }

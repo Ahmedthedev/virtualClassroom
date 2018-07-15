@@ -4,13 +4,12 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 
+import com.esgi.virtualclassroom.data.AuthenticationProvider;
 import com.esgi.virtualclassroom.data.api.FirebaseProvider;
 import com.esgi.virtualclassroom.data.models.Classroom;
 import com.esgi.virtualclassroom.data.models.User;
 import com.esgi.virtualclassroom.modules.attachments.AttachmentsFragment;
 import com.esgi.virtualclassroom.modules.chat.ChatFragment;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -47,12 +46,7 @@ public class ClassroomPresenter {
             }
         });
 
-        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        if (firebaseUser == null) {
-            return;
-        }
-
-        User user = new User(firebaseUser.getUid(), firebaseUser.getDisplayName());
+        User user = AuthenticationProvider.getCurrentUser();
         this.firebaseProvider.postViewer(classroom, user)
                 .addOnFailureListener(Throwable::printStackTrace);
     }
@@ -105,12 +99,7 @@ public class ClassroomPresenter {
     }
 
     public void onStop() {
-        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        if (firebaseUser == null) {
-            return;
-        }
-
-        User user = new User(firebaseUser.getUid(), firebaseUser.getDisplayName());
+        User user = AuthenticationProvider.getCurrentUser();
         this.firebaseProvider.deleteViewer(classroom, user)
                 .addOnFailureListener(Throwable::printStackTrace);
     }

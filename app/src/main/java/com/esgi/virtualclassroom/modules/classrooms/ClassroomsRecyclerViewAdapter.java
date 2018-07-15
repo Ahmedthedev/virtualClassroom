@@ -9,10 +9,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.esgi.virtualclassroom.R;
+import com.esgi.virtualclassroom.data.AuthenticationProvider;
 import com.esgi.virtualclassroom.data.models.Classroom;
 import com.esgi.virtualclassroom.data.models.User;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 
@@ -23,15 +22,8 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class ClassroomsRecyclerViewAdapter extends RecyclerView.Adapter<ClassroomsRecyclerViewAdapter.ViewHolder> {
     private ArrayList<Classroom> classrooms;
     private Listener listener;
-    private User user;
 
     ClassroomsRecyclerViewAdapter(ArrayList<Classroom> classrooms) {
-        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        if (firebaseUser == null) {
-            return;
-        }
-
-        this.user = new User(firebaseUser.getUid(), firebaseUser.getDisplayName());
         this.classrooms = classrooms;
     }
 
@@ -73,12 +65,18 @@ public class ClassroomsRecyclerViewAdapter extends RecyclerView.Adapter<Classroo
         }
 
         void bind(final Classroom classroom) {
+            User user = AuthenticationProvider.getCurrentUser();
+
             titleTextView.setText(classroom.getTitle());
             descriptionTextView.setText(classroom.getDescription());
             viewersCountTextView.setText(String.valueOf(classroom.getViewersCount()));
             subscriptionsCountTextView.setText(String.valueOf(classroom.getSubscriptionsCount()));
             attachmentsCountTextView.setText(String.valueOf(classroom.getAttachmentsCount()));
-            listener.loadImage(classroom.getTeacher().getPictureUrl(), circleImageView);
+
+            if (classroom.getTeacher().getPictureUrl() != null) {
+                listener.loadImage(classroom.getTeacher().getPictureUrl(), circleImageView);
+            }
+
             itemView.setOnClickListener(view -> listener.onClassroomClick(classroom));
 
             favoriteButtonEmpty.setVisibility(user.hasSubscribed(classroom) ? View.GONE : View.VISIBLE);

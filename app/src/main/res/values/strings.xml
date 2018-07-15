@@ -30,4 +30,7 @@
     <string name="attachment_open_text">Open</string>
     <string name="classroom_send_drawing_button_text">Send</string>
     <string name="classroom_clear_drawing_button_text">Clear</string>
+    <string name="classroom_creation_cancel_text">Reset</string>
+    <string name="classroom_creation_confirm_text">Done</string>
+    <string name="error_invalid_title">Invalid classroom title</string>
 </resources>

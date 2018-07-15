@@ -14,13 +14,12 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 import android.widget.ImageView;
 
-import com.esgi.virtualclassroom.notifications.NotificationPublisher;
 import com.esgi.virtualclassroom.R;
+import com.esgi.virtualclassroom.data.AuthenticationProvider;
 import com.esgi.virtualclassroom.data.api.FirebaseProvider;
 import com.esgi.virtualclassroom.data.models.Classroom;
 import com.esgi.virtualclassroom.data.models.User;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import com.esgi.virtualclassroom.notifications.NotificationPublisher;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.Query;
@@ -65,7 +64,9 @@ public class ClassroomsPresenter implements ClassroomsRecyclerViewAdapter.Listen
                         continue;
                     }
 
-                    if (!classroomsPeriod.toLowerCase().equals(PERIOD_LIVE) || classroom.getStart().getTime() < new Date().getTime()) {
+                    classroom.setId(classroomSnapshot.getKey());
+
+                    if (!classroomsPeriod.toLowerCase().equals(PERIOD_LIVE) || classroom.getStart() < new Date().getTime()) {
                         classrooms.add(classroom);
                     }
 
@@ -126,28 +127,18 @@ public class ClassroomsPresenter implements ClassroomsRecyclerViewAdapter.Listen
 
     @Override
     public void postSubscription(Classroom classroom) {
-        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        if (firebaseUser == null) {
-            return;
-        }
-
-        User user = new User(firebaseUser.getUid(), firebaseUser.getDisplayName());
+        User user = AuthenticationProvider.getCurrentUser();
         this.firebaseProvider.postSubscription(classroom, user)
                 .addOnSuccessListener(aVoid -> scheduleNotification(context, classroom.getStart(), 50));
     }
 
     @Override
     public void deleteSubscription(Classroom classroom) {
-        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        if (firebaseUser == null) {
-            return;
-        }
-
-        User user = new User(firebaseUser.getUid(), firebaseUser.getDisplayName());
+        User user = AuthenticationProvider.getCurrentUser();
         this.firebaseProvider.deleteSubscription(classroom, user);
     }
 
-    public void scheduleNotification(Context context, Date notificationDate, int notificationId) {
+    public void scheduleNotification(Context context, long notificationDate, int notificationId) {
         BitmapDrawable largeIconDrawable = (BitmapDrawable) ContextCompat.getDrawable(context, R.mipmap.ic_launcher);
         if (largeIconDrawable == null) {
             return;
@@ -187,24 +178,14 @@ public class ClassroomsPresenter implements ClassroomsRecyclerViewAdapter.Listen
 
     @Override
     public void onAcceptClick(Classroom classroom) {
-        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        if (firebaseUser == null) {
-            return;
-        }
-
-        User user = new User(firebaseUser.getUid(), firebaseUser.getDisplayName());
+        User user = AuthenticationProvider.getCurrentUser();
         this.firebaseProvider.postSubscription(classroom, user)
                 .addOnFailureListener(Throwable::printStackTrace);
     }
 
     @Override
     public void onDeclineClick(Classroom classroom) {
-        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        if (firebaseUser == null) {
-            return;
-        }
-
-        User user = new User(firebaseUser.getUid(), firebaseUser.getDisplayName());
+        User user = AuthenticationProvider.getCurrentUser();
         this.firebaseProvider.deleteSubscription(classroom, user)
                 .addOnFailureListener(Throwable::printStackTrace);
     }

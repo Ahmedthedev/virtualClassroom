@@ -88,6 +88,7 @@ public class LogInActivity extends AppCompatActivity implements LoginView {
     public void hideProgressDialog() {
         if (progressDialog != null && progressDialog.isShowing()) {
             progressDialog.hide();
+            progressDialog = null;
         }
     }
 

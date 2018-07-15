@@ -2,12 +2,11 @@ package com.esgi.virtualclassroom.modules.chat;
 
 import android.support.annotation.NonNull;
 
+import com.esgi.virtualclassroom.data.AuthenticationProvider;
 import com.esgi.virtualclassroom.data.api.FirebaseProvider;
 import com.esgi.virtualclassroom.data.models.Classroom;
 import com.esgi.virtualclassroom.data.models.Message;
 import com.esgi.virtualclassroom.data.models.User;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -55,12 +54,7 @@ public class ChatPresenter {
     }
 
     public void onSendMessageButtonClick(String text) {
-        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        if (firebaseUser == null || text.isEmpty()) {
-            return;
-        }
-
-        User user = new User(firebaseUser.getUid(), firebaseUser.getDisplayName());
+        User user = AuthenticationProvider.getCurrentUser();
         Message message = new Message(text, new Date(), user);
 
         this.firebaseProvider.postMessage(classroom, message)

@@ -15,4 +15,8 @@ class HomePresenter {
         this.firebaseProvider.signOut();
         this.view.signOut();
     }
+
+    public void onClassroomAddButtonClick() {
+        this.view.showClassroomCreationActivity();
+    }
 }

@@ -4,14 +4,13 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 public class Classroom implements Parcelable {
     private String id;
     private String title;
     private String description;
-    private Date start;
-    private Date end;
+    private long start;
+    private long end;
     private int attachmentsCount;
     private int viewersCount;
     private int subscriptionsCount;
@@ -27,12 +26,14 @@ public class Classroom implements Parcelable {
         id = in.readString();
         title = in.readString();
         description = in.readString();
+        start = in.readLong();
+        end = in.readLong();
         attachmentsCount = in.readInt();
         viewersCount = in.readInt();
         subscriptionsCount = in.readInt();
         speechText = in.readString();
         teacher = in.readParcelable(getClass().getClassLoader());
-//        subscriptions = in.readBooleanArray();
+        subscriptions = in.createStringArrayList();
     }
 
     public static final Creator<Classroom> CREATOR = new Creator<Classroom>() {
@@ -47,6 +48,14 @@ public class Classroom implements Parcelable {
         }
     };
 
+    public Classroom(String title, String description, long start, long end, User teacher) {
+        this.title = title;
+        this.description = description;
+        this.start = start;
+        this.end = end;
+        this.teacher = teacher;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -57,11 +66,14 @@ public class Classroom implements Parcelable {
         parcel.writeString(id);
         parcel.writeString(title);
         parcel.writeString(description);
+        parcel.writeLong(start);
+        parcel.writeLong(end);
         parcel.writeInt(attachmentsCount);
         parcel.writeInt(viewersCount);
         parcel.writeInt(subscriptionsCount);
         parcel.writeString(speechText);
         parcel.writeParcelable(teacher, i);
+        parcel.writeList(subscriptions);
     }
 
     public String getId() {
@@ -76,19 +88,19 @@ public class Classroom implements Parcelable {
         this.title = title;
     }
 
-    public Date getStart() {
+    public long getStart() {
         return start;
     }
 
-    public void setStart(Date start) {
+    public void setStart(long start) {
         this.start = start;
     }
 
-    public Date getEnd() {
+    public long getEnd() {
         return end;
     }
 
-    public void setEnd(Date end) {
+    public void setEnd(long end) {
         this.end = end;
     }
 

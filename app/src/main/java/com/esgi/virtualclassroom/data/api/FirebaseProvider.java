@@ -26,7 +26,8 @@ import java.util.Date;
 
 public class FirebaseProvider {
     private static FirebaseProvider instance;
-    private static final String CLASSROOM_REFERENCE = "classrooms";
+    private static final String CLASSROOMS_REFERENCE = "classrooms";
+    private static final String USERS_REFERENCE = "users";
     private static final String MESSAGES_REFERENCE = "messages";
     private static final String ATTACHMENTS_REFERENCE = "attachments";
     private static final String VIEWERS_REFERENCE = "viewers";
@@ -72,19 +73,27 @@ public class FirebaseProvider {
     }
 
     public Query getClassroomsUpcoming() {
-        return this.dbRef.child(CLASSROOM_REFERENCE).orderByChild("start/time").startAt(new Date().getTime());
+        return this.dbRef.child(CLASSROOMS_REFERENCE).orderByChild("start").startAt(new Date().getTime());
     }
 
     public Query getClassroomsPast() {
-        return this.dbRef.child(CLASSROOM_REFERENCE).orderByChild("end/time").endAt(new Date().getTime());
+        return this.dbRef.child(CLASSROOMS_REFERENCE).orderByChild("end").endAt(new Date().getTime());
     }
 
     public Query getClassroomsLive() {
-        return this.dbRef.child(CLASSROOM_REFERENCE).orderByChild("end/time").startAt(new Date().getTime());
+        return this.dbRef.child(CLASSROOMS_REFERENCE).orderByChild("end").startAt(new Date().getTime());
+    }
+
+    public DatabaseReference getUser(String id) {
+        return this.dbRef.child(USERS_REFERENCE).child(id);
+    }
+
+    public DatabaseReference getClassrooms() {
+        return this.dbRef.child(CLASSROOMS_REFERENCE);
     }
 
     public DatabaseReference getClassroom(Classroom classroom) {
-        return this.dbRef.child(CLASSROOM_REFERENCE).child(classroom.getId());
+        return this.dbRef.child(CLASSROOMS_REFERENCE).child(classroom.getId());
     }
 
     public DatabaseReference getMessages(Classroom classroom) {
@@ -101,6 +110,12 @@ public class FirebaseProvider {
 
     public DatabaseReference getSubscriptions(Classroom classroom) {
         return this.dbRef.child(SUBSCRIPTIONS_REFERENCE).child(classroom.getId());
+    }
+
+    public Task<Void> postClassroom(Classroom classroom) {
+        DatabaseReference classroomRef = getClassrooms().push();
+        classroom.setId(classroomRef.getKey());
+        return classroomRef.setValue(classroom);
     }
 
     public Task<Void> postMessage(Classroom classroom, Message message) {
@@ -132,7 +147,7 @@ public class FirebaseProvider {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 20, stream);
         byte[] data = stream.toByteArray();
-        StorageReference imageRef = this.storageRef.child(CLASSROOM_REFERENCE).child(classroom.getId()).child(name);
+        StorageReference imageRef = this.storageRef.child(CLASSROOMS_REFERENCE).child(classroom.getId()).child(name);
         return imageRef.putBytes(data);
     }
 

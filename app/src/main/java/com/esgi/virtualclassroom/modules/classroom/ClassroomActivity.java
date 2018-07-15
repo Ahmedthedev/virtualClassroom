@@ -21,11 +21,11 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.esgi.virtualclassroom.R;
+import com.esgi.virtualclassroom.data.AuthenticationProvider;
 import com.esgi.virtualclassroom.data.models.Classroom;
+import com.esgi.virtualclassroom.data.models.User;
 import com.esgi.virtualclassroom.modules.attachments.AttachmentsFragment;
 import com.esgi.virtualclassroom.modules.chat.ChatFragment;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 
@@ -102,8 +102,8 @@ public class ClassroomActivity extends AppCompatActivity implements ClassroomVie
         drawingView = new DrawingView(this);
         layoutDrawingContainer.addView(drawingView);
 
-        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        if (firebaseUser != null && classroom.getTeacher().getUid().equals(firebaseUser.getUid())) {
+        User user = AuthenticationProvider.getCurrentUser();
+        if (user != null && classroom.getTeacher().getUid().equals(user.getUid())) {
             layoutDrawingContainer.setVisibility(View.VISIBLE);
             speechButton.setVisibility(View.VISIBLE);
             sendDrawingButton.setVisibility(View.VISIBLE);
