@@ -1,11 +1,20 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <dimen name="tab_max_width" tools:keep="@dimen/tab_max_width">264dp</dimen>
+    <dimen name="status_bar_height">25dp</dimen>
 
     <dimen name="margin_bigger">50dp</dimen>
     <dimen name="margin_big">32dp</dimen>
-    <dimen name="status_bar_height">25dp</dimen>
     <dimen name="margin_normal">16dp</dimen>
     <dimen name="margin_half">8dp</dimen>
 
+    <dimen name="margin_list_item_normal">10dp</dimen>
+    <dimen name="margin_list_item_half">5dp</dimen>
+
     <dimen name="font_size_app_title">26sp</dimen>
+    <dimen name="font_size_small">12sp</dimen>
+
+    <dimen name="chat_list_height">300dp</dimen>
+    <dimen name="chat_new_message_bar_height">48dp</dimen>
+
+    <dimen name="attachments_list_height">300dp</dimen>
 </resources>

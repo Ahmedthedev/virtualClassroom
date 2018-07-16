@@ -22,7 +22,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="@dimen/margin_half"
         android:textSize="13sp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -33,7 +33,7 @@
         android:id="@+id/classroom_title_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="@dimen/margin_half"
         android:layout_marginTop="@dimen/margin_normal"
         android:textColor="@color/colorBackgroundDark"
         android:textSize="16sp"
@@ -43,22 +43,24 @@
 
     <TextView
         android:id="@+id/classroom_description_text_view"
-        android:layout_width="262dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="@dimen/margin_half"
         android:lines="2"
         android:layout_marginBottom="@dimen/margin_normal"
+        android:layout_marginEnd="@dimen/margin_big"
         app:layout_constraintStart_toEndOf="@+id/imageView"
         app:layout_constraintTop_toBottomOf="@+id/classroom_title_text_view"
+        app:layout_constraintEnd_toEndOf="parent"
         tools:text="Message text text text text text text text text text text text" />
 
     <ImageView
         android:id="@+id/attachment_favorite_full"
-        android:contentDescription="Remove from favorites button"
+        android:contentDescription="@string/classroom_item_unsubscribe_button_description"
         android:layout_width="25dp"
         android:layout_height="25dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginEnd="@dimen/margin_half"
+        android:layout_marginTop="@dimen/margin_half"
         android:src="@drawable/ic_outline_favorite_24px"
         android:tint="@color/colorPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -67,11 +69,11 @@
 
     <ImageView
         android:id="@+id/attachment_favorite_empty"
-        android:contentDescription="Add to favorites button"
+        android:contentDescription="@string/classroom_item_subscribe_button_description"
         android:layout_width="25dp"
         android:layout_height="25dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginEnd="@dimen/margin_half"
+        android:layout_marginTop="@dimen/margin_half"
         android:src="@drawable/ic_outline_favorite_border_24px"
         android:tint="@color/colorPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -82,8 +84,8 @@
         android:orientation="horizontal"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
+        android:paddingTop="@dimen/margin_list_item_normal"
+        android:paddingBottom="@dimen/margin_list_item_normal"
         app:layout_constraintTop_toBottomOf="@id/classroom_description_text_view"
         app:layout_constraintStart_toStartOf="@id/classroom_description_text_view"
         app:layout_constraintEnd_toEndOf="parent"
@@ -91,7 +93,7 @@
         >
 
         <ImageView
-            android:contentDescription="Viewers count icon"
+            android:contentDescription="@string/classroom_item_viewers_count_description"
             android:layout_width="18dp"
             android:layout_height="18dp"
             android:tint="@color/colorPrimary"
@@ -108,7 +110,7 @@
             />
 
         <ImageView
-            android:contentDescription="Subscribed count icon"
+            android:contentDescription="@string/classroom_item_subscriptions_count_description"
             android:layout_width="18dp"
             android:layout_height="18dp"
             android:tint="@color/colorPrimary"
@@ -125,7 +127,7 @@
             />
 
         <ImageView
-            android:contentDescription="Attachment counts icon"
+            android:contentDescription="@string/classroom_item_attachments_count_description"
             android:layout_width="18dp"
             android:layout_height="18dp"
             android:tint="@color/colorPrimary"

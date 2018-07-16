@@ -60,7 +60,7 @@ public class ClassroomActivity extends AppCompatActivity implements ClassroomVie
         presenter.onClearDrawingClick();
     }
 
-    @OnClick(R.id.fabChat)
+    @OnClick(R.id.classroom_chat_button)
     public void onChatItemClick() {
         presenter.onChatItemClick();
     }

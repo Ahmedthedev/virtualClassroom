@@ -58,6 +58,7 @@ class RegisterPresenter {
     }
 
     private void createUser(String email, String password, final String username) {
+        // TODO : username doesn't pass in database anymore
         this.firebaseProvider.createUser(email, password)
                 .addOnSuccessListener(authResult -> this.firebaseProvider.updateUser(authResult, username).addOnSuccessListener(this::onUpdateUserSuccess))
                 .addOnFailureListener(this::onCreateUserFailure);

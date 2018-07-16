@@ -45,4 +45,9 @@
 
     <string name="attachment_open_button_text">Open</string>
     <string name="attachments_download_button_description">Download button</string>
+    <string name="classroom_item_attachments_count_description">Attachment counts icon</string>
+    <string name="classroom_item_subscriptions_count_description">Subscribed count icon</string>
+    <string name="classroom_item_viewers_count_description">Viewers count icon</string>
+    <string name="classroom_item_subscribe_button_description">Add to favorites button</string>
+    <string name="classroom_item_unsubscribe_button_description">Remove from favorites button</string>
 </resources>

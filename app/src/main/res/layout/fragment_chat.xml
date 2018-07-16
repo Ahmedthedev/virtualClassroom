@@ -12,7 +12,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/new_message_layout"
         android:layout_width="match_parent"
-        android:layout_height="300dp" />
+        android:layout_height="@dimen/chat_list_height" />
 
     <LinearLayout
         android:id="@+id/new_message_layout"
@@ -29,18 +29,18 @@
         <EditText
             android:id="@+id/message_edit_text"
             android:layout_width="0dp"
-            android:layout_height="48dp"
+            android:layout_height="@dimen/chat_new_message_bar_height"
             android:layout_weight="1"
             android:background="@android:color/transparent"
             android:inputType="textCapSentences|textMultiLine"
             android:hint="@string/chat_new_message_hint"
-            android:paddingStart="10dp"
-            android:paddingEnd="10dp"
+            android:paddingStart="@dimen/margin_list_item_normal"
+            android:paddingEnd="@dimen/margin_list_item_normal"
             android:textSize="14sp" />
 
         <Button
             android:id="@+id/send_button"
-            android:layout_width="48dp"
+            android:layout_width="@dimen/chat_new_message_bar_height"
             android:layout_height="wrap_content"
             android:background="@drawable/ic_send"
             />
