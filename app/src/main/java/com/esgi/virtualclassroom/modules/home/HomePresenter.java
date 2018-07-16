@@ -1,22 +1,22 @@
 package com.esgi.virtualclassroom.modules.home;
 
-import com.esgi.virtualclassroom.data.api.FirebaseProvider;
+import com.esgi.virtualclassroom.data.AuthenticationProvider;
 
 class HomePresenter {
     private HomeView view;
-    private FirebaseProvider firebaseProvider;
+    private AuthenticationProvider authenticationProvider;
 
     HomePresenter(HomeView view) {
         this.view = view;
-        this.firebaseProvider = FirebaseProvider.getInstance();
+        this.authenticationProvider = AuthenticationProvider.getInstance();
     }
 
-    public void signOut() {
-        this.firebaseProvider.signOut();
-        this.view.signOut();
+    public void onActionLogOutButtonClick() {
+        authenticationProvider.signOut();
+        view.signOut();
     }
 
     public void onClassroomAddButtonClick() {
-        this.view.showClassroomCreationActivity();
+        view.showClassroomCreationActivity();
     }
 }

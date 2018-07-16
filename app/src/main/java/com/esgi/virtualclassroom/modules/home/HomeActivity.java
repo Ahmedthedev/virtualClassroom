@@ -41,9 +41,9 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
         setSupportActionBar(toolbar);
 
         HomeViewPagerAdapter adapter = new HomeViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(ClassroomsFragment.newInstance(getString(R.string.home_fragment_title_upcoming)), getString(R.string.home_fragment_title_upcoming));
-        adapter.addFragment(ClassroomsFragment.newInstance(getString(R.string.home_fragment_title_live)), getString(R.string.home_fragment_title_live));
-        adapter.addFragment(ClassroomsFragment.newInstance(getString(R.string.home_fragment_title_past)), getString(R.string.home_fragment_title_past));
+        adapter.addFragment(ClassroomsFragment.newInstance(getString(R.string.home_title_upcoming)), getString(R.string.home_title_upcoming));
+        adapter.addFragment(ClassroomsFragment.newInstance(getString(R.string.home_title_live)), getString(R.string.home_title_live));
+        adapter.addFragment(ClassroomsFragment.newInstance(getString(R.string.home_title_past)), getString(R.string.home_title_past));
 
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
@@ -61,7 +61,7 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_log_out:
-                this.presenter.signOut();
+                this.presenter.onActionLogOutButtonClick();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

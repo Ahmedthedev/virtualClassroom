@@ -72,6 +72,18 @@ public class ChatFragment extends BottomSheetDialogFragment implements ChatView 
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        presenter.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        presenter.onPause();
+    }
+
+    @Override
     public void updateMessagesList() {
         adapter.notifyDataSetChanged();
         recyclerView.scrollToPosition(presenter.getMessagesList().size() - 1);

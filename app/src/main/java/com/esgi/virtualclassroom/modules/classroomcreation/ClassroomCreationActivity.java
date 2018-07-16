@@ -15,10 +15,7 @@ import android.widget.Toast;
 
 import com.esgi.virtualclassroom.R;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.Locale;
 
 import butterknife.BindView;
@@ -38,29 +35,10 @@ public class ClassroomCreationActivity extends AppCompatActivity implements Clas
     @BindView(R.id.classroom_creation_start_time_picker_button) Button classroomStartTimeButton;
     @BindView(R.id.classroom_creation_end_time_picker_button) Button classroomEndTimeButton;
 
-    DatePickerDialog.OnDateSetListener classroomStartDatePicker = (view, year, month, dayOfMonth) -> {
-        Date date = new GregorianCalendar(year, month, dayOfMonth).getTime();
-        SimpleDateFormat formatter = new SimpleDateFormat("dd MMM. yyyy", Locale.getDefault());
-        String format = formatter.format(date);
-        classroomStartDateButton.setText(format);
-    };
-
-    DatePickerDialog.OnDateSetListener classroomEndDatePicker = (view, year, month, dayOfMonth) -> {
-        Date date = new GregorianCalendar(year, month, dayOfMonth).getTime();
-        SimpleDateFormat formatter = new SimpleDateFormat("dd MMM. yyyy", Locale.getDefault());
-        String format = formatter.format(date);
-        classroomEndDateButton.setText(format);
-    };
-
-    TimePickerDialog.OnTimeSetListener classroomStartTimePicker = (view, hourOfDay, minutes) -> {
-        String hourString = String.format(Locale.getDefault(), "%02d", hourOfDay) + ":" + String.format(Locale.getDefault(), "%02d", minutes);
-        classroomStartTimeButton.setText(hourString);
-    };
-
-    TimePickerDialog.OnTimeSetListener classroomEndTimePicker = (view, hourOfDay, minutes) -> {
-        String hourString = String.format(Locale.getDefault(), "%02d", hourOfDay) + ":" + String.format(Locale.getDefault(), "%02d", minutes);
-        classroomEndTimeButton.setText(hourString);
-    };
+    DatePickerDialog.OnDateSetListener classroomStartDatePicker = (view, year, month, dayOfMonth) -> presenter.onStartDateSelected(year, month, dayOfMonth);
+    DatePickerDialog.OnDateSetListener classroomEndDatePicker = (view, year, month, dayOfMonth) -> presenter.onEndDateSelected(year, month, dayOfMonth);
+    TimePickerDialog.OnTimeSetListener classroomStartTimePicker = (view, hourOfDay, minutes) -> presenter.onStartTimeSelected(hourOfDay, minutes);
+    TimePickerDialog.OnTimeSetListener classroomEndTimePicker = (view, hourOfDay, minutes) -> presenter.onEndTimeSelected(hourOfDay, minutes);
 
     @OnClick(R.id.classroom_creation_start_date_picker_button)
     void onStartDatePickerButtonClick() {
@@ -86,18 +64,16 @@ public class ClassroomCreationActivity extends AppCompatActivity implements Clas
     void onConfirmButtonClick() {
         String title = titleEditText.getText().toString();
         String description = descriptionEditText.getText().toString();
-        long start = new Date().getTime();
-        long end = start + 3600000;
-        presenter.onConfirmButtonClick(title, description, start, end);
+        presenter.onConfirmButtonClick(title, description);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        presenter = new ClassroomCreationPresenter(this);
         calendar = Calendar.getInstance(Locale.getDefault());
         setContentView(R.layout.activity_classroom_creation);
         ButterKnife.bind(this);
+        presenter = new ClassroomCreationPresenter(this);
 
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
@@ -118,15 +94,42 @@ public class ClassroomCreationActivity extends AppCompatActivity implements Clas
     }
 
     @Override
+    public void showEndDateError(int stringId) {
+        descriptionEditText.setError(getString(stringId));
+        descriptionEditText.requestFocus();
+    }
+
+    @Override
+    public void setStartDateButtonText(String text) {
+        classroomStartDateButton.setText(text);
+    }
+
+    @Override
+    public void setEndDateButtonText(String text) {
+        classroomEndDateButton.setText(text);
+    }
+
+    @Override
+    public void setStartTimeButtonText(String text) {
+        classroomStartTimeButton.setText(text);
+    }
+
+    @Override
+    public void setEndTimeButtonText(String text) {
+        classroomEndTimeButton.setText(text);
+    }
+
+    @Override
     public void resetErrors() {
         titleEditText.setError(null);
+        descriptionEditText.setError(null);
     }
 
     @Override
     public void showProgressDialog() {
         if (progressDialog == null) {
             progressDialog = new ProgressDialog(this);
-            progressDialog.setMessage(getString(R.string.fragment_log_in_loading));
+            progressDialog.setMessage(getString(R.string.log_in_loading));
             progressDialog.setIndeterminate(true);
         }
 
@@ -148,11 +151,6 @@ public class ClassroomCreationActivity extends AppCompatActivity implements Clas
         if (inputMethodManager != null) {
             inputMethodManager.hideSoftInputFromWindow(getWindow().getDecorView().getRootView().getWindowToken(), InputMethodManager.RESULT_UNCHANGED_SHOWN);
         }
-    }
-
-    @Override
-    public void postClassroomSuccess() {
-        finish();
     }
 
     @Override

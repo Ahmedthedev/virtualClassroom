@@ -7,6 +7,7 @@ import com.esgi.virtualclassroom.R;
 import com.esgi.virtualclassroom.data.AuthenticationProvider;
 import com.esgi.virtualclassroom.data.api.FirebaseProvider;
 import com.esgi.virtualclassroom.data.models.User;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -14,10 +15,12 @@ import com.google.firebase.database.ValueEventListener;
 
 class LoginPresenter {
     private LoginView view;
+    private AuthenticationProvider authenticationProvider;
     private FirebaseProvider firebaseProvider;
 
     LoginPresenter(LoginView view) {
         this.view = view;
+        this.authenticationProvider = AuthenticationProvider.getInstance();
         this.firebaseProvider = FirebaseProvider.getInstance();
     }
 
@@ -38,11 +41,15 @@ class LoginPresenter {
         signIn(email, password);
     }
 
-    void checkUserLogged() {
-        FirebaseUser firebaseUser = this.firebaseProvider.getCurrentUser();
+    private void checkUserLogged() {
+        FirebaseUser firebaseUser = firebaseProvider.getCurrentFirebaseUser();
         if (firebaseUser != null) {
             createUserAndGoToHome(firebaseUser);
         }
+    }
+
+    public void onResume() {
+        checkUserLogged();
     }
 
     private boolean isFormValid(String email, String password) {
@@ -62,35 +69,44 @@ class LoginPresenter {
     }
 
     private void signIn(String email, String password) {
-        this.firebaseProvider.signIn(email, password)
-                .addOnSuccessListener(authResult -> createUserAndGoToHome(authResult.getUser()))
-                .addOnFailureListener(e -> {
-                    view.showLoginError(R.string.error_auth);
-                    this.firebaseProvider.signOut();
-                    view.hideProgressDialog();
-                });
+        firebaseProvider.signIn(email, password)
+                .addOnSuccessListener(this::onSignInSuccess)
+                .addOnFailureListener(this::onSignInFailure);
+    }
+
+    private void onSignInSuccess(AuthResult authResult) {
+        createUserAndGoToHome(authResult.getUser());
+    }
+
+    private void onSignInFailure(Exception exception) {
+        exception.printStackTrace();
+
+        view.showLoginError(R.string.error_auth);
+        authenticationProvider.signOut();
+        view.hideProgressDialog();
     }
 
     private void createUserAndGoToHome(FirebaseUser firebaseUser) {
-        this.firebaseProvider.getUser(firebaseUser.getUid())
-                .addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        User user = dataSnapshot.getValue(User.class);
-                        if (user == null) {
-                            return;
-                        }
-
-                        user.setUid(dataSnapshot.getKey());
-                        AuthenticationProvider.setCurrentUser(user);
-                        view.hideProgressDialog();
-                        view.goToHomeActivity();
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                        view.hideProgressDialog();
-                    }
-                });
+        firebaseProvider.getUser(firebaseUser.getUid()).addValueEventListener(listener);
     }
+
+    private ValueEventListener listener = new ValueEventListener() {
+        @Override
+        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+            User user = dataSnapshot.getValue(User.class);
+            if (user == null) {
+                return;
+            }
+
+            user.setUid(dataSnapshot.getKey());
+            authenticationProvider.setCurrentUser(user);
+            view.hideProgressDialog();
+            view.goToHomeActivity();
+        }
+
+        @Override
+        public void onCancelled(@NonNull DatabaseError databaseError) {
+            view.hideProgressDialog();
+        }
+    };
 }

@@ -1,8 +1,12 @@
 package com.esgi.virtualclassroom.modules.attachments;
 
+import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Environment;
 import android.support.annotation.NonNull;
+import android.support.v4.content.FileProvider;
 import android.view.View;
 
 import com.esgi.virtualclassroom.data.api.FirebaseProvider;
@@ -20,45 +24,50 @@ import static com.esgi.virtualclassroom.modules.attachments.AttachmentsFragment.
 
 public class AttachmentsPresenter implements AttachmentsRecyclerViewAdapter.Listener {
     private AttachmentsView view;
+    private Context context;
     private FirebaseProvider firebaseProvider;
     private Classroom classroom;
     private List<Attachment> attachments;
 
-    AttachmentsPresenter(AttachmentsView view, Classroom classroom) {
+    AttachmentsPresenter(AttachmentsView view, Context context, Classroom classroom) {
         this.view = view;
+        this.context = context;
         this.attachments = new ArrayList<>();
         this.classroom = classroom;
         this.firebaseProvider = FirebaseProvider.getInstance();
-        this.init();
     }
 
-    private void init() {
-        this.firebaseProvider.getAttachments(this.classroom).orderByChild("createdAt").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                attachments.clear();
+    public void onResume() {
+        firebaseProvider.getAttachments(classroom).orderByChild("createdAt").addValueEventListener(listener);
+    }
 
-                for (DataSnapshot attachmentSnapshot: dataSnapshot.getChildren()) {
-                    Attachment attachment = attachmentSnapshot.getValue(Attachment.class);
+    public void onPause() {
+        firebaseProvider.getAttachments(classroom).orderByChild("createdAt").removeEventListener(listener);
+    }
 
-                    if (attachment == null) {
-                        continue;
-                    }
+    private ValueEventListener listener = new ValueEventListener() {
+        @Override
+        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+            attachments.clear();
 
-                    File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + "/" + attachment.getName());
-                    attachment.setDownloaded(file.exists());
-                    attachments.add(attachment);
+            for (DataSnapshot attachmentSnapshot: dataSnapshot.getChildren()) {
+                Attachment attachment = attachmentSnapshot.getValue(Attachment.class);
+
+                if (attachment == null) {
+                    continue;
                 }
 
-                view.updateAttachmentsList();
+                File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + "/" + attachment.getName());
+                attachment.setDownloaded(file.exists());
+                attachments.add(attachment);
             }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+            view.updateAttachmentsList();
+        }
 
-            }
-        });
-    }
+        @Override
+        public void onCancelled(@NonNull DatabaseError databaseError) {}
+    };
 
     public List<Attachment> getAttachmentsList() {
         return attachments;
@@ -70,20 +79,20 @@ public class AttachmentsPresenter implements AttachmentsRecyclerViewAdapter.List
         viewHolder.attachmentDownloadButton.setVisibility(View.GONE);
         viewHolder.attachmentDownloadProgress.setVisibility(View.VISIBLE);
 
-        this.firebaseProvider.downloadFile(attachment)
+        firebaseProvider.downloadFile(attachment)
                 .addOnFailureListener(exception -> {
                     attachment.setDownloaded(false);
                     viewHolder.attachmentOpenButton.setVisibility(attachment.isDownloaded() ? View.VISIBLE : View.GONE);
                     viewHolder.attachmentDownloadButton.setVisibility(attachment.isDownloaded() ? View.GONE : View.VISIBLE);
                     viewHolder.attachmentDownloadProgress.setVisibility(View.GONE);
-                    this.view.updateAttachmentsList();
+                    view.updateAttachmentsList();
                 })
                 .addOnSuccessListener(taskSnapshot -> {
                     attachment.setDownloaded(true);
                     viewHolder.attachmentOpenButton.setVisibility(attachment.isDownloaded() ? View.VISIBLE : View.GONE);
                     viewHolder.attachmentDownloadButton.setVisibility(attachment.isDownloaded() ? View.GONE : View.VISIBLE);
                     viewHolder.attachmentDownloadProgress.setVisibility(View.GONE);
-                    this.view.updateAttachmentsList();
+                    view.updateAttachmentsList();
                 });
     }
 
@@ -97,14 +106,25 @@ public class AttachmentsPresenter implements AttachmentsRecyclerViewAdapter.List
     }
 
     private void openFile(File file) {
-        this.view.openFile(file);
+        if (context == null) {
+            return;
+        }
+
+        Uri uri = FileProvider.getUriForFile(context, "com.esgi.virtualclassroom", file);
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        Intent.createChooser(intent, "Choose an application");
+
+        if (intent.resolveActivity(context.getPackageManager()) != null) {
+            context.startActivity(intent);
+        }
     }
 
     public void onRequestPermissionsResult(int requestCode, int[] grantResults) {
         switch (requestCode){
             case REQUEST_WRITE_EXTERNAL_STORAGE:
                 if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
-                    this.view.exit();
+                    view.exit();
                 }
 
                 break;

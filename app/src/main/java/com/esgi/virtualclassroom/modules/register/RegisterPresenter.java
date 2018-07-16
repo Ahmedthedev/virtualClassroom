@@ -3,15 +3,18 @@ package com.esgi.virtualclassroom.modules.register;
 import android.text.TextUtils;
 
 import com.esgi.virtualclassroom.R;
+import com.esgi.virtualclassroom.data.AuthenticationProvider;
 import com.esgi.virtualclassroom.data.api.FirebaseProvider;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 
 class RegisterPresenter {
     private RegisterView view;
+    private AuthenticationProvider authenticationProvider;
     private FirebaseProvider firebaseProvider;
 
     RegisterPresenter(RegisterView view) {
         this.view = view;
+        this.authenticationProvider = AuthenticationProvider.getInstance();
         this.firebaseProvider = FirebaseProvider.getInstance();
     }
 
@@ -55,19 +58,24 @@ class RegisterPresenter {
     }
 
     private void createUser(String email, String password, final String username) {
-        this.firebaseProvider.createUser(email, password).addOnSuccessListener(authResult ->
-            this.firebaseProvider.updateUser(authResult, username).addOnSuccessListener(e -> {
-                view.hideProgressDialog();
-                view.goToLoginActivity();
-        })).addOnFailureListener(e -> {
-            if (e instanceof FirebaseAuthUserCollisionException) {
-                view.showRegisterError(R.string.error_already_member);
-            } else {
-                view.showRegisterError(R.string.error_auth);
-            }
+        this.firebaseProvider.createUser(email, password)
+                .addOnSuccessListener(authResult -> this.firebaseProvider.updateUser(authResult, username).addOnSuccessListener(this::onUpdateUserSuccess))
+                .addOnFailureListener(this::onCreateUserFailure);
+    }
 
-            this.firebaseProvider.signOut();
-            view.hideProgressDialog();
-        });
+    private void onUpdateUserSuccess(Void aVoid) {
+        view.hideProgressDialog();
+        view.goToLoginActivity();
+    }
+
+    private void onCreateUserFailure(Exception exception) {
+        if (exception instanceof FirebaseAuthUserCollisionException) {
+            view.showRegisterError(R.string.error_already_member);
+        } else {
+            view.showRegisterError(R.string.error_auth);
+        }
+
+        this.authenticationProvider.signOut();
+        view.hideProgressDialog();
     }
 }

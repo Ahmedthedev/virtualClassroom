@@ -2,6 +2,8 @@ package com.esgi.virtualclassroom.modules.classroom;
 
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.os.Bundle;
+import android.speech.SpeechRecognizer;
 import android.support.annotation.NonNull;
 
 import com.esgi.virtualclassroom.data.AuthenticationProvider;
@@ -14,6 +16,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 import static com.esgi.virtualclassroom.modules.classroom.ClassroomActivity.REQUEST_RECORD_AUDIO_PERMISSION;
@@ -21,50 +24,57 @@ import static com.esgi.virtualclassroom.modules.classroom.ClassroomActivity.REQU
 public class ClassroomPresenter {
     private ClassroomView view;
     private Classroom classroom;
+    private AuthenticationProvider authenticationProvider;
     private FirebaseProvider firebaseProvider;
     private boolean isSpeaking;
 
     ClassroomPresenter(ClassroomView view, Classroom classroom) {
         this.view = view;
         this.classroom = classroom;
+        this.authenticationProvider = AuthenticationProvider.getInstance();
         this.firebaseProvider = FirebaseProvider.getInstance();
         this.isSpeaking = false;
         this.init();
     }
 
-    private void init() {
-        firebaseProvider.getClassroom(classroom).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                classroom = dataSnapshot.getValue(Classroom.class);
-                view.updateView(classroom);
-            }
+    public void onResume() {
+        firebaseProvider.getClassroom(classroom).addValueEventListener(listener);
+    }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+    public void onPause() {
+        firebaseProvider.getClassroom(classroom).removeEventListener(listener);
+    }
 
-            }
-        });
-
-        User user = AuthenticationProvider.getCurrentUser();
-        this.firebaseProvider.postViewer(classroom, user)
+    public void onStart() {
+        User user = authenticationProvider.getCurrentUser();
+        firebaseProvider.postViewer(classroom, user)
                 .addOnFailureListener(Throwable::printStackTrace);
+    }
+
+    public void onStop() {
+        User user = authenticationProvider.getCurrentUser();
+        firebaseProvider.deleteViewer(classroom, user)
+                .addOnFailureListener(Throwable::printStackTrace);
+    }
+
+    private void init() {
+        firebaseProvider.getClassroom(classroom).addValueEventListener(listener);
     }
 
     public void onChatItemClick() {
         ChatFragment fragment = ChatFragment.newInstance(classroom);
-        this.view.showChatFragment(fragment);
+        view.showChatFragment(fragment);
     }
 
     public void onAttachmentsItemClick() {
         AttachmentsFragment fragment = AttachmentsFragment.newInstance(classroom);
-        this.view.showAttachmentFragment(fragment);
+        view.showAttachmentFragment(fragment);
     }
 
     public void onSendDrawingClick(Bitmap bitmap) {
         final String name = new Date().getTime() + ".jpg";
-        this.firebaseProvider.uploadImage(classroom, name, bitmap).addOnFailureListener(Throwable::printStackTrace);
-        this.view.clearDrawing();
+        firebaseProvider.uploadImage(classroom, name, bitmap).addOnFailureListener(Throwable::printStackTrace);
+        view.clearDrawing();
     }
 
     public void onClearDrawingClick() {
@@ -73,9 +83,9 @@ public class ClassroomPresenter {
 
     public void onSpeechButtonClick() {
         if (!isSpeaking) {
-            this.view.startSpeech();
+            view.startSpeech();
         } else {
-            this.view.stopSpeech();
+            view.stopSpeech();
         }
 
         isSpeaking = !isSpeaking;
@@ -92,15 +102,32 @@ public class ClassroomPresenter {
         }
     }
 
-    public void updateSpeechText(String speechText) {
-        this.firebaseProvider.getClassroom(classroom).child("speechText").setValue(speechText)
+    public void updateSpeechText(Bundle bundle) {
+        ArrayList<String> voiceText = bundle.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
+        if (voiceText == null) {
+            return;
+        }
+
+        String speechText = voiceText.get(0);
+
+        firebaseProvider.getClassroom(classroom).child("speechText").setValue(speechText)
                 .addOnSuccessListener(aVoid -> view.updateView(classroom))
                 .addOnFailureListener(Throwable::printStackTrace);
     }
 
-    public void onStop() {
-        User user = AuthenticationProvider.getCurrentUser();
-        this.firebaseProvider.deleteViewer(classroom, user)
-                .addOnFailureListener(Throwable::printStackTrace);
+    public boolean isClassroomTeacher() {
+        User user = authenticationProvider.getCurrentUser();
+        return user != null && classroom.getTeacher().getUid().equals(user.getUid());
     }
+
+    private ValueEventListener listener = new ValueEventListener() {
+        @Override
+        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+            classroom = dataSnapshot.getValue(Classroom.class);
+            view.updateView(classroom);
+        }
+
+        @Override
+        public void onCancelled(@NonNull DatabaseError databaseError) {}
+    };
 }

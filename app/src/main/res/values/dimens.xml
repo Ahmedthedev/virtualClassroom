@@ -1,4 +1,11 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="tab_max_width" tools:keep="@dimen/tab_max_width">264dp</dimen>
+
+    <dimen name="margin_bigger">50dp</dimen>
+    <dimen name="margin_big">32dp</dimen>
+    <dimen name="status_bar_height">25dp</dimen>
+    <dimen name="margin_normal">16dp</dimen>
+    <dimen name="margin_half">8dp</dimen>
+
+    <dimen name="font_size_app_title">26sp</dimen>
 </resources>

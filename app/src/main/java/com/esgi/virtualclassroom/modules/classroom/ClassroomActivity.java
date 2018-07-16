@@ -21,13 +21,9 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.esgi.virtualclassroom.R;
-import com.esgi.virtualclassroom.data.AuthenticationProvider;
 import com.esgi.virtualclassroom.data.models.Classroom;
-import com.esgi.virtualclassroom.data.models.User;
 import com.esgi.virtualclassroom.modules.attachments.AttachmentsFragment;
 import com.esgi.virtualclassroom.modules.chat.ChatFragment;
-
-import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -40,7 +36,6 @@ public class ClassroomActivity extends AppCompatActivity implements ClassroomVie
     private DrawingView drawingView;
     private SpeechRecognizer speechRecognizer;
     private Intent recognizerIntent;
-    private Classroom classroom;
 
     @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.speech_scroll_view) ScrollView speechScrollView;
@@ -52,27 +47,27 @@ public class ClassroomActivity extends AppCompatActivity implements ClassroomVie
 
     @OnClick(R.id.speech_button)
     public void onSpeechButtonClick() {
-        this.presenter.onSpeechButtonClick();
+        presenter.onSpeechButtonClick();
     }
 
     @OnClick(R.id.send_drawing_button)
     public void onSendDrawingClick() {
-        this.presenter.onSendDrawingClick(this.drawingView.getBitmap());
+        presenter.onSendDrawingClick(drawingView.getBitmap());
     }
 
     @OnClick(R.id.clear_drawing_button)
     public void onClearDrawingClick() {
-        this.presenter.onClearDrawingClick();
+        presenter.onClearDrawingClick();
     }
 
     @OnClick(R.id.fabChat)
     public void onChatItemClick() {
-        this.presenter.onChatItemClick();
+        presenter.onChatItemClick();
     }
 
     @OnClick(R.id.fabAttachment)
     public void onAttachmentsItemClick() {
-        this.presenter.onAttachmentsItemClick();
+        presenter.onAttachmentsItemClick();
     }
 
     @Override
@@ -81,7 +76,7 @@ public class ClassroomActivity extends AppCompatActivity implements ClassroomVie
         setContentView(R.layout.activity_classroom);
         ButterKnife.bind(this);
 
-        classroom = getIntent().getParcelableExtra(EXTRA_CLASSROOM);
+        Classroom classroom = getIntent().getParcelableExtra(EXTRA_CLASSROOM);
         presenter = new ClassroomPresenter(this, classroom);
 
         setSupportActionBar(toolbar);
@@ -95,15 +90,14 @@ public class ClassroomActivity extends AppCompatActivity implements ClassroomVie
             requestPermissions(new String[]{Manifest.permission.RECORD_AUDIO}, REQUEST_RECORD_AUDIO_PERMISSION);
         }
 
-        this.init();
+        init();
     }
 
     private void init() {
         drawingView = new DrawingView(this);
         layoutDrawingContainer.addView(drawingView);
 
-        User user = AuthenticationProvider.getCurrentUser();
-        if (user != null && classroom.getTeacher().getUid().equals(user.getUid())) {
+        if (presenter.isClassroomTeacher()) {
             layoutDrawingContainer.setVisibility(View.VISIBLE);
             speechButton.setVisibility(View.VISIBLE);
             sendDrawingButton.setVisibility(View.VISIBLE);
@@ -113,7 +107,7 @@ public class ClassroomActivity extends AppCompatActivity implements ClassroomVie
         speechRecognizer = SpeechRecognizer.createSpeechRecognizer(this);
         speechRecognizer.setRecognitionListener(this);
         recognizerIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-        recognizerIntent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, this.getPackageName());
+        recognizerIntent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, getPackageName());
         recognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_WEB_SEARCH);
         recognizerIntent.putExtra(RecognizerIntent.EXTRA_PARTIAL_RESULTS, true);
         recognizerIntent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_MINIMUM_LENGTH_MILLIS, 60000);
@@ -121,9 +115,34 @@ public class ClassroomActivity extends AppCompatActivity implements ClassroomVie
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        presenter.onStart();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        presenter.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        presenter.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+        presenter.onStop();
+        speechRecognizer.destroy();
+        super.onStop();
+    }
+
+    @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        this.presenter.onRequestPermissionsResult(requestCode, grantResults);
+        presenter.onRequestPermissionsResult(requestCode, grantResults);
     }
 
     @Override
@@ -152,13 +171,6 @@ public class ClassroomActivity extends AppCompatActivity implements ClassroomVie
     public void updateView(Classroom classroom) {
         speechTextView.setText(classroom.getSpeechText());
         speechScrollView.scrollTo(0, speechScrollView.getBottom());
-    }
-
-    @Override
-    protected void onStop() {
-        this.presenter.onStop();
-        this.speechRecognizer.destroy();
-        super.onStop();
     }
 
     @Override
@@ -255,13 +267,7 @@ public class ClassroomActivity extends AppCompatActivity implements ClassroomVie
     @Override
     public void onPartialResults(Bundle bundle) {
         Log.i("SPEECH", "onPartialResults");
-
-        ArrayList<String> voiceText = bundle.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
-        if (voiceText == null) {
-            return;
-        }
-
-        this.presenter.updateSpeechText(voiceText.get(0));
+        presenter.updateSpeechText(bundle);
     }
 
     @Override

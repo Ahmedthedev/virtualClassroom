@@ -17,6 +17,7 @@ import java.util.List;
 
 public class ChatPresenter {
     private ChatView view;
+    private AuthenticationProvider authenticationProvider;
     private FirebaseProvider firebaseProvider;
     private Classroom classroom;
     private List<Message> messages;
@@ -25,28 +26,16 @@ public class ChatPresenter {
         this.view = view;
         this.messages = new ArrayList<>();
         this.classroom = classroom;
+        this.authenticationProvider = AuthenticationProvider.getInstance();
         this.firebaseProvider = FirebaseProvider.getInstance();
-        this.init();
     }
 
-    private void init() {
-        this.firebaseProvider.getMessages(this.classroom).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                messages.clear();
+    public void onResume() {
+        firebaseProvider.getMessages(classroom).addValueEventListener(listener);
+    }
 
-                for (DataSnapshot messageSnapshot: dataSnapshot.getChildren()) {
-                    messages.add(messageSnapshot.getValue(Message.class));
-                }
-
-                view.updateMessagesList();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
+    public void onPause() {
+        firebaseProvider.getMessages(classroom).removeEventListener(listener);
     }
 
     public List<Message> getMessagesList() {
@@ -54,11 +43,27 @@ public class ChatPresenter {
     }
 
     public void onSendMessageButtonClick(String text) {
-        User user = AuthenticationProvider.getCurrentUser();
+        User user = authenticationProvider.getCurrentUser();
         Message message = new Message(text, new Date(), user);
 
-        this.firebaseProvider.postMessage(classroom, message)
+        firebaseProvider.postMessage(classroom, message)
                 .addOnSuccessListener(task -> view.sendMessageComplete())
                 .addOnFailureListener(Throwable::printStackTrace);
     }
+
+    private ValueEventListener listener = new ValueEventListener() {
+        @Override
+        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+            messages.clear();
+
+            for (DataSnapshot messageSnapshot: dataSnapshot.getChildren()) {
+                messages.add(messageSnapshot.getValue(Message.class));
+            }
+
+            view.updateMessagesList();
+        }
+
+        @Override
+        public void onCancelled(@NonNull DatabaseError databaseError) {}
+    };
 }

@@ -1,38 +1,48 @@
 <resources>
     <string name="app_name">VirtualClassroom</string>
 
-
-    <string name="home_fragment_title">Classrooms</string>
-    <string name="home_fragment_title_live">Live</string>
-    <string name="home_fragment_title_upcoming">Upcoming</string>
-    <string name="home_fragment_title_past">Past</string>
-
     <string name="error_invalid_password">Invalid password</string>
     <string name="error_invalid_email">Invalid e-mail</string>
     <string name="error_invalid_username">Invalid username</string>
     <string name="error_already_member">You already have an existing account.\nPlease try another authentication provider.</string>
     <string name="error_auth">An error has occurred during the Email authentication process.</string>
+    <string name="error_invalid_title">Invalid classroom title</string>
+    <string name="error_invalid_end_date">End date must be after start date</string>
 
-    <string name="fragment_log_in_logo_desc">Application logo</string>
-    <string name="fragment_log_in_loading">Loading…</string>
-    <string name="fragment_log_in_create_account">No account ? Signup</string>
-    <string name="fragment_log_in_log_in_text">Log in</string>
-    <string name="fragment_log_in_email_hint">E-mail address</string>
-    <string name="fragment_log_in_name_hint">Username</string>
-    <string name="fragment_log_in_password_hint">Password</string>
-    <string name="fragment_log_in_password_confirm_hint">Repeat password</string>
-
-    <string name="fragment_create_account_button_text">Sign UP</string>
-    <string name="fragment_chat_message_hint">Your message…</string>
     <string name="menu_log_out">Log out</string>
-    <string name="fragment_upcoming_dialog_decline">No thanks</string>
-    <string name="fragment_upcoming_dialog_accept">Of course!</string>
-    <string name="attachment_open_text">Open</string>
+
+    <string name="home_title">Classrooms</string>
+    <string name="home_title_live">Live</string>
+    <string name="home_title_upcoming">Upcoming</string>
+    <string name="home_title_past">Past</string>
+
+    <string name="log_in_logo_desc">Application logo</string>
+    <string name="log_in_loading">Loading…</string>
+    <string name="log_in_create_account">No account ? Sign up</string>
+    <string name="log_in_log_in_text">Log in</string>
+    <string name="log_in_email_hint">E-mail address</string>
+    <string name="log_in_name_hint">Username</string>
+    <string name="log_in_password_hint">Password</string>
+    <string name="log_in_password_confirm_hint">Repeat password</string>
+
     <string name="classroom_send_drawing_button_text">Send</string>
     <string name="classroom_clear_drawing_button_text">Clear</string>
-    <string name="classroom_creation_cancel_text">Reset</string>
+
     <string name="classroom_creation_confirm_text">Done</string>
-    <string name="error_invalid_title">Invalid classroom title</string>
     <string name="classroom_creation_description_hint">Description</string>
     <string name="classroom_creation_title_hint">Title</string>
+
+    <string name="register_sign_up_button_text">Sign up</string>
+
+    <string name="chat_new_message_hint">Your message…</string>
+
+    <string name="upcoming_classroom_dialog_decline">No thanks</string>
+    <string name="upcoming_classroom_dialog_accept">Of course!</string>
+    <string name="upcoming_classroom_dialog_title">%s is coming soon!</string>
+    <string name="upcoming_classroom_dialog_text">Would you like to receive notifications about this course and stay informed?</string>
+    <string name="upcoming_classroom_start_notification_content_title">%s in 10 minutes!</string>
+    <string name="upcoming_classroom_end_notification_content_title">%s is now over!</string>
+
+    <string name="attachment_open_button_text">Open</string>
+    <string name="attachments_download_button_description">Download button</string>
 </resources>

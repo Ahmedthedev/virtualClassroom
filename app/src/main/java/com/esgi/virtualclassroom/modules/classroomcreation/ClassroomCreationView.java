@@ -7,6 +7,10 @@ interface ClassroomCreationView {
     void showProgressDialog();
     void hideProgressDialog();
     void closeKeyboard();
-    void postClassroomSuccess();
     void exit();
+    void showEndDateError(int stringId);
+    void setStartDateButtonText(String text);
+    void setEndDateButtonText(String text);
+    void setStartTimeButtonText(String text);
+    void setEndTimeButtonText(String text);
 }

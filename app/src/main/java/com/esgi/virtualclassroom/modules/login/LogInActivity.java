@@ -47,7 +47,7 @@ public class LogInActivity extends AppCompatActivity implements LoginView {
     @Override
     protected void onResume() {
         super.onResume();
-        presenter.checkUserLogged();
+        presenter.onResume();
     }
 
     @Override
@@ -77,7 +77,7 @@ public class LogInActivity extends AppCompatActivity implements LoginView {
     public void showProgressDialog() {
         if (progressDialog == null) {
             progressDialog = new ProgressDialog(this);
-            progressDialog.setMessage(getString(R.string.fragment_log_in_loading));
+            progressDialog.setMessage(getString(R.string.log_in_loading));
             progressDialog.setIndeterminate(true);
         }
 

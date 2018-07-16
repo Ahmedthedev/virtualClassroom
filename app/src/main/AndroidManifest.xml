@@ -16,7 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/MaterialTheme">
         <activity
-            android:theme="@style/MaterialTheme.FullScreen"
+            android:theme="@style/MaterialTheme"
             android:name=".modules.login.LogInActivity"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -25,21 +25,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".modules.register.RegisterActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".modules.home.HomeActivity"
-            android:label="@string/home_fragment_title"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".modules.classroom.ClassroomActivity"
-            android:screenOrientation="portrait"
-            />
-        <activity
-            android:name=".modules.classroomcreation.ClassroomCreationActivity"
-            android:screenOrientation="portrait"
-            />
+
+        <activity android:name=".modules.register.RegisterActivity" android:screenOrientation="portrait" />
+        <activity android:name=".modules.home.HomeActivity" android:label="@string/home_title" android:screenOrientation="portrait" />
+        <activity android:name=".modules.classroom.ClassroomActivity" android:screenOrientation="portrait" />
+        <activity android:name=".modules.classroomcreation.ClassroomCreationActivity" android:screenOrientation="portrait" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"

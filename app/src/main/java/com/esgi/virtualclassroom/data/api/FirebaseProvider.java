@@ -50,16 +50,12 @@ public class FirebaseProvider {
         return instance;
     }
 
-    public FirebaseUser getCurrentUser() {
+    public FirebaseUser getCurrentFirebaseUser() {
         return firebaseAuth.getCurrentUser();
     }
 
     public Task<AuthResult> signIn(String email, String password) {
         return firebaseAuth.signInWithEmailAndPassword(email, password);
-    }
-
-    public void signOut() {
-        firebaseAuth.signOut();
     }
 
     public Task<AuthResult> createUser(String email, String password) {

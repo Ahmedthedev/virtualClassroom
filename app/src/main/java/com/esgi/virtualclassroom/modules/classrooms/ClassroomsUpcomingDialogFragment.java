@@ -39,10 +39,10 @@ public class ClassroomsUpcomingDialogFragment extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         builder
-                .setTitle(this.classroom.getTitle() + " is coming soon!")
-                .setMessage("Would you like to receive notifications about this course and stay informed?")
-                .setNegativeButton(R.string.fragment_upcoming_dialog_decline, (dialog, id) -> listener.onDeclineClick(classroom))
-                .setPositiveButton(R.string.fragment_upcoming_dialog_accept, (dialog, id) -> listener.onAcceptClick(classroom));
+                .setTitle(getString(R.string.upcoming_classroom_dialog_title, classroom.getTitle()))
+                .setMessage(getString(R.string.upcoming_classroom_dialog_text))
+                .setNegativeButton(R.string.upcoming_classroom_dialog_decline, (dialog, id) -> listener.onDeclineClick(classroom))
+                .setPositiveButton(R.string.upcoming_classroom_dialog_accept, (dialog, id) -> listener.onAcceptClick(classroom));
 
         return builder.create();
     }

@@ -45,7 +45,7 @@ public class ClassroomsFragment extends Fragment implements ClassroomsView {
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-            presenter = new ClassroomsPresenter(this.getActivity(), this, getArguments().getString(EXTRA_CLASSROOMS_PERIOD));
+            presenter = new ClassroomsPresenter(getActivity(), this, getArguments().getString(EXTRA_CLASSROOMS_PERIOD));
         }
     }
 
@@ -68,6 +68,18 @@ public class ClassroomsFragment extends Fragment implements ClassroomsView {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        presenter.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        presenter.onPause();
+    }
+
+    @Override
     public void goToClassroom(Classroom classroom) {
         Intent intent = new Intent(getActivity(), ClassroomActivity.class);
         intent.putExtra(ClassroomActivity.EXTRA_CLASSROOM, classroom);
@@ -83,7 +95,7 @@ public class ClassroomsFragment extends Fragment implements ClassroomsView {
     @Override
     public void showPopupUpcomingClassroom(Classroom classroom) {
         ClassroomsUpcomingDialogFragment upcomingClassroomModal = ClassroomsUpcomingDialogFragment.newInstance(classroom);
-        upcomingClassroomModal.setListener(this.presenter);
+        upcomingClassroomModal.setListener(presenter);
 
         FragmentManager fragmentManager = getFragmentManager();
         if (fragmentManager != null) {

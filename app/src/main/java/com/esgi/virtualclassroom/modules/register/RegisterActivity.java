@@ -81,7 +81,7 @@ public class RegisterActivity extends AppCompatActivity implements RegisterView 
     public void showProgressDialog() {
         if (progressDialog == null) {
             progressDialog = new ProgressDialog(this);
-            progressDialog.setMessage(getString(R.string.fragment_log_in_loading));
+            progressDialog.setMessage(getString(R.string.log_in_loading));
             progressDialog.setIndeterminate(true);
         }
 
