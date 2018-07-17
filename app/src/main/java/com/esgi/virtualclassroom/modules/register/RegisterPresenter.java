@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import com.esgi.virtualclassroom.R;
 import com.esgi.virtualclassroom.data.AuthenticationProvider;
 import com.esgi.virtualclassroom.data.api.FirebaseProvider;
+import com.esgi.virtualclassroom.data.models.User;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 
 class RegisterPresenter {
@@ -58,13 +59,14 @@ class RegisterPresenter {
     }
 
     private void createUser(String email, String password, final String username) {
-        // TODO : username doesn't pass in database anymore
         this.firebaseProvider.createUser(email, password)
-                .addOnSuccessListener(authResult -> this.firebaseProvider.updateUser(authResult, username).addOnSuccessListener(this::onUpdateUserSuccess))
-                .addOnFailureListener(this::onCreateUserFailure);
+                .addOnFailureListener(this::onCreateUserFailure)
+                .addOnSuccessListener(authResult -> this.firebaseProvider.postUser(new User(authResult.getUser().getUid(), email, username))
+                        .addOnFailureListener(Throwable::printStackTrace)
+                        .addOnSuccessListener(this::onPostUserSuccess));
     }
 
-    private void onUpdateUserSuccess(Void aVoid) {
+    private void onPostUserSuccess(Void aVoid) {
         view.hideProgressDialog();
         view.goToLoginActivity();
     }

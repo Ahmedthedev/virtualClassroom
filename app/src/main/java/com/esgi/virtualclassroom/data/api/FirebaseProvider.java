@@ -69,43 +69,48 @@ public class FirebaseProvider {
     }
 
     public Query getClassroomsUpcoming() {
-        return this.dbRef.child(CLASSROOMS_REFERENCE).orderByChild("start").startAt(new Date().getTime());
+        return dbRef.child(CLASSROOMS_REFERENCE).orderByChild("start").startAt(new Date().getTime());
     }
 
     public Query getClassroomsPast() {
-        return this.dbRef.child(CLASSROOMS_REFERENCE).orderByChild("end").endAt(new Date().getTime());
+        return dbRef.child(CLASSROOMS_REFERENCE).orderByChild("end").endAt(new Date().getTime());
     }
 
     public Query getClassroomsLive() {
-        return this.dbRef.child(CLASSROOMS_REFERENCE).orderByChild("end").startAt(new Date().getTime());
+        return dbRef.child(CLASSROOMS_REFERENCE).orderByChild("end").startAt(new Date().getTime());
     }
 
     public DatabaseReference getUser(String id) {
-        return this.dbRef.child(USERS_REFERENCE).child(id);
+        return dbRef.child(USERS_REFERENCE).child(id);
+    }
+
+    public Task<Void> postUser(User user) {
+        DatabaseReference userRef = getUser(user.getUid());
+        return userRef.setValue(user);
     }
 
     public DatabaseReference getClassrooms() {
-        return this.dbRef.child(CLASSROOMS_REFERENCE);
+        return dbRef.child(CLASSROOMS_REFERENCE);
     }
 
     public DatabaseReference getClassroom(Classroom classroom) {
-        return this.dbRef.child(CLASSROOMS_REFERENCE).child(classroom.getId());
+        return dbRef.child(CLASSROOMS_REFERENCE).child(classroom.getId());
     }
 
     public DatabaseReference getMessages(Classroom classroom) {
-        return this.dbRef.child(MESSAGES_REFERENCE).child(classroom.getId());
+        return dbRef.child(MESSAGES_REFERENCE).child(classroom.getId());
     }
 
     public DatabaseReference getAttachments(Classroom classroom) {
-        return this.dbRef.child(ATTACHMENTS_REFERENCE).child(classroom.getId());
+        return dbRef.child(ATTACHMENTS_REFERENCE).child(classroom.getId());
     }
 
     public DatabaseReference getViewers(Classroom classroom) {
-        return this.dbRef.child(VIEWERS_REFERENCE).child(classroom.getId());
+        return dbRef.child(VIEWERS_REFERENCE).child(classroom.getId());
     }
 
     public DatabaseReference getSubscriptions(Classroom classroom) {
-        return this.dbRef.child(SUBSCRIPTIONS_REFERENCE).child(classroom.getId());
+        return dbRef.child(SUBSCRIPTIONS_REFERENCE).child(classroom.getId());
     }
 
     public Task<Void> postClassroom(Classroom classroom) {
@@ -143,16 +148,16 @@ public class FirebaseProvider {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 20, stream);
         byte[] data = stream.toByteArray();
-        StorageReference imageRef = this.storageRef.child(CLASSROOMS_REFERENCE).child(classroom.getId()).child(name);
+        StorageReference imageRef = storageRef.child(CLASSROOMS_REFERENCE).child(classroom.getId()).child(name);
         return imageRef.putBytes(data);
     }
 
     public StorageReference getFileRef(String url) {
-        return this.storageRef.child(url);
+        return storageRef.child(url);
     }
 
     public FileDownloadTask downloadFile(Attachment attachment) {
         File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), attachment.getName());
-        return this.storageRef.child(attachment.getUrl()).getFile(file);
+        return storageRef.child(attachment.getUrl()).getFile(file);
     }
 }

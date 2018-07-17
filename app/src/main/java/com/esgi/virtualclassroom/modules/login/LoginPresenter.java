@@ -87,6 +87,7 @@ class LoginPresenter {
     }
 
     private void createUserAndGoToHome(FirebaseUser firebaseUser) {
+        view.showProgressDialog();
         firebaseProvider.getUser(firebaseUser.getUid()).addValueEventListener(listener);
     }
 
